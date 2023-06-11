@@ -12,7 +12,7 @@
 
 .navbar {
   padding: 0.5rem;
-  margin: 0 0 2rem 0;
+  margin: 1rem 0 2rem 0;
   border: 1px solid var(--light-grey);
   border-radius: var(--border-radius);
 }
@@ -31,6 +31,6 @@
     padding: 1rem;
   }
   .navbar {
-    margin: 0 0 3rem 0;
+    margin: 1rem 0 3rem 0;
   }
 }

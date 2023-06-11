@@ -10,7 +10,7 @@
   "prettier": {
     "tabWidth": 2,
     "semi": false,
-    "printWidth": 100
+    "printWidth": 120
   },
   "dependencies": {
     "@types/node": "20.2.6",

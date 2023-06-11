@@ -1,23 +1,64 @@
 "use client"
 import { useState } from "react"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
-import { generateMineGrid } from "@/services/sweeperService"
+import {
+  generateMineGrid,
+  directions,
+  getAdjacentMinesAmount,
+  hasValueOneInMatrix,
+  isInRange,
+} from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
-import { Dir } from "fs"
-import { dir } from "console"
 
 const Sweeper = () => {
   const [mineGrid] = useState(generateMineGrid())
-  const [visited, setVisited] = useState(Array(5).fill(Array(5).fill(0)))
+  const [visited, setVisited] = useState(Array(10).fill(Array(10).fill(0)))
   const [gameOn, setGameOn] = useState(true)
 
+  const handleGameOver = () => {
+    console.log("Booom!")
+    setGameOn(false)
+  }
+
+  let temp
+
+  const revealConnectedEmptyCells = (i: number, j: number, visitedCells: number[][]) => {
+    temp = JSON.parse(JSON.stringify(visitedCells))
+    temp[i][j] = 1
+    setVisited(temp)
+
+    if (getAdjacentMinesAmount(i, j, mineGrid)) return
+
+    // TODO: refactor to use Object keys directly
+    const { up, down, left, right, upLeft, upRight, downLeft, downRight } = directions(i, j) || {}
+    const adjacent = [up, upRight, right, downRight, down, downLeft, left, upLeft]
+
+    for (let l = 0; l < adjacent.length; l++) {
+      const curr = adjacent[l]
+      if (!isInRange(curr.y, curr.x, mineGrid)) continue
+      if (hasValueOneInMatrix(curr.y, curr.x, temp)) continue
+
+      revealConnectedEmptyCells(curr.y, curr.x, temp)
+    }
+  }
+
+  // TODO: clean up
   const handleClick = (i: number, j: number): void => {
     if (!gameOn) return
 
     // mine found
-    if (mineGrid[i][j] === 1) {
-      console.log("Booom!")
-      setGameOn(false)
+    if (hasValueOneInMatrix(i, j, mineGrid)) {
+      handleGameOver()
+      return
+    }
+
+    // game won
+    // TODO: sum of visited array & mineGrid -> all ones -> game won
+
+    // empty without neighboring mines found -> reveal all connected similar cells
+    if (!getAdjacentMinesAmount(i, j, mineGrid)) {
+      revealConnectedEmptyCells(i, j, visited)
+      return
     }
 
     // update visited
@@ -26,33 +67,7 @@ const Sweeper = () => {
     setVisited(temp)
   }
 
-  const getAdjacentMinesAmount = (i: number, j: number) => {
-    let sum = 0
-
-    const directions = {
-      up: { y: i - 1, x: j },
-      upRight: { y: i - 1, x: j + 1 },
-      right: { y: i, x: j + 1 },
-      downRight: { y: i + 1, x: j + 1 },
-      down: { y: i + 1, x: j },
-      downLeft: { y: i + 1, x: j - 1 },
-      left: { y: i, x: j - 1 },
-      upLeft: { y: i - 1, x: j - 1 },
-    }
-
-    Object.keys(directions).forEach((d) => {
-      const current = directions[d as keyof typeof directions]
-      const { x, y } = current || {}
-      try {
-        if (mineGrid[y][x]) sum++
-      } catch (e) {
-        // console.log("")
-      }
-    })
-
-    return sum
-  }
-
+  // TODO: clean up
   const renderSweeper = () => {
     const items = []
 
@@ -62,20 +77,14 @@ const Sweeper = () => {
           <div
             key={`item-${i}-${j}`}
             id={`item-${i}-${j}`}
-            className={`${styles.gridItem} ${visited[i][j] ? styles.visited : ""}`}
+            className={`${styles.gridItem} ${hasValueOneInMatrix(i, j, visited) ? styles.visited : ""}`}
             onClick={(e) => handleClick(i, j)}
           >
-            {/* {visited[i][j] === 1 ? "v" : 0} */}
-            {mineGrid[i][j] === 1 ? "xx" : ""}
-            {getAdjacentMinesAmount(i, j)}
+            {!gameOn && hasValueOneInMatrix(i, j, mineGrid) ? "💩" : ""}
+            {(hasValueOneInMatrix(i, j, visited) && getAdjacentMinesAmount(i, j, mineGrid)) || ""}
           </div>
         )
       }
-
-      // console.log(mineGrid[i])
-      // if ((i + 1) % 5 === 0) {
-      //   console.log("row end!")
-      // }
     }
     return <div className={styles.gridContainer}>{items}</div>
   }

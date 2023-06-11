@@ -1,16 +1,23 @@
 .gridContainer {
   display: flex;
-  width: 15rem;
+  width: 20rem;
   flex-wrap: wrap;
-  background-color: var(--light-grey);
+  background-color: var(--pink-lavender);
 }
 
 .gridItem {
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--champagne-pink);
+  /* text-align: center; */
+  font-weight: bold;
+  /* opacity: 0.7; */
+  font-size: 1.25rem;
 }
 
 .visited {
-  background-color: blue;
+  background-color: var(--mauve);
 }
