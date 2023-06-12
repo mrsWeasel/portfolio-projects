@@ -13,11 +13,23 @@ import styles from "./sweeper.module.css"
 const Sweeper = () => {
   const [mineGrid] = useState(generateMineGrid())
   const [visited, setVisited] = useState(Array(10).fill(Array(10).fill(0)))
-  const [gameOn, setGameOn] = useState(true)
+  const [gameStatus, setGameStatus] = useState("playing")
 
   const handleGameOver = () => {
     console.log("Booom!")
-    setGameOn(false)
+    setGameStatus("lost")
+  }
+
+  const checkIfGameWon = (visited: number[][]) => {
+    console.log(visited)
+    for (let i = 0; i < visited.flat().length; i++) {
+      if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
+        return false
+      }
+    }
+    alert("🎊🪅🎈🎁🎉🪩")
+    setGameStatus("won")
+    return true
   }
 
   let temp
@@ -44,16 +56,13 @@ const Sweeper = () => {
 
   // TODO: clean up
   const handleClick = (i: number, j: number): void => {
-    if (!gameOn) return
+    if (gameStatus !== "playing") return
 
     // mine found
     if (hasValueOneInMatrix(i, j, mineGrid)) {
       handleGameOver()
       return
     }
-
-    // game won
-    // TODO: sum of visited array & mineGrid -> all ones -> game won
 
     // empty without neighboring mines found -> reveal all connected similar cells
     if (!getAdjacentMinesAmount(i, j, mineGrid)) {
@@ -65,6 +74,8 @@ const Sweeper = () => {
     const temp = JSON.parse(JSON.stringify(visited))
     temp[i][j] = 1
     setVisited(temp)
+
+    checkIfGameWon(temp)
   }
 
   // TODO: clean up
@@ -80,7 +91,8 @@ const Sweeper = () => {
             className={`${styles.gridItem} ${hasValueOneInMatrix(i, j, visited) ? styles.visited : ""}`}
             onClick={(e) => handleClick(i, j)}
           >
-            {!gameOn && hasValueOneInMatrix(i, j, mineGrid) ? "💩" : ""}
+            {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "lost" && "💩"}
+            {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "won" && "🦄"}
             {(hasValueOneInMatrix(i, j, visited) && getAdjacentMinesAmount(i, j, mineGrid)) || ""}
           </div>
         )
@@ -92,9 +104,9 @@ const Sweeper = () => {
 
   return (
     <ContainerWithNavigation>
-      <h1>Sweeper game</h1>
+      <h1>Minesweeper game</h1>
       <div>
-        {gameOn ? "Now playing" : "Game over"}
+        {gameStatus === "playing" && "Now playing"}
         {renderSweeper()}
       </div>
     </ContainerWithNavigation>
