@@ -15,7 +15,7 @@ const ContainerWithNavigation: React.FC<Props> = ({ children }) => {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="/sweeper">Sweeper game</Link>
+            <Link href="/sweeper">Minesweeper game</Link>
           </li>
         </ul>
       </nav>

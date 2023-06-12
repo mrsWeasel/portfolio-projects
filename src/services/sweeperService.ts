@@ -1,5 +1,5 @@
 
-export const directions = (i: number, j: number) => ({
+export const getDirections = (i: number, j: number) => ({
     up: { y: i - 1, x: j },
     upRight: { y: i - 1, x: j + 1 },
     right: { y: i, x: j + 1 },
@@ -10,20 +10,24 @@ export const directions = (i: number, j: number) => ({
     upLeft: { y: i - 1, x: j - 1 },
   })
 
+export const generateGrid = (size = 10): number[][] => (
+    Array(size).fill(Array(size).fill(0))
+)
+
 export const generateMineGrid = () => {
     // 100 cells - 10 x 10 grid
     // TODO: make dynamic
     return ([
-        [0,0,0,0,0,0,0,0,0,0],
         [1,0,0,0,0,0,0,0,0,1],
-        [0,0,0,0,0,0,0,1,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,1,0,0,0,0,1,0,1],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,1,0,0,0],
         [0,1,0,0,0,0,0,0,0,0],
         [0,0,0,0,1,0,0,0,0,0],
-        [0,0,0,0,0,0,0,1,0,0],
         [0,0,0,0,0,0,0,0,0,0],
-        [0,1,0,0,0,0,0,0,0,0]
+        [0,0,0,0,0,0,0,1,0,0],
+        [0,0,0,1,0,0,0,0,0,0]
     ])
 }
 
@@ -34,25 +38,20 @@ export const isInRange = (i: number, j: number, mineGrid: number[][]) => {
     } catch(e){
         return false
     }
-    // return false
 }
 
-export const getAdjacentMinesAmount = (i: number, j: number, mineGrid: number[][]) => {
+export const getAmountOfSurroundingMines = (i: number, j: number, mineGrid: number[][]) => {
     let sum = 0
 
-    const dir = directions(i, j)
+    const dir = getDirections(i, j)
 
     Object.keys(dir).forEach((d) => {
       const current = dir[d as keyof typeof dir]
       const { x, y } = current || {}
       try {
         if (mineGrid[y][x]) sum++
-      } catch (e) {
-        // console.log("")
-        
-      }
+      } catch (e) {}
     })
-
     return sum
 }
 
@@ -64,7 +63,7 @@ export const hasValueOneInMatrix = (i: number, j: number, arr: number[][]) => {
     } catch (e) {
         return true
     }
-    // return false
+    return false
 }
 
 

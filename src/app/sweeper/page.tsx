@@ -3,16 +3,20 @@ import { useState } from "react"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
 import {
   generateMineGrid,
-  directions,
-  getAdjacentMinesAmount,
+  getDirections,
+  getAmountOfSurroundingMines,
   hasValueOneInMatrix,
   isInRange,
+  generateGrid,
 } from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
 
 const Sweeper = () => {
   const [mineGrid] = useState(generateMineGrid())
-  const [visited, setVisited] = useState(Array(10).fill(Array(10).fill(0)))
+  const [visitedGrid, setVisitedGrid] = useState(generateGrid(10))
+  const [flaggedGrid, setFlaggedGrid] = useState(generateGrid(10))
+
+  const [flagging, setFlagging] = useState(true)
   const [gameStatus, setGameStatus] = useState("playing")
 
   const handleGameOver = () => {
@@ -27,7 +31,7 @@ const Sweeper = () => {
         return false
       }
     }
-    alert("🎊🪅🎈🎁🎉🪩")
+    // alert("🎊🪅🎈🎁🎉🪩")
     setGameStatus("won")
     return true
   }
@@ -37,12 +41,12 @@ const Sweeper = () => {
   const revealConnectedEmptyCells = (i: number, j: number, visitedCells: number[][]) => {
     temp = JSON.parse(JSON.stringify(visitedCells))
     temp[i][j] = 1
-    setVisited(temp)
+    setVisitedGrid(temp)
 
-    if (getAdjacentMinesAmount(i, j, mineGrid)) return
+    if (getAmountOfSurroundingMines(i, j, mineGrid)) return
 
     // TODO: refactor to use Object keys directly
-    const { up, down, left, right, upLeft, upRight, downLeft, downRight } = directions(i, j) || {}
+    const { up, down, left, right, upLeft, upRight, downLeft, downRight } = getDirections(i, j) || {}
     const adjacent = [up, upRight, right, downRight, down, downLeft, left, upLeft]
 
     for (let l = 0; l < adjacent.length; l++) {
@@ -54,9 +58,16 @@ const Sweeper = () => {
     }
   }
 
-  // TODO: clean up
   const handleClick = (i: number, j: number): void => {
     if (gameStatus !== "playing") return
+
+    // flagging cells
+    if (flagging) {
+      const tempFlaggedGrid = JSON.parse(JSON.stringify(flaggedGrid))
+      tempFlaggedGrid[i][j] = !tempFlaggedGrid[i][j]
+      setFlaggedGrid(tempFlaggedGrid)
+      return
+    }
 
     // mine found
     if (hasValueOneInMatrix(i, j, mineGrid)) {
@@ -65,17 +76,18 @@ const Sweeper = () => {
     }
 
     // empty without neighboring mines found -> reveal all connected similar cells
-    if (!getAdjacentMinesAmount(i, j, mineGrid)) {
-      revealConnectedEmptyCells(i, j, visited)
+    if (!getAmountOfSurroundingMines(i, j, mineGrid)) {
+      revealConnectedEmptyCells(i, j, visitedGrid)
       return
     }
 
     // update visited
-    const temp = JSON.parse(JSON.stringify(visited))
-    temp[i][j] = 1
-    setVisited(temp)
+    const tempVisitedGrid = JSON.parse(JSON.stringify(visitedGrid))
+    tempVisitedGrid[i][j] = 1
+    setVisitedGrid(tempVisitedGrid)
 
-    checkIfGameWon(temp)
+    // check if game is won
+    checkIfGameWon(tempVisitedGrid)
   }
 
   // TODO: clean up
@@ -88,12 +100,13 @@ const Sweeper = () => {
           <div
             key={`item-${i}-${j}`}
             id={`item-${i}-${j}`}
-            className={`${styles.gridItem} ${hasValueOneInMatrix(i, j, visited) ? styles.visited : ""}`}
+            className={`${styles.gridItem} ${hasValueOneInMatrix(i, j, visitedGrid) ? styles.visited : ""}`}
             onClick={(e) => handleClick(i, j)}
           >
             {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "lost" && "💩"}
             {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "won" && "🦄"}
-            {(hasValueOneInMatrix(i, j, visited) && getAdjacentMinesAmount(i, j, mineGrid)) || ""}
+            {hasValueOneInMatrix(i, j, flaggedGrid) && gameStatus === "playing" && "📍"}
+            {(hasValueOneInMatrix(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
           </div>
         )
       }
