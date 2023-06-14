@@ -10,25 +10,75 @@ export const getDirections = (i: number, j: number) => ({
     upLeft: { y: i - 1, x: j - 1 },
   })
 
-export const generateGrid = (size = 10): number[][] => (
-    Array(size).fill(Array(size).fill(0))
-)
+export const generateGrid = (size = 10): number[][] => {
+    return Array(10).fill(Array(10).fill(0))
+}
 
-export const generateMineGrid = () => {
-    // 100 cells - 10 x 10 grid
-    // TODO: make dynamic
-    return ([
-        [1,0,0,0,0,0,0,0,0,1],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,1,0,0,0,0,1,0,1],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,1,0,0,0],
-        [0,1,0,0,0,0,0,0,0,0],
-        [0,0,0,0,1,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,1,0,0],
-        [0,0,0,1,0,0,0,0,0,0]
-    ])
+
+// console.log(arr)
+    
+export const generateMineGrid = (size = 10): number[][] => {
+    const arr = Array(100).fill(0)
+    const mines: number[] = []
+
+    while (mines.length <= 10) {
+        const mineIndex = Math.round(Math.random() * 100)
+        mines.push(mineIndex)
+    }
+    console.log(mines)
+
+    let tempRow: number[] = []
+    let tempGrid: number[][] = []
+
+    
+    arr.forEach((cell, index) => {
+        if (mines.indexOf(index) !== -1) {
+            tempRow.push(1)
+        } else {
+            tempRow.push(0)
+        }
+        if (tempRow.length >= size) {
+            tempGrid.push(tempRow)
+            tempRow = []
+        }
+    })
+
+    console.log(tempGrid)
+    return tempGrid
+
+ 
+    // amount of mines should be same as grid size (10 x 10 grid -> 10 mines)
+    // while (mineCount <= size) {
+    //     mineCount ++
+        
+    //     console.log(mineCount, size)
+    //     x = Math.floor(Math.random() * size)
+    //     y = Math.floor(Math.random() * size)
+      
+    //     // console.log(arr[y][x], 'before')
+    //     // console.log(x, y, 'x y')
+    //     mineCount ++
+
+    //    if (!hasValueOneInMatrix(y, x, arr)) {
+    //     // console.log(arr[y][x], 'should be ')
+    //     arr[y][x] = 1
+    //     mineCount ++
+    //    }
+    // }
+    // console.log(arr)
+    
+    // return ([
+    //     [1,0,0,0,0,0,0,0,0,1],
+    //     [0,0,0,0,0,0,0,0,0,0],
+    //     [0,0,1,0,0,0,0,1,0,1],
+    //     [0,0,0,0,0,0,0,0,0,0],
+    //     [0,0,0,0,0,0,1,0,0,0],
+    //     [0,1,0,0,0,0,0,0,0,0],
+    //     [0,0,0,0,1,0,0,0,0,0],
+    //     [0,0,0,0,0,0,0,0,0,0],
+    //     [0,0,0,0,0,0,0,1,0,0],
+    //     [0,0,0,1,0,0,0,0,0,0]
+    // ])
 }
 
 export const isInRange = (i: number, j: number, mineGrid: number[][]) => {

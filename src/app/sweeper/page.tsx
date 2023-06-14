@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
 import {
   generateMineGrid,
@@ -12,12 +12,17 @@ import {
 import styles from "./sweeper.module.css"
 
 const Sweeper = () => {
-  const [mineGrid] = useState(generateMineGrid())
+  const [mineGrid, setMineGrid] = useState(generateMineGrid(10))
   const [visitedGrid, setVisitedGrid] = useState(generateGrid(10))
   const [flaggedGrid, setFlaggedGrid] = useState(generateGrid(10))
-
-  const [flagging, setFlagging] = useState(true)
+  const [flagging, setFlagging] = useState(false)
   const [gameStatus, setGameStatus] = useState("playing")
+
+  useEffect(() => {
+    // console.log("use effect")
+    // const mineGrid = generateMineGrid(10)
+    // setMineGrid(mineGrid)
+  }, [])
 
   const handleGameOver = () => {
     console.log("Booom!")
@@ -105,7 +110,7 @@ const Sweeper = () => {
           >
             {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "lost" && "💩"}
             {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "won" && "🦄"}
-            {hasValueOneInMatrix(i, j, flaggedGrid) && gameStatus === "playing" && "📍"}
+            {hasValueOneInMatrix(i, j, flaggedGrid) && gameStatus === "playing" && "🚩"}
             {(hasValueOneInMatrix(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
           </div>
         )
