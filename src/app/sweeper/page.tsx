@@ -113,20 +113,32 @@ const Sweeper = () => {
         )
       }
     }
-    return <div>
-      <div><button onClick={() => setFlagging(!flagging)}>{flagging ? '🚩 flag' : '👇 try your luck'}</button></div>
-      <div className={styles.gridContainer}>{items}</div>
+    return (
+      <div>
+        <div className={styles.toolBar}>
+          <button
+            className={`${styles.toolBarButton} ${flagging && styles.selected}`}
+            onClick={() => setFlagging(true)}
+          >
+            🚩
+          </button>
+          <button
+            className={`${styles.toolBarButton} ${!flagging && styles.selected}`}
+            onClick={() => setFlagging(false)}
+          >
+            ☠️
+          </button>
+          {gameStatus === "playing" && "Now playing"}
+        </div>
+        <div className={styles.gridContainer}>{items}</div>
       </div>
+    )
   }
-  renderSweeper()
 
   return (
     <ContainerWithNavigation>
       <h1>Minesweeper game</h1>
-      <div>
-        {gameStatus === "playing" && "Now playing"}
-        {renderSweeper()}
-      </div>
+      <div>{renderSweeper()}</div>
     </ContainerWithNavigation>
   )
 }

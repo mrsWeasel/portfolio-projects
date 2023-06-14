@@ -22,3 +22,20 @@
 .visited {
   background-color: var(--mauve);
 }
+
+.toolBar {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.toolBarButton {
+  background-color: var(--light-grey);
+  border: none;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 1px;
+}
+
+.selected {
+  background-color: var(--medium-grey);
+}
