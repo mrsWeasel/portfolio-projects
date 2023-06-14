@@ -1,119 +1,78 @@
-
 export const getDirections = (i: number, j: number) => ({
-    up: { y: i - 1, x: j },
-    upRight: { y: i - 1, x: j + 1 },
-    right: { y: i, x: j + 1 },
-    downRight: { y: i + 1, x: j + 1 },
-    down: { y: i + 1, x: j },
-    downLeft: { y: i + 1, x: j - 1 },
-    left: { y: i, x: j - 1 },
-    upLeft: { y: i - 1, x: j - 1 },
-  })
+  up: { y: i - 1, x: j },
+  upRight: { y: i - 1, x: j + 1 },
+  right: { y: i, x: j + 1 },
+  downRight: { y: i + 1, x: j + 1 },
+  down: { y: i + 1, x: j },
+  downLeft: { y: i + 1, x: j - 1 },
+  left: { y: i, x: j - 1 },
+  upLeft: { y: i - 1, x: j - 1 },
+})
 
 export const generateGrid = (size = 10): number[][] => {
-    return Array(10).fill(Array(10).fill(0))
+  return Array(10).fill(Array(10).fill(0))
 }
 
-
 // console.log(arr)
-    
+
 export const generateMineGrid = (size = 10): number[][] => {
-    const arr = Array(100).fill(0)
-    const mines: number[] = []
+  const arr = Array(100).fill(0)
+  const mines: number[] = []
 
-    while (mines.length <= 10) {
-        const mineIndex = Math.round(Math.random() * 100)
-        mines.push(mineIndex)
+  while (mines.length <= 10) {
+    const mineIndex = Math.round(Math.random() * 100)
+    mines.push(mineIndex)
+  }
+
+  let tempRow: number[] = []
+  const mineGrid: number[][] = []
+
+  arr.forEach((cell, index) => {
+    if (mines.indexOf(index) !== -1) {
+      tempRow.push(1)
+    } else {
+      tempRow.push(0)
     }
-    console.log(mines)
+    if (tempRow.length >= size) {
+      mineGrid.push(tempRow)
+      tempRow = []
+    }
+  })
 
-    let tempRow: number[] = []
-    let tempGrid: number[][] = []
-
-    
-    arr.forEach((cell, index) => {
-        if (mines.indexOf(index) !== -1) {
-            tempRow.push(1)
-        } else {
-            tempRow.push(0)
-        }
-        if (tempRow.length >= size) {
-            tempGrid.push(tempRow)
-            tempRow = []
-        }
-    })
-
-    console.log(tempGrid)
-    return tempGrid
-
- 
-    // amount of mines should be same as grid size (10 x 10 grid -> 10 mines)
-    // while (mineCount <= size) {
-    //     mineCount ++
-        
-    //     console.log(mineCount, size)
-    //     x = Math.floor(Math.random() * size)
-    //     y = Math.floor(Math.random() * size)
-      
-    //     // console.log(arr[y][x], 'before')
-    //     // console.log(x, y, 'x y')
-    //     mineCount ++
-
-    //    if (!hasValueOneInMatrix(y, x, arr)) {
-    //     // console.log(arr[y][x], 'should be ')
-    //     arr[y][x] = 1
-    //     mineCount ++
-    //    }
-    // }
-    // console.log(arr)
-    
-    // return ([
-    //     [1,0,0,0,0,0,0,0,0,1],
-    //     [0,0,0,0,0,0,0,0,0,0],
-    //     [0,0,1,0,0,0,0,1,0,1],
-    //     [0,0,0,0,0,0,0,0,0,0],
-    //     [0,0,0,0,0,0,1,0,0,0],
-    //     [0,1,0,0,0,0,0,0,0,0],
-    //     [0,0,0,0,1,0,0,0,0,0],
-    //     [0,0,0,0,0,0,0,0,0,0],
-    //     [0,0,0,0,0,0,0,1,0,0],
-    //     [0,0,0,1,0,0,0,0,0,0]
-    // ])
+  return mineGrid
 }
 
 export const isInRange = (i: number, j: number, mineGrid: number[][]) => {
-    try {
-        if (mineGrid[i][j] === 0) return true
-        if (mineGrid[i][j] === 1) return true
-    } catch(e){
-        return false
-    }
+  try {
+    if (mineGrid[i][j] === 0) return true
+    if (mineGrid[i][j] === 1) return true
+  } catch (e) {
+    return false
+  }
 }
 
 export const getAmountOfSurroundingMines = (i: number, j: number, mineGrid: number[][]) => {
-    let sum = 0
+  let sum = 0
 
-    const dir = getDirections(i, j)
+  const dir = getDirections(i, j)
 
-    Object.keys(dir).forEach((d) => {
-      const current = dir[d as keyof typeof dir]
-      const { x, y } = current || {}
-      try {
-        if (mineGrid[y][x]) sum++
-      } catch (e) {}
-    })
-    return sum
+  Object.keys(dir).forEach((d) => {
+    const current = dir[d as keyof typeof dir]
+    const { x, y } = current || {}
+    try {
+      if (mineGrid[y][x]) sum++
+    } catch (e) {}
+  })
+  return sum
 }
 
 export const hasValueOneInMatrix = (i: number, j: number, arr: number[][]) => {
-    try {
-        if (arr[i][j]) {
-            return true
-        } 
-    } catch (e) {
-        return true
+  try {
+    if (arr[i][j]) {
+      return true
     }
-    return false
+  } catch (e) {
+    return true
+  }
+  return false
 }
-
-

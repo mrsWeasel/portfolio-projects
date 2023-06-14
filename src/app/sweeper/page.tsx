@@ -25,18 +25,15 @@ const Sweeper = () => {
   }, [])
 
   const handleGameOver = () => {
-    console.log("Booom!")
     setGameStatus("lost")
   }
 
   const checkIfGameWon = (visited: number[][]) => {
-    console.log(visited)
     for (let i = 0; i < visited.flat().length; i++) {
       if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
         return false
       }
     }
-    // alert("🎊🪅🎈🎁🎉🪩")
     setGameStatus("won")
     return true
   }
@@ -116,7 +113,10 @@ const Sweeper = () => {
         )
       }
     }
-    return <div className={styles.gridContainer}>{items}</div>
+    return <div>
+      <div><button onClick={() => setFlagging(!flagging)}>{flagging ? '🚩 flag' : '👇 try your luck'}</button></div>
+      <div className={styles.gridContainer}>{items}</div>
+      </div>
   }
   renderSweeper()
 
