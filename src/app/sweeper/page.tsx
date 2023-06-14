@@ -5,7 +5,7 @@ import {
   generateMineGrid,
   getDirections,
   getAmountOfSurroundingMines,
-  hasValueOneInMatrix,
+  cellHasValueInGrid,
   isInRange,
   generateGrid,
 } from "@/services/sweeperService"
@@ -54,7 +54,7 @@ const Sweeper = () => {
     for (let l = 0; l < adjacent.length; l++) {
       const curr = adjacent[l]
       if (!isInRange(curr.y, curr.x, mineGrid)) continue
-      if (hasValueOneInMatrix(curr.y, curr.x, temp)) continue
+      if (cellHasValueInGrid(curr.y, curr.x, temp)) continue
 
       revealConnectedEmptyCells(curr.y, curr.x, temp)
     }
@@ -72,7 +72,7 @@ const Sweeper = () => {
     }
 
     // mine found
-    if (hasValueOneInMatrix(i, j, mineGrid)) {
+    if (cellHasValueInGrid(i, j, mineGrid)) {
       handleGameOver()
       return
     }
@@ -102,13 +102,13 @@ const Sweeper = () => {
           <div
             key={`item-${i}-${j}`}
             id={`item-${i}-${j}`}
-            className={`${styles.gridItem} ${hasValueOneInMatrix(i, j, visitedGrid) ? styles.visited : ""}`}
+            className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
             onClick={(e) => handleClick(i, j)}
           >
-            {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "lost" && "💩"}
-            {hasValueOneInMatrix(i, j, mineGrid) && gameStatus === "won" && "🦄"}
-            {hasValueOneInMatrix(i, j, flaggedGrid) && gameStatus === "playing" && "🚩"}
-            {(hasValueOneInMatrix(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
+            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === "lost" && "💩"}
+            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === "won" && "🦄"}
+            {cellHasValueInGrid(i, j, flaggedGrid) && gameStatus === "playing" && "🚩"}
+            {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
           </div>
         )
       }

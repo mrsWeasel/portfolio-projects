@@ -66,7 +66,7 @@ export const getAmountOfSurroundingMines = (i: number, j: number, mineGrid: numb
   return sum
 }
 
-export const hasValueOneInMatrix = (i: number, j: number, arr: number[][]) => {
+export const cellHasValueInGrid = (i: number, j: number, arr: number[][]) => {
   try {
     if (arr[i][j]) {
       return true
