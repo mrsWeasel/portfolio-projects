@@ -6,3 +6,4 @@
 | 11.6. | 4    | Adding some logic to minesweeper game + fighting with recursion                                                                       |
 | 12.6. | 2    | Handling victrory case + flagging suspected mine cells in minesweeper game                                                            |
 | 14.6. | 1    | Generate minegrid dynamically                                                                                                         |
+| 15.6. | 1    | Create toolbar for either flagging / revealing cells. Fix some bugs with generating minegrid.                                         |

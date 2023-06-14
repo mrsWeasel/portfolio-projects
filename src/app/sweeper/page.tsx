@@ -12,16 +12,16 @@ import {
 import styles from "./sweeper.module.css"
 
 const Sweeper = () => {
-  const [mineGrid, setMineGrid] = useState(generateMineGrid(10))
+  const [mineGrid, setMineGrid] = useState([])
   const [visitedGrid, setVisitedGrid] = useState(generateGrid(10))
   const [flaggedGrid, setFlaggedGrid] = useState(generateGrid(10))
   const [flagging, setFlagging] = useState(false)
   const [gameStatus, setGameStatus] = useState("playing")
 
   useEffect(() => {
-    // console.log("use effect")
-    // const mineGrid = generateMineGrid(10)
-    // setMineGrid(mineGrid)
+    console.log("use effect")
+    const mineGrid = generateMineGrid(10)
+    setMineGrid(mineGrid)
   }, [])
 
   const handleGameOver = () => {

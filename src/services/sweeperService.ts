@@ -19,16 +19,22 @@ export const generateMineGrid = (size = 10): number[][] => {
   const arr = Array(100).fill(0)
   const mines: number[] = []
 
-  while (mines.length <= 10) {
+  while (mines.length < 10) {
     const mineIndex = Math.round(Math.random() * 100)
-    mines.push(mineIndex)
+    if (mines.indexOf(mineIndex) === -1) {
+        mines.push(mineIndex)
+    }
+    
   }
+
+  const sortedMines = mines.sort((a, b) => a - b)
+  console.log(sortedMines)
 
   let tempRow: number[] = []
   const mineGrid: number[][] = []
 
   arr.forEach((cell, index) => {
-    if (mines.indexOf(index) !== -1) {
+    if (sortedMines.indexOf(index) !== -1) {
       tempRow.push(1)
     } else {
       tempRow.push(0)
