@@ -19,7 +19,6 @@ const Sweeper = () => {
   const [gameStatus, setGameStatus] = useState("playing")
 
   useEffect(() => {
-    console.log("use effect")
     const mineGrid = generateMineGrid(10)
     setMineGrid(mineGrid)
   }, [])
@@ -92,7 +91,13 @@ const Sweeper = () => {
     checkIfGameWon(tempVisitedGrid)
   }
 
-  // TODO: clean up
+  const handleStartNewGame = (): void => {
+    setMineGrid(generateMineGrid(10))
+    setVisitedGrid(generateGrid(10))
+    setFlaggedGrid(generateGrid(10))
+    setGameStatus("playing")
+  }
+
   const renderSweeper = () => {
     const items = []
 
@@ -107,7 +112,10 @@ const Sweeper = () => {
           >
             {cellHasValueInGrid(i, j, mineGrid) && gameStatus === "lost" && "💩"}
             {cellHasValueInGrid(i, j, mineGrid) && gameStatus === "won" && "🦄"}
-            {cellHasValueInGrid(i, j, flaggedGrid) && gameStatus === "playing" && "🚩"}
+            {cellHasValueInGrid(i, j, flaggedGrid) &&
+              !cellHasValueInGrid(i, j, visitedGrid) &&
+              gameStatus === "playing" &&
+              "🚩"}
             {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
           </div>
         )
@@ -128,7 +136,9 @@ const Sweeper = () => {
           >
             ☠️
           </button>
-          {gameStatus === "playing" && "Now playing"}
+          <button className={`${styles.toolBarButton}`} onClick={() => handleStartNewGame()}>
+            🌟
+          </button>
         </div>
         <div className={styles.gridContainer}>{items}</div>
       </div>

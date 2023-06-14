@@ -7,3 +7,4 @@
 | 12.6. | 2    | Handling victrory case + flagging suspected mine cells in minesweeper game                                                            |
 | 14.6. | 1    | Generate minegrid dynamically                                                                                                         |
 | 15.6. | 1.5  | Create toolbar for either flagging / revealing cells. Fix some bugs with generating minegrid. Polishing styles.                       |
+| 15.6. | 0.5  | Add button for starting a new game                                                                                                    |
