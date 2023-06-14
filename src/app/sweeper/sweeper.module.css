@@ -2,7 +2,8 @@
   display: flex;
   width: 20rem;
   flex-wrap: wrap;
-  background-color: var(--pink-lavender);
+  background-color: var(--champagne-pink);
+  border-radius: var(--border-radius);
 }
 
 .gridItem {
@@ -11,7 +12,7 @@
   align-items: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--champagne-pink);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   /* text-align: center; */
   font-weight: bold;
   /* opacity: 0.7; */
@@ -20,22 +21,30 @@
 }
 
 .visited {
-  background-color: var(--mauve);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .toolBar {
   display: flex;
+  width: 20rem;
+  padding: 0.5rem;
   margin-bottom: 1rem;
+  align-items: center;
+  background-color: var(--champagne-pink);
+  border-radius: var(--border-radius);
 }
 
 .toolBarButton {
-  background-color: var(--light-grey);
+  background-color: rgba(0, 0, 0, 0.1);
   border: none;
   width: 2rem;
   height: 2rem;
-  margin: 0 1px;
+  font-size: 1.25rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  margin-right: 0.5rem;
 }
 
 .selected {
-  background-color: var(--medium-grey);
+  background-color: rgba(0, 0, 0, 0.3);
 }
