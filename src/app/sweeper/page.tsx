@@ -20,6 +20,7 @@ const Sweeper = () => {
   const [visitedGrid, setVisitedGrid] = useState(generateGrid(10))
   const [flaggedGrid, setFlaggedGrid] = useState(generateGrid(10))
   const [flagging, setFlagging] = useState(false)
+  const [timer, setTimer] = useState(0)
   const [gameStatus, setGameStatus] = useState("playing")
 
   useEffect(() => {
@@ -27,18 +28,13 @@ const Sweeper = () => {
     setMineGrid(mineGrid)
   }, [])
 
-  const handleGameOver = () => {
-    setGameStatus("lost")
-  }
-
-  const checkIfGameWon = (visited: number[][]) => {
+  const checkIfGameWon = (visited: number[][]): void => {
     for (let i = 0; i < visited.flat().length; i++) {
       if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
-        return false
+        return
       }
     }
     setGameStatus("won")
-    return true
   }
 
   let temp
@@ -61,6 +57,9 @@ const Sweeper = () => {
 
       revealConnectedEmptyCells(curr.y, curr.x, temp)
     }
+
+    // check if game is won
+    checkIfGameWon(temp)
   }
 
   const handleClick = (i: number, j: number): void => {
@@ -81,7 +80,7 @@ const Sweeper = () => {
 
     // mine found
     if (cellHasValueInGrid(i, j, mineGrid)) {
-      handleGameOver()
+      setGameStatus("lost")
       return
     }
 
@@ -145,6 +144,7 @@ const Sweeper = () => {
           >
             ☠️
           </button>
+
           <button className={`${styles.toolBarButton}`} onClick={() => handleStartNewGame()}>
             🌟
           </button>
@@ -159,6 +159,7 @@ const Sweeper = () => {
     <ContainerWithNavigation>
       <Header title="Play minesweeper!" />
       <div className={redHatDisplay.className}>{renderSweeper()}</div>
+      <div className={styles.timer}>{timer}</div>
     </ContainerWithNavigation>
   )
 }
