@@ -7,12 +7,12 @@
 }
 
 .container {
-  padding: 0.75rem;
+  padding: 0 0.75rem;
 }
 
 .navbar {
-  padding: 0.5rem;
-  margin: 1rem 0 2rem 0;
+  padding: 0 0.5rem;
+  margin: 1rem 0 0 0;
   border: 1px solid var(--light-grey);
   border-radius: var(--border-radius);
 }
@@ -28,9 +28,6 @@
 
 @media tablet {
   .container {
-    padding: 1rem;
-  }
-  .navbar {
-    margin: 1rem 0 3rem 0;
+    padding: 0 1rem;
   }
 }

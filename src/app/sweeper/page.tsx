@@ -10,16 +10,20 @@ import {
   generateGrid,
 } from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
+import { Red_Hat_Display } from "next/font/google"
+import Header from "@/components/header/header"
+
+const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
 const Sweeper = () => {
-  const [mineGrid, setMineGrid] = useState([])
+  const [mineGrid, setMineGrid] = useState<number[][]>(generateGrid(10))
   const [visitedGrid, setVisitedGrid] = useState(generateGrid(10))
   const [flaggedGrid, setFlaggedGrid] = useState(generateGrid(10))
   const [flagging, setFlagging] = useState(false)
   const [gameStatus, setGameStatus] = useState("playing")
 
   useEffect(() => {
-    const mineGrid = generateMineGrid(10)
+    const mineGrid: number[][] = generateMineGrid(10)
     setMineGrid(mineGrid)
   }, [])
 
@@ -67,6 +71,11 @@ const Sweeper = () => {
       const tempFlaggedGrid = JSON.parse(JSON.stringify(flaggedGrid))
       tempFlaggedGrid[i][j] = !tempFlaggedGrid[i][j]
       setFlaggedGrid(tempFlaggedGrid)
+      return
+    }
+
+    // // if cell is flagged, do not reveal it (might be clicked by accident)
+    if (cellHasValueInGrid(i, j, flaggedGrid)) {
       return
     }
 
@@ -140,6 +149,7 @@ const Sweeper = () => {
             🌟
           </button>
         </div>
+
         <div className={styles.gridContainer}>{items}</div>
       </div>
     )
@@ -147,8 +157,8 @@ const Sweeper = () => {
 
   return (
     <ContainerWithNavigation>
-      <h1>Minesweeper game</h1>
-      <div>{renderSweeper()}</div>
+      <Header title="Play minesweeper!" />
+      <div className={redHatDisplay.className}>{renderSweeper()}</div>
     </ContainerWithNavigation>
   )
 }

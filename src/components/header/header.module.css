@@ -1,0 +1,13 @@
+.header {
+  padding: 2rem 0;
+  margin-bottom: 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--light-grey);
+}
+
+@media tablet {
+  .header {
+    padding: 3rem 0;
+    margin-bottom: 4rem;
+  }
+}
