@@ -10,4 +10,6 @@
 | 15.6. | 0.5  | Add button for starting a new game                                                                                                    |
 | 16.6. | 2    | Styling: paddings, margins, colors, typographic styles etc. Improve usability by "protecting" flagged cells from clicks               |
 | 16.6. | 0.5  | Bug hunt 🐛 and fix: "game won" state not updated correctly in all situations                                                         |
-|   -   | 17.5 | Total hours                                                                                                                           |
+| 18.6. | 0.5  | Some style tweaks                                                                                                                     |
+| 18.6. | 1.5  | Setting up Express, investigating AWS services and reading through documentation for how to deploy Node.js / Express backend          |
+|   -   | 19.5 | Total hours                                                                                                                           |
