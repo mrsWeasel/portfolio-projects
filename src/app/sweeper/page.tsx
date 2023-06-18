@@ -142,7 +142,7 @@ const Sweeper = () => {
             className={`${styles.toolBarButton} ${!flagging && styles.selected}`}
             onClick={() => setFlagging(false)}
           >
-            ☠️
+            👇
           </button>
 
           <button className={`${styles.toolBarButton}`} onClick={() => handleStartNewGame()}>
