@@ -15,8 +15,7 @@ export const generateGrid = (size = 10): number[][] => {
 
 // console.log(arr)
 
-export const generateMineGrid = (size = 10): number[][] => {
-  const arr = Array(100).fill(0)
+export const randomizeMines = (size = 10): number[] => {
   const mines: number[] = []
 
   while (mines.length < 10) {
@@ -28,13 +27,17 @@ export const generateMineGrid = (size = 10): number[][] => {
   }
 
   const sortedMines = mines.sort((a, b) => a - b)
-  console.log(sortedMines)
+  return sortedMines
+}
+
+export const generateMineGrid = (size = 10, mines = randomizeMines(10)): number[][] => {
+  const arr = Array(100).fill(0)
 
   let tempRow: number[] = []
   const mineGrid: number[][] = []
 
   arr.forEach((cell, index) => {
-    if (sortedMines.indexOf(index) !== -1) {
+    if (mines.indexOf(index) !== -1) {
       tempRow.push(1)
     } else {
       tempRow.push(0)
