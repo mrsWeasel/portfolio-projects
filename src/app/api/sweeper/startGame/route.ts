@@ -1,28 +1,43 @@
-import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { NextResponse } from "next/server"
+import clientPromise from "@/lib/mongodb"
+import { ObjectId } from "mongodb"
 
-export async function POST(request: Request) {
-    const data = await request.json()
-    console.log(data)
+export async function PUT(request: Request) {
+  const data = await request.json()
 
-    try {
-        const {MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION} = process.env || {}
-
-        if (!MONGODB_LEADERBOARD_DB || !MONGODB_MINESWEEPER_COLLECTION) {
-            throw new Error ('Database details missing')
-        }
-
-        const client = await clientPromise;
-        const db = client.db(MONGODB_LEADERBOARD_DB);
-
-        const newGame = {
-            startTime: new Date()
-        }
-        
-        await db.collection(MONGODB_MINESWEEPER_COLLECTION).insertOne(newGame)
-        return NextResponse.json({status: `started new game at ${newGame.startTime}`})
-
-    } catch (e) {
-        console.error(e);
+  try {
+    const { MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
+    if (!MONGODB_LEADERBOARD_DB || !MONGODB_MINESWEEPER_COLLECTION) {
+      throw new Error("Database details missing")
     }
+
+    const { id } = data || {}
+    if (!id) throw new Error("Player id missing from request")
+    const objectId = new ObjectId(id)
+
+    const client = await clientPromise
+    const db = client.db(MONGODB_LEADERBOARD_DB)
+
+    const game = await db.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
+    if (!game) {
+      throw new Error("Game not found in database")
+    }
+
+    if (game.startTime) {
+      throw new Error("Game already started")
+    }
+
+    const updatedGame = {
+      startTime: new Date(),
+    }
+
+    await db.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
+    return NextResponse.json({ status: `Started new game at ${updatedGame.startTime}` })
+  } catch (error) {
+    let errorMessage = "Error handling request"
+    if (error instanceof Error) {
+      errorMessage += `: ${error.message}`
+    }
+    return NextResponse.json(errorMessage)
+  }
 }
