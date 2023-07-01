@@ -12,6 +12,7 @@ import {
 import styles from "./sweeper.module.css"
 import { Red_Hat_Display } from "next/font/google"
 import Header from "@/components/header/header"
+import axios from "axios"
 
 const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
@@ -22,10 +23,30 @@ const Sweeper = () => {
   const [flagging, setFlagging] = useState(false)
   const [timer, setTimer] = useState(0)
   const [gameStatus, setGameStatus] = useState("playing")
+  const [player, setPlayer] = useState("")
+
+  // TODO: game status null / initiated / playing / lost / won
+
+  const initiateGame = async () => {
+    try {
+      const res = await axios.post(`/api/sweeper/initGame`)
+
+      const { data } = res || {}
+      const { id, mineGrid } = data || {}
+
+      if (!id || !mineGrid) {
+        throw new Error("Response data missing")
+      }
+
+      setPlayer(id)
+      setMineGrid(mineGrid)
+    } catch (e) {
+      console.log("Error")
+    }
+  }
 
   useEffect(() => {
-    const mineGrid: number[][] = generateMineGrid(10)
-    setMineGrid(mineGrid)
+    initiateGame()
   }, [])
 
   const checkIfGameWon = (visited: number[][]): void => {
@@ -99,8 +120,9 @@ const Sweeper = () => {
     checkIfGameWon(tempVisitedGrid)
   }
 
-  const handleStartNewGame = (): void => {
-    setMineGrid(generateMineGrid(10))
+  const handleStartNewGame = async () => {
+    // setMineGrid(generateMineGrid(10))
+    await initiateGame()
     setVisitedGrid(generateGrid(10))
     setFlaggedGrid(generateGrid(10))
     setGameStatus("playing")
