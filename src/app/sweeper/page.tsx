@@ -16,16 +16,21 @@ import axios from "axios"
 
 const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
+enum GameStatus {
+  INITIATED = "INITIATED",
+  PLAYING = "PLAYING",
+  LOST = "LOST",
+  WON = "WON",
+}
+
 const Sweeper = () => {
-  const [mineGrid, setMineGrid] = useState<number[][]>(generateGrid(10))
-  const [visitedGrid, setVisitedGrid] = useState(generateGrid(10))
-  const [flaggedGrid, setFlaggedGrid] = useState(generateGrid(10))
+  const [mineGrid, setMineGrid] = useState<number[][] | null>(null)
+  const [visitedGrid, setVisitedGrid] = useState<number[][]>(generateGrid(10))
+  const [flaggedGrid, setFlaggedGrid] = useState<number[][]>(generateGrid(10))
   const [flagging, setFlagging] = useState(false)
   const [timer, setTimer] = useState(0)
-  const [gameStatus, setGameStatus] = useState("playing")
-  const [player, setPlayer] = useState("")
-
-  // TODO: game status null / initiated / playing / lost / won
+  const [gameStatus, setGameStatus] = useState<GameStatus | null>(null)
+  const [player, setPlayer] = useState<string | null>(null)
 
   const initiateGame = async () => {
     try {
@@ -39,10 +44,39 @@ const Sweeper = () => {
       }
 
       setPlayer(id)
+      setGameStatus(GameStatus.INITIATED)
       setMineGrid(mineGrid)
     } catch (e) {
       console.log("Error")
     }
+  }
+
+  const startGame = async () => {
+    try {
+      const res = await axios.put("/api/sweeper/startGame", { id: player })
+
+      const { data } = res || {}
+      console.log(data)
+    } catch (e) {
+      console.log("Error")
+    }
+  }
+
+  const endGame = async () => {
+    try {
+      const res = await axios.put("/api/sweeper/endGame", { id: player })
+
+      const { data } = res || {}
+      console.log(data)
+      reset()
+    } catch (e) {
+      console.log("Error")
+    }
+  }
+
+  const reset = () => {
+    setPlayer(null)
+    setTimer(0)
   }
 
   useEffect(() => {
@@ -50,17 +84,21 @@ const Sweeper = () => {
   }, [])
 
   const checkIfGameWon = (visited: number[][]): void => {
+    if (!mineGrid) return
     for (let i = 0; i < visited.flat().length; i++) {
       if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
         return
       }
     }
-    setGameStatus("won")
+    setGameStatus(GameStatus.WON)
+    endGame()
   }
 
   let temp
 
   const revealConnectedEmptyCells = (i: number, j: number, visitedCells: number[][]) => {
+    if (!mineGrid) return
+
     temp = JSON.parse(JSON.stringify(visitedCells))
     temp[i][j] = 1
     setVisitedGrid(temp)
@@ -83,8 +121,16 @@ const Sweeper = () => {
     checkIfGameWon(temp)
   }
 
-  const handleClick = (i: number, j: number): void => {
-    if (gameStatus !== "playing") return
+  const handleClick = async (i: number, j: number): void => {
+    if (!mineGrid) return
+
+    if (gameStatus === GameStatus.WON) return
+    if (gameStatus === GameStatus.LOST) return
+
+    if (gameStatus === GameStatus.INITIATED) {
+      setGameStatus(GameStatus.PLAYING)
+      await startGame()
+    }
 
     // flagging cells
     if (flagging) {
@@ -101,7 +147,8 @@ const Sweeper = () => {
 
     // mine found
     if (cellHasValueInGrid(i, j, mineGrid)) {
-      setGameStatus("lost")
+      endGame()
+      setGameStatus(GameStatus.LOST)
       return
     }
 
@@ -123,12 +170,14 @@ const Sweeper = () => {
   const handleStartNewGame = async () => {
     // setMineGrid(generateMineGrid(10))
     await initiateGame()
+    setGameStatus(GameStatus.INITIATED)
     setVisitedGrid(generateGrid(10))
     setFlaggedGrid(generateGrid(10))
-    setGameStatus("playing")
   }
 
   const renderSweeper = () => {
+    if (!mineGrid) return null
+
     const items = []
 
     for (let i = 0; i < mineGrid.length; i++) {
@@ -140,11 +189,11 @@ const Sweeper = () => {
             className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
             onClick={(e) => handleClick(i, j)}
           >
-            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === "lost" && "💩"}
-            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === "won" && "🦄"}
+            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
+            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
             {cellHasValueInGrid(i, j, flaggedGrid) &&
               !cellHasValueInGrid(i, j, visitedGrid) &&
-              gameStatus === "playing" &&
+              gameStatus === GameStatus.PLAYING &&
               "🚩"}
             {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
           </div>

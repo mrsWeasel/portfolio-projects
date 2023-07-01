@@ -13,5 +13,5 @@
 | 18.6. | 0.5  | Some style tweaks                                                                                                                     |
 | 18.6. | 1.5  | Setting up Express, investigating AWS services and reading through documentation for how to deploy Node.js / Express backend          |
 | 25.6. | 3    | Studying Next.js route handlers, start using that instead of Express after all + set up Mongo db                                      |
-| 1.7.  | 4    | Further studying of route handlers + create route handlers minesweeper game, use Axios in frontend to fetch data from API             |
-|   -   | 26.5 | Total hours                                                                                                                           |
+| 1.7.  | 5    | Further studying of route handlers + create route handlers minesweeper game, use Axios in frontend to fetch and post data             |
+|   -   | 27.5 | Total hours                                                                                                                           |

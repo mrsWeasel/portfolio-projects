@@ -23,10 +23,6 @@ export async function PUT(request: Request) {
       throw new Error("Game not found in database")
     }
 
-    if (!game.startTime) {
-      throw new Error("Game can not be ended because it never started")
-    }
-
     if (game.endTime) {
       throw new Error("Game already ended")
     }
