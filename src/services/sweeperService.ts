@@ -10,7 +10,7 @@ export const getDirections = (i: number, j: number) => ({
 })
 
 export const generateGrid = (size = 10): number[][] => {
-  return Array(10).fill(Array(10).fill(0))
+  return Array(size).fill(Array(size).fill(0))
 }
 
 // console.log(arr)

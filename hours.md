@@ -15,4 +15,5 @@
 | 25.6. | 3    | Studying Next.js route handlers, start using that instead of Express after all + set up Mongo db                                      |
 | 1.7.  | 5    | Further studying of route handlers + create route handlers minesweeper game, use Axios in frontend to fetch and post data             |
 | 2.7.  | 2    | Refactor: extract logic from component to service, add backend validation for if game was won / lost                                  |
-|   -   | 29.5 | Total hours                                                                                                                           |
+| 3.7.  | 0.5  | Install and configure Jest for TypeScript, create first unit tests                                                                    |
+|   -   | 30   | Total hours                                                                                                                           |
