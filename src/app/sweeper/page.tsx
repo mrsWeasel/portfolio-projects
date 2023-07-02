@@ -8,6 +8,7 @@ import {
   cellHasValueInGrid,
   isInRange,
   generateGrid,
+  isGameWon,
 } from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
 import { Red_Hat_Display } from "next/font/google"
@@ -83,17 +84,6 @@ const Sweeper = () => {
     initiateGame()
   }, [])
 
-  const checkIfGameWon = (visited: number[][]): void => {
-    if (!mineGrid) return
-    for (let i = 0; i < visited.flat().length; i++) {
-      if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
-        return
-      }
-    }
-    setGameStatus(GameStatus.WON)
-    endGame()
-  }
-
   let temp
 
   const revealConnectedEmptyCells = (i: number, j: number, visitedCells: number[][]) => {
@@ -118,7 +108,10 @@ const Sweeper = () => {
     }
 
     // check if game is won
-    checkIfGameWon(temp)
+    if (isGameWon(temp, mineGrid)) {
+      setGameStatus(GameStatus.WON)
+      endGame()
+    }
   }
 
   const handleClick = async (i: number, j: number): void => {
@@ -164,7 +157,10 @@ const Sweeper = () => {
     setVisitedGrid(tempVisitedGrid)
 
     // check if game is won
-    checkIfGameWon(tempVisitedGrid)
+    if (isGameWon(tempVisitedGrid, mineGrid)) {
+      setGameStatus(GameStatus.WON)
+      endGame()
+    }
   }
 
   const handleStartNewGame = async () => {

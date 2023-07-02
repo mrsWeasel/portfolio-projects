@@ -21,9 +21,8 @@ export const randomizeMines = (size = 10): number[] => {
   while (mines.length < 10) {
     const mineIndex = Math.round(Math.random() * 100)
     if (mines.indexOf(mineIndex) === -1) {
-        mines.push(mineIndex)
+      mines.push(mineIndex)
     }
-    
   }
 
   const sortedMines = mines.sort((a, b) => a - b)
@@ -58,6 +57,16 @@ export const isInRange = (i: number, j: number, mineGrid: number[][]) => {
   } catch (e) {
     return false
   }
+}
+
+export const isGameWon = (visited: number[][], mineGrid: number[][]): boolean => {
+  if (!mineGrid || !visited) return false
+  for (let i = 0; i < visited.flat().length; i++) {
+    if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
+      return false
+    }
+  }
+  return true
 }
 
 export const getAmountOfSurroundingMines = (i: number, j: number, mineGrid: number[][]) => {
