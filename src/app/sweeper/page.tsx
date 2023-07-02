@@ -9,6 +9,7 @@ import {
   isInRange,
   generateGrid,
   isGameWon,
+  unobfuscateMines,
 } from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
 import { Red_Hat_Display } from "next/font/google"
@@ -46,7 +47,8 @@ const Sweeper = () => {
 
       setGameId(id)
       setGameStatus(GameStatus.INITIATED)
-      setMineGrid(generateMineGrid(mines, 10))
+
+      setMineGrid(generateMineGrid(unobfuscateMines(mines), 10))
     } catch (e) {
       console.log("Error")
     }

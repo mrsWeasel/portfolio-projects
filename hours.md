@@ -16,4 +16,5 @@
 | 1.7.  | 5    | Further studying of route handlers + create route handlers minesweeper game, use Axios in frontend to fetch and post data             |
 | 2.7.  | 2    | Refactor: extract logic from component to service, add backend validation for if game was won / lost                                  |
 | 3.7.  | 1    | Install and configure Jest for TypeScript, create first unit tests for sweeperService                                                 |
-|   -   | 30.5 | Total hours                                                                                                                           |
+| 3.7.  | 1    | Make it a bit harder to cheat by obfuscating minegrid data sent in response from api                                                  |
+|   -   | 31.5 | Total hours                                                                                                                           |

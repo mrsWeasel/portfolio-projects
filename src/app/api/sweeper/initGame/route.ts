@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
-import { generateMineGrid, randomizeMines } from "@/services/sweeperService"
+import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
 
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
@@ -14,13 +14,14 @@ export async function POST() {
     const client = await clientPromise
     const db = client.db(MONGODB_LEADERBOARD_DB)
 
-    const newGame = {
-      mines: randomizeMines(10),
-    }
+    const mines = randomizeMines(10)
 
-    const result = await db.collection(MONGODB_MINESWEEPER_COLLECTION).insertOne(newGame)
-    // TODO: maybe obscure response a bit so user can't see directly from it where mines are at
-    return NextResponse.json({ mines: newGame.mines, id: result.insertedId })
+    const result = await db.collection(MONGODB_MINESWEEPER_COLLECTION).insertOne({ mines })
+
+    // obscure response a bit so user can't see directly from it where mines are at
+    const responseMines = obfuscateMines(mines)
+
+    return NextResponse.json({ mines: responseMines, id: result.insertedId })
   } catch (e) {
     console.error(e)
   }

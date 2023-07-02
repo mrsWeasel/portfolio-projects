@@ -29,6 +29,18 @@ export const randomizeMines = (size = 10): number[] => {
   return sortedMines
 }
 
+export const obfuscateMines = (mines: number[]): number[] => {
+  return mines.map((m) => {
+    return (m - mines.length) * -mines.length
+  })
+}
+
+export const unobfuscateMines = (mines: number[]): number[] => {
+  return mines.map((m) => {
+    return m / -mines.length + mines.length
+  })
+}
+
 export const generateMineGrid = (mines = randomizeMines(10), size = 10): number[][] => {
   const arr = Array(100).fill(0)
 
