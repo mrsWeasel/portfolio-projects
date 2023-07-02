@@ -38,15 +38,15 @@ const Sweeper = () => {
       const res = await axios.post(`/api/sweeper/initGame`)
 
       const { data } = res || {}
-      const { id, mineGrid } = data || {}
+      const { id, mines } = data || {}
 
-      if (!id || !mineGrid) {
+      if (!id || !mines) {
         throw new Error("Response data missing")
       }
 
       setGameId(id)
       setGameStatus(GameStatus.INITIATED)
-      setMineGrid(mineGrid)
+      setMineGrid(generateMineGrid(mines, 10))
     } catch (e) {
       console.log("Error")
     }

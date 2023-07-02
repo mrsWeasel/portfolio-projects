@@ -18,7 +18,7 @@ describe("generateMineGrid", () => {
   it("Generates mine grid of specified size", () => {
     const mines = [2, 6, 8, 36, 54, 55, 71, 88, 90, 98]
 
-    const grid = generateMineGrid(10, mines)
+    const grid = generateMineGrid(mines, 10)
     expect(grid.length).toBe(10)
     expect(grid[0].length).toBe(10)
 

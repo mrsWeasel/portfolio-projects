@@ -29,7 +29,7 @@ export const randomizeMines = (size = 10): number[] => {
   return sortedMines
 }
 
-export const generateMineGrid = (size = 10, mines = randomizeMines(10)): number[][] => {
+export const generateMineGrid = (mines = randomizeMines(10), size = 10): number[][] => {
   const arr = Array(100).fill(0)
 
   let tempRow: number[] = []

@@ -31,7 +31,7 @@ export async function PUT(request: Request) {
       throw new Error("Game already ended")
     }
 
-    const mineGrid = generateMineGrid(10, game.mines)
+    const mineGrid = generateMineGrid(game.mines, 10)
 
     if (!isGameWon(visited, mineGrid)) {
       return NextResponse.json({ status: "Game lost" })
