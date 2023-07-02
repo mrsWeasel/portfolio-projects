@@ -31,7 +31,7 @@ const Sweeper = () => {
   const [flagging, setFlagging] = useState(false)
   const [timer, setTimer] = useState(0)
   const [gameStatus, setGameStatus] = useState<GameStatus | null>(null)
-  const [player, setPlayer] = useState<string | null>(null)
+  const [gameId, setGameId] = useState<string | null>(null)
 
   const initiateGame = async () => {
     try {
@@ -44,7 +44,7 @@ const Sweeper = () => {
         throw new Error("Response data missing")
       }
 
-      setPlayer(id)
+      setGameId(id)
       setGameStatus(GameStatus.INITIATED)
       setMineGrid(mineGrid)
     } catch (e) {
@@ -54,7 +54,7 @@ const Sweeper = () => {
 
   const startGame = async () => {
     try {
-      const res = await axios.put("/api/sweeper/startGame", { id: player })
+      const res = await axios.put("/api/sweeper/startGame", { id: gameId })
 
       const { data } = res || {}
       console.log(data)
@@ -63,9 +63,9 @@ const Sweeper = () => {
     }
   }
 
-  const endGame = async () => {
+  const endGame = async (visited?: number[][]) => {
     try {
-      const res = await axios.put("/api/sweeper/endGame", { id: player })
+      const res = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
 
       const { data } = res || {}
       console.log(data)
@@ -76,7 +76,7 @@ const Sweeper = () => {
   }
 
   const reset = () => {
-    setPlayer(null)
+    setGameId(null)
     setTimer(0)
   }
 
@@ -84,14 +84,14 @@ const Sweeper = () => {
     initiateGame()
   }, [])
 
-  let temp
+  let tempVisited
 
   const revealConnectedEmptyCells = (i: number, j: number, visitedCells: number[][]) => {
     if (!mineGrid) return
 
-    temp = JSON.parse(JSON.stringify(visitedCells))
-    temp[i][j] = 1
-    setVisitedGrid(temp)
+    tempVisited = JSON.parse(JSON.stringify(visitedCells))
+    tempVisited[i][j] = 1
+    setVisitedGrid(tempVisited)
 
     if (getAmountOfSurroundingMines(i, j, mineGrid)) return
 
@@ -102,19 +102,19 @@ const Sweeper = () => {
     for (let l = 0; l < adjacent.length; l++) {
       const curr = adjacent[l]
       if (!isInRange(curr.y, curr.x, mineGrid)) continue
-      if (cellHasValueInGrid(curr.y, curr.x, temp)) continue
+      if (cellHasValueInGrid(curr.y, curr.x, tempVisited)) continue
 
-      revealConnectedEmptyCells(curr.y, curr.x, temp)
+      revealConnectedEmptyCells(curr.y, curr.x, tempVisited)
     }
 
     // check if game is won
-    if (isGameWon(temp, mineGrid)) {
+    if (isGameWon(tempVisited, mineGrid)) {
       setGameStatus(GameStatus.WON)
-      endGame()
+      endGame(tempVisited)
     }
   }
 
-  const handleClick = async (i: number, j: number): void => {
+  const handleClick = async (i: number, j: number) => {
     if (!mineGrid) return
 
     if (gameStatus === GameStatus.WON) return
@@ -159,7 +159,7 @@ const Sweeper = () => {
     // check if game is won
     if (isGameWon(tempVisitedGrid, mineGrid)) {
       setGameStatus(GameStatus.WON)
-      endGame()
+      endGame(tempVisitedGrid)
     }
   }
 

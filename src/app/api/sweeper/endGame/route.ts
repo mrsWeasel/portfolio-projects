@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
+import { generateMineGrid, isGameWon } from "@/services/sweeperService"
 
 export async function PUT(request: Request) {
   const data = await request.json()
@@ -11,8 +12,9 @@ export async function PUT(request: Request) {
       throw new Error("Database details missing")
     }
 
-    const { id } = data || {}
-    if (!id) throw new Error("Player id missing from request")
+    const { id, visited } = data || {}
+    if (!id) throw new Error("Data missing from request")
+
     const objectId = new ObjectId(id)
 
     const client = await clientPromise
@@ -23,8 +25,16 @@ export async function PUT(request: Request) {
       throw new Error("Game not found in database")
     }
 
+    console.log(game.mines)
+
     if (game.endTime) {
       throw new Error("Game already ended")
+    }
+
+    const mineGrid = generateMineGrid(10, game.mines)
+
+    if (!isGameWon(visited, mineGrid)) {
+      return NextResponse.json({ status: "Game lost" })
     }
 
     const updatedGame = {
@@ -32,7 +42,7 @@ export async function PUT(request: Request) {
     }
 
     await db.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
-    return NextResponse.json({ status: `Game ended at ${updatedGame.endTime}` })
+    return NextResponse.json({ status: `Game won at ${updatedGame.endTime}` })
   } catch (error) {
     let errorMessage = "Error handling request"
     if (error instanceof Error) {

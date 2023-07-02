@@ -60,7 +60,9 @@ export const isInRange = (i: number, j: number, mineGrid: number[][]) => {
 }
 
 export const isGameWon = (visited: number[][], mineGrid: number[][]): boolean => {
-  if (!mineGrid || !visited) return false
+  // TODO: throw error instead of returning false
+  if (!visited || !mineGrid) return false
+
   for (let i = 0; i < visited.flat().length; i++) {
     if (visited.flat()[i] + mineGrid.flat()[i] !== 1) {
       return false
