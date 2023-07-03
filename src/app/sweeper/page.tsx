@@ -174,39 +174,32 @@ const Sweeper = () => {
     setFlaggedGrid(generateGrid(10))
   }
 
-  const renderSweeper = () => {
-    if (!mineGrid) return null
-
-    const items = []
-
-    for (let i = 0; i < mineGrid.length; i++) {
-      for (let j = 0; j < mineGrid[i].length; j++) {
-        items.push(
-          <div
-            key={`item-${i}-${j}`}
-            id={`item-${i}-${j}`}
-            className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
-            onClick={(e) => handleClick(i, j)}
-          >
-            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
-            {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
-            {cellHasValueInGrid(i, j, flaggedGrid) &&
-              !cellHasValueInGrid(i, j, visitedGrid) &&
-              gameStatus === GameStatus.PLAYING &&
-              "🚩"}
-            {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
-          </div>
-        )
-      }
-    }
-    return <div className={styles.gridContainer}>{items}</div>
-  }
-
   return (
     <ContainerWithNavigation>
       <Header title="Play minesweeper!" />
       <SweeperToolbar flagging={flagging} setFlagging={setFlagging} handleStartNewGame={handleStartNewGame} />
-      <div className={redHatDisplay.className}>{renderSweeper()}</div>
+      <div className={redHatDisplay.className}>
+        <div className={styles.gridContainer}>
+          {mineGrid?.map((row, i) =>
+            row.map((cell, j) => (
+              <div
+                key={`item-${i}-${j}`}
+                id={`item-${i}-${j}`}
+                className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
+                onClick={(e) => handleClick(i, j)}
+              >
+                {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
+                {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
+                {cellHasValueInGrid(i, j, flaggedGrid) &&
+                  !cellHasValueInGrid(i, j, visitedGrid) &&
+                  gameStatus === GameStatus.PLAYING &&
+                  "🚩"}
+                {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
       <div className={styles.timer}>{timer}</div>
     </ContainerWithNavigation>
   )
