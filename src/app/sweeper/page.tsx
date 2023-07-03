@@ -15,6 +15,7 @@ import styles from "./sweeper.module.css"
 import { Red_Hat_Display } from "next/font/google"
 import Header from "@/components/header/header"
 import axios from "axios"
+import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 
 const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
@@ -198,35 +199,13 @@ const Sweeper = () => {
         )
       }
     }
-    return (
-      <div>
-        <div className={styles.toolBar}>
-          <button
-            className={`${styles.toolBarButton} ${flagging && styles.selected}`}
-            onClick={() => setFlagging(true)}
-          >
-            🚩
-          </button>
-          <button
-            className={`${styles.toolBarButton} ${!flagging && styles.selected}`}
-            onClick={() => setFlagging(false)}
-          >
-            👇
-          </button>
-
-          <button className={`${styles.toolBarButton}`} onClick={() => handleStartNewGame()}>
-            🌟
-          </button>
-        </div>
-
-        <div className={styles.gridContainer}>{items}</div>
-      </div>
-    )
+    return <div className={styles.gridContainer}>{items}</div>
   }
 
   return (
     <ContainerWithNavigation>
       <Header title="Play minesweeper!" />
+      <SweeperToolbar flagging={flagging} setFlagging={setFlagging} handleStartNewGame={handleStartNewGame} />
       <div className={redHatDisplay.className}>{renderSweeper()}</div>
       <div className={styles.timer}>{timer}</div>
     </ContainerWithNavigation>
