@@ -16,6 +16,7 @@ import { Red_Hat_Display } from "next/font/google"
 import Header from "@/components/header/header"
 import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
+import Timer from "@/components/timer/timer"
 
 const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
@@ -25,7 +26,7 @@ enum GameStatus {
   LOST = "LOST",
   WON = "WON",
 }
-
+let interval: number | undefined
 const Sweeper = () => {
   const [mineGrid, setMineGrid] = useState<number[][] | null>(null)
   const [visitedGrid, setVisitedGrid] = useState<number[][]>(generateGrid(10))
@@ -35,7 +36,14 @@ const Sweeper = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus | null>(null)
   const [gameId, setGameId] = useState<string | null>(null)
 
+  const reset = () => {
+    if (interval) clearInterval(interval)
+    setGameId(null)
+  }
+
   const initiateGame = async () => {
+    reset()
+    setTimer(0)
     try {
       const res = await axios.post(`/api/sweeper/initGame`)
 
@@ -51,7 +59,7 @@ const Sweeper = () => {
 
       setMineGrid(generateMineGrid(unobfuscateMines(mines), 10))
     } catch (e) {
-      console.log("Error")
+      console.log(e.message)
     }
   }
 
@@ -61,8 +69,11 @@ const Sweeper = () => {
 
       const { data } = res || {}
       console.log(data)
+      interval = window?.setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1)
+      }, 1000)
     } catch (e) {
-      console.log("Error")
+      console.log(e.message)
     }
   }
 
@@ -74,13 +85,8 @@ const Sweeper = () => {
       console.log(data)
       reset()
     } catch (e) {
-      console.log("Error")
+      console.log(e.message)
     }
-  }
-
-  const reset = () => {
-    setGameId(null)
-    setTimer(0)
   }
 
   useEffect(() => {
@@ -200,7 +206,9 @@ const Sweeper = () => {
           )}
         </div>
       </div>
-      <div className={styles.timer}>{timer}</div>
+      <div className={styles.timer}>
+        <Timer elapsedSeconds={timer} />
+      </div>
     </ContainerWithNavigation>
   )
 }

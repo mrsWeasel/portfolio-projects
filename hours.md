@@ -18,4 +18,5 @@
 | 3.7.  | 1    | Install and configure Jest for TypeScript, create first unit tests for sweeperService                                                 |
 | 3.7.  | 1    | Make it a bit harder to cheat by obfuscating minegrid data sent in response from api                                                  |
 | 4.7.  | 0.5  | Refactor toolbar away from page.tsx to another module                                                                                 |
-|   -   | 32   | Total hours                                                                                                                           |
+| 15.7. | 1.5  | Starting with timer component                                                                                                         |
+|   -   | 33.5 | Total hours                                                                                                                           |
