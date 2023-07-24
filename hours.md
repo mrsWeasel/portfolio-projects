@@ -19,4 +19,5 @@
 | 3.7.  | 1    | Make it a bit harder to cheat by obfuscating minegrid data sent in response from api                                                  |
 | 4.7.  | 0.5  | Refactor toolbar away from page.tsx to another module                                                                                 |
 | 15.7. | 1.5  | Starting with timer component                                                                                                         |
-|   -   | 33.5 | Total hours                                                                                                                           |
+| 25.7. | 3    | Struggling with getting React Testing Library to work with Jest & .tsx files                                                          |
+|   -   | 36.5 | Total hours                                                                                                                           |
