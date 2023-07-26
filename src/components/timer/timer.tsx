@@ -2,22 +2,23 @@ interface Props {
   elapsedSeconds: number
 }
 
-const Timer = ({ elapsedSeconds }: Props) => {
-  const getHours = () => {
-    if (elapsedSeconds < 3600) return 0
-    const hours = elapsedSeconds / 60 / 60
-    return hours
+const Timer = ({ elapsedSeconds = 0 }: Props) => {
+  const getHours = (): string => {
+    const hours = Math.floor(elapsedSeconds / 60 / 60)
+    if (hours < 10) return `0${hours}`
+    return hours.toString()
   }
 
-  const getMinutes = () => {
-    if (elapsedSeconds < 60) return 0
-    const minutes = elapsedSeconds / 60
-    return Math.floor(minutes % 60)
+  const getMinutes = (): string => {
+    const minutes = Math.floor((elapsedSeconds / 60) % 60)
+    if (minutes < 10) return `0${minutes}`
+    return minutes.toString()
   }
 
-  const getSeconds = () => {
-    if (elapsedSeconds < 60) return elapsedSeconds
-    return Math.floor(elapsedSeconds % 60)
+  const getSeconds = (): string => {
+    const seconds = Math.floor(elapsedSeconds % 60)
+    if (seconds < 10) return `0${seconds}`
+    return seconds.toString()
   }
 
   return <div>{`${getHours()}:${getMinutes()}:${getSeconds()}`}</div>
