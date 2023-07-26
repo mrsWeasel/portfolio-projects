@@ -13,8 +13,7 @@
 .navbar {
   padding: 0 0.5rem;
   margin: 1rem 0 0 0;
-  border: 1px solid var(--light-grey);
-  border-radius: var(--border-radius);
+  border-bottom: 1px solid var(--light-grey);
 }
 
 .navbar ul {
@@ -23,7 +22,10 @@
 
 .navbar li {
   list-style-type: none;
-  padding: 0.5rem;
+  padding: 1rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 @media tablet {

@@ -1,3 +1,7 @@
+import { Red_Hat_Mono } from "next/font/google"
+
+const redHatMono = Red_Hat_Mono({ subsets: ["latin"], weight: ["500"] })
+
 interface Props {
   elapsedSeconds: number
 }
@@ -21,7 +25,7 @@ const Timer = ({ elapsedSeconds = 0 }: Props) => {
     return seconds.toString()
   }
 
-  return <div>{`${getHours()}:${getMinutes()}:${getSeconds()}`}</div>
+  return <div className={redHatMono.className}>{`${getHours()}:${getMinutes()}:${getSeconds()}`}</div>
 }
 
 export default Timer

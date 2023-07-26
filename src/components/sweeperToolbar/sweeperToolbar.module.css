@@ -30,9 +30,8 @@
 
 .timer {
   text-align: center;
-  font-family: "Courier New", Courier, monospace;
-  font-weight: bold;
   font-size: 1.1rem;
+  letter-spacing: 0.1em;
 }
 
 .selected {

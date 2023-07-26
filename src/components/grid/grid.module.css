@@ -1,0 +1,26 @@
+@value breakpoints: "../../styles/breakpoints.css";
+@value tablet from breakpoints;
+
+.grid {
+  display: grid;
+  gap: 3rem;
+  justify-items: center;
+}
+
+.grid-2,
+.grid-3 {
+  composes: grid;
+  grid-template-columns: 1fr;
+}
+
+@media tablet {
+  .grid {
+    gap: 2rem;
+  }
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

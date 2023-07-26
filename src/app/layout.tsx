@@ -1,7 +1,7 @@
 import "../styles/globals.css"
-import { Red_Hat_Display } from "next/font/google"
+import { Red_Hat_Text } from "next/font/google"
 
-const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
+const redHatText = Red_Hat_Text({ subsets: ["latin"], weight: ["400", "700"] })
 
 export const metadata = {
   title: "Laura Heino | Projects",
@@ -11,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={redHatDisplay.className}>{children}</body>
+      <body className={redHatText.className}>{children}</body>
     </html>
   )
 }

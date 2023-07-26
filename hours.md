@@ -21,4 +21,5 @@
 | 15.7. | 1.5  | Starting with timer component                                                                                                         |
 | 25.7. | 3    | Struggling with getting React Testing Library to work with Jest & .tsx files                                                          |
 | 26.7. | 2    | Styling: create more 3D look and feel, embed timer to toolbar component                                                               |
-|   -   | 38.5 | Total hours                                                                                                                           |
+| 26.7. | 1    | Styling: add grid component for multi column layouts, typographic styles                                                              |
+|   -   | 39.5 | Total hours                                                                                                                           |

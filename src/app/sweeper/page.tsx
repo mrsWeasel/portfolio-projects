@@ -12,7 +12,7 @@ import {
   unobfuscateMines,
 } from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
-
+import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
 import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
@@ -94,6 +94,8 @@ const Sweeper = () => {
 
   useEffect(() => {
     initiateGame()
+
+    return () => clearInterval(interval)
   }, [])
 
   let tempVisited
@@ -185,35 +187,45 @@ const Sweeper = () => {
 
   return (
     <ContainerWithNavigation>
-      <Header title="Play minesweeper!" />
-      <SweeperToolbar
-        elapsedSeconds={timer}
-        flagging={flagging}
-        setFlagging={setFlagging}
-        handleStartNewGame={handleStartNewGame}
-      />
-      <div>
-        <div className={styles.gridContainer}>
-          {mineGrid?.map((row, i) =>
-            row.map((cell, j) => (
-              <div
-                key={`item-${i}-${j}`}
-                id={`item-${i}-${j}`}
-                className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
-                onClick={(e) => handleClick(i, j)}
-              >
-                {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
-                {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
-                {cellHasValueInGrid(i, j, flaggedGrid) &&
-                  !cellHasValueInGrid(i, j, visitedGrid) &&
-                  gameStatus === GameStatus.PLAYING &&
-                  "🚩"}
-                {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
-              </div>
-            ))
-          )}
+      <Header title="Minesweeper game" />
+      <Grid columns={2}>
+        <div>
+          <SweeperToolbar
+            elapsedSeconds={timer}
+            flagging={flagging}
+            setFlagging={setFlagging}
+            handleStartNewGame={handleStartNewGame}
+          />
+          <div>
+            <div className={styles.gridContainer}>
+              {mineGrid?.map((row, i) =>
+                row.map((cell, j) => (
+                  <div
+                    key={`item-${i}-${j}`}
+                    id={`item-${i}-${j}`}
+                    className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
+                    onClick={(e) => handleClick(i, j)}
+                  >
+                    {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
+                    {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
+                    {cellHasValueInGrid(i, j, flaggedGrid) &&
+                      !cellHasValueInGrid(i, j, visitedGrid) &&
+                      gameStatus === GameStatus.PLAYING &&
+                      "🚩"}
+                    {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+        <div>
+          <p style={{ textAlign: "left" }}>
+            Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
+            get a bit creative with it. Hope you enjoy it!
+          </p>
+        </div>
+      </Grid>
     </ContainerWithNavigation>
   )
 }
