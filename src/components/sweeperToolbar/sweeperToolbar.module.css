@@ -11,16 +11,18 @@
     rgba(255, 207, 210, 1) 40%,
     rgba(241, 192, 232, 1) 100%
   );
-  border-radius: var(--border-radius);
 }
 
 .toolBarButton {
-  background-color: rgba(0, 0, 0, 0.1);
-  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  border-right-color: rgba(0, 0, 0, 0.05);
   width: 2rem;
   height: 2rem;
-  font-size: 1.25rem;
-  border-radius: var(--border-radius);
+  font-size: 1.1rem;
   cursor: pointer;
   margin-right: 0.5rem;
 }
@@ -31,5 +33,7 @@
 }
 
 .selected {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-width: 2px;
+  border-color: rgba(0, 0, 0, 0.05);
 }
