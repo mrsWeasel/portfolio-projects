@@ -1,5 +1,7 @@
 .toolBar {
-  display: flex;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: max-content max-content 1fr max-content;
   width: 20rem;
   padding: 0.5rem;
   margin-bottom: 1rem;
@@ -24,12 +26,13 @@
   height: 2rem;
   font-size: 1.1rem;
   cursor: pointer;
-  margin-right: 0.5rem;
 }
 
-.toolBarButton:last-child {
-  margin-left: auto;
-  margin-right: 0;
+.timer {
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: 1.1rem;
 }
 
 .selected {

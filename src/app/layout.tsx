@@ -1,8 +1,7 @@
 import "../styles/globals.css"
-import { Space_Mono } from "next/font/google"
+import { Red_Hat_Display } from "next/font/google"
 
-// const inter = Inter({ subsets: ["latin"] })
-const spaceMono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"] })
+const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
 export const metadata = {
   title: "Laura Heino | Projects",
@@ -12,8 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={spaceMono.className}>{children}</body>
-      {/* <body>{children}</body> */}
+      <body className={redHatDisplay.className}>{children}</body>
     </html>
   )
 }

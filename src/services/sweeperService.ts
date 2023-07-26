@@ -30,6 +30,7 @@ export const randomizeMines = (size = 10): number[] => {
 }
 
 export const obfuscateMines = (mines: number[]): number[] => {
+  // TODO: use encrypt / decrypt instead?
   return mines.map((m) => {
     return (m - mines.length) * -mines.length
   })

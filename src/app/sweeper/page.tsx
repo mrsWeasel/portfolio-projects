@@ -12,13 +12,10 @@ import {
   unobfuscateMines,
 } from "@/services/sweeperService"
 import styles from "./sweeper.module.css"
-import { Red_Hat_Display } from "next/font/google"
+
 import Header from "@/components/header/header"
 import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
-import Timer from "@/components/timer/timer"
-
-const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
 
 enum GameStatus {
   INITIATED = "INITIATED",
@@ -189,8 +186,13 @@ const Sweeper = () => {
   return (
     <ContainerWithNavigation>
       <Header title="Play minesweeper!" />
-      <SweeperToolbar flagging={flagging} setFlagging={setFlagging} handleStartNewGame={handleStartNewGame} />
-      <div className={redHatDisplay.className}>
+      <SweeperToolbar
+        elapsedSeconds={timer}
+        flagging={flagging}
+        setFlagging={setFlagging}
+        handleStartNewGame={handleStartNewGame}
+      />
+      <div>
         <div className={styles.gridContainer}>
           {mineGrid?.map((row, i) =>
             row.map((cell, j) => (
@@ -211,9 +213,6 @@ const Sweeper = () => {
             ))
           )}
         </div>
-      </div>
-      <div className={styles.timer}>
-        <Timer elapsedSeconds={timer} />
       </div>
     </ContainerWithNavigation>
   )

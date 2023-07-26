@@ -20,4 +20,5 @@
 | 4.7.  | 0.5  | Refactor toolbar away from page.tsx to another module                                                                                 |
 | 15.7. | 1.5  | Starting with timer component                                                                                                         |
 | 25.7. | 3    | Struggling with getting React Testing Library to work with Jest & .tsx files                                                          |
-|   -   | 36.5 | Total hours                                                                                                                           |
+| 26.7. | 2    | Styling: create more 3D look and feel, embed timer to toolbar component                                                               |
+|   -   | 38.5 | Total hours                                                                                                                           |
