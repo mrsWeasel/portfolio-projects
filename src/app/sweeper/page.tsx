@@ -59,7 +59,9 @@ const Sweeper = () => {
 
       setMineGrid(generateMineGrid(unobfuscateMines(mines), 10))
     } catch (e) {
-      console.log(e.message)
+      if (e instanceof Error) {
+        console.log(e.message)
+      }
     }
   }
 
@@ -73,7 +75,9 @@ const Sweeper = () => {
         setTimer((prevTimer) => prevTimer + 1)
       }, 1000)
     } catch (e) {
-      console.log(e.message)
+      if (e instanceof Error) {
+        console.log(e.message)
+      }
     }
   }
 
@@ -85,7 +89,9 @@ const Sweeper = () => {
       console.log(data)
       reset()
     } catch (e) {
-      console.log(e.message)
+      if (e instanceof Error) {
+        console.log(e.message)
+      }
     }
   }
 
