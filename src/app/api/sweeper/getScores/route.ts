@@ -18,7 +18,7 @@ export async function GET() {
       .collection(MONGODB_MINESWEEPER_COLLECTION)
       .find({ time: { $exists: true } })
       .sort({ time: 1, startTime: 1 })
-      .limit(10)
+      .limit(11)
       .forEach((r) => {
         results.push(r)
       })

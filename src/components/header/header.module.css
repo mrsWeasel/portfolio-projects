@@ -1,3 +1,6 @@
+@value breakpoints: "../../styles/breakpoints.css";
+@value tablet from breakpoints;
+
 .header {
   padding: 2.5rem 0;
   margin-bottom: 3rem;

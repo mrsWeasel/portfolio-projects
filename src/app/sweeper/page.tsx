@@ -16,6 +16,8 @@ import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
 import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
+import Scores from "@/components/sweeperScores/scores"
+import { Score } from "@/typed/typed"
 
 enum GameStatus {
   INITIATED = "INITIATED",
@@ -23,6 +25,7 @@ enum GameStatus {
   LOST = "LOST",
   WON = "WON",
 }
+
 let interval: number | undefined
 const Sweeper = () => {
   const [mineGrid, setMineGrid] = useState<number[][] | null>(null)
@@ -32,6 +35,7 @@ const Sweeper = () => {
   const [timer, setTimer] = useState(0)
   const [gameStatus, setGameStatus] = useState<GameStatus | null>(null)
   const [gameId, setGameId] = useState<string | null>(null)
+  const [scores, setScores] = useState<Score[]>([])
 
   const reset = () => {
     if (interval) clearInterval(interval)
@@ -92,8 +96,18 @@ const Sweeper = () => {
     }
   }
 
+  const setHighScores = async () => {
+    try {
+      const res = await axios.get("/api/sweeper/getScores")
+
+      const { data } = res || {}
+      setScores(data)
+    } catch (e) {}
+  }
+
   useEffect(() => {
     initiateGame()
+    setHighScores()
 
     return () => clearInterval(interval)
   }, [])
@@ -188,7 +202,7 @@ const Sweeper = () => {
   return (
     <ContainerWithNavigation>
       <Header title="Minesweeper game" />
-      <Grid columns={2}>
+      <Grid columns={3}>
         <div>
           <SweeperToolbar
             elapsedSeconds={timer}
@@ -218,6 +232,9 @@ const Sweeper = () => {
               )}
             </div>
           </div>
+        </div>
+        <div>
+          <Scores scores={scores} />
         </div>
         <div>
           <p style={{ textAlign: "left" }}>

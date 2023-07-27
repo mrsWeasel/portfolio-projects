@@ -37,7 +37,8 @@ body {
 body {
   color: var(--black);
   background: var(--white);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+  line-height: 1.8em;
   color: var(--dark-grey);
 }
 
@@ -69,6 +70,4 @@ h2 {
 }
 
 p {
-  font-size: 1.125rem;
-  line-height: 1.8em;
 }

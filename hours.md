@@ -24,4 +24,5 @@
 | 26.7. | 1    | Styling: add grid component for multi column layouts, typographic styles                                                              |
 | 27.7. | 1    | Query for getting best results in MongoDB leaderboard + modify how time is saved in MongoDB when game ends                            |
 | 27.7. | 0.5  | Add new index for minesweeper collection (leaderboard) for searching by time (in MongoDB Atlas admin panel)                           |
-|   -   | 41   | Total hours                                                                                                                           |
+| 27.7. | 1    | Add high scores to UI                                                                                                                 |
+|   -   | 42   | Total hours                                                                                                                           |
