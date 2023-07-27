@@ -25,7 +25,9 @@ export async function PUT(request: Request) {
       throw new Error("Game not found in database")
     }
 
-    console.log(game.mines)
+    if (!game.startTime) {
+      throw new Error("Game not started yet")
+    }
 
     if (game.endTime) {
       throw new Error("Game already ended")
@@ -38,11 +40,11 @@ export async function PUT(request: Request) {
     }
 
     const updatedGame = {
-      endTime: new Date(),
+      time: Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000),
     }
 
     await db.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
-    return NextResponse.json({ status: `Game won at ${updatedGame.endTime}` })
+    return NextResponse.json({ status: `Game won, time: ${updatedGame.time} seconds` })
   } catch (error) {
     let errorMessage = "Error handling request"
     if (error instanceof Error) {
