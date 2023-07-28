@@ -115,7 +115,7 @@ const Sweeper = () => {
 
   let tempVisited
 
-  const revealConnectedEmptyCells = (i: number, j: number, visitedCells: number[][]) => {
+  const revealConnectedEmptyCells = async (i: number, j: number, visitedCells: number[][]) => {
     if (!mineGrid) return
 
     tempVisited = JSON.parse(JSON.stringify(visitedCells))
@@ -139,7 +139,8 @@ const Sweeper = () => {
     // check if game is won
     if (isGameWon(tempVisited, mineGrid)) {
       setGameStatus(GameStatus.WON)
-      endGame(tempVisited)
+      await endGame(tempVisited)
+      setHighScores()
     }
   }
 
