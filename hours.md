@@ -26,4 +26,5 @@
 | 27.7. | 0.5  | Add new index for minesweeper collection (leaderboard) for searching by time (in MongoDB Atlas admin panel)                           |
 | 27.7. | 1    | Add high scores to UI                                                                                                                 |
 | 28.7. | 1    | Update high scores after game won + highlight current game if present in score table                                                  |
-|   -   | 43   | Total hours                                                                                                                           |
+| 28.7. | 1    | Component tests for Timer, figuring out how to mock google fonts for Jest                                                             |
+|   -   | 44   | Total hours                                                                                                                           |
