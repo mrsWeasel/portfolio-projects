@@ -88,7 +88,8 @@ const Sweeper = () => {
 
       const { data } = res || {}
       console.log(data)
-      reset()
+      // reset()
+      if (interval) clearInterval(interval)
     } catch (e) {
       if (e instanceof Error) {
         console.log(e.message)
@@ -187,7 +188,8 @@ const Sweeper = () => {
     // check if game is won
     if (isGameWon(tempVisitedGrid, mineGrid)) {
       setGameStatus(GameStatus.WON)
-      endGame(tempVisitedGrid)
+      await endGame(tempVisitedGrid)
+      setHighScores()
     }
   }
 
@@ -202,7 +204,7 @@ const Sweeper = () => {
   return (
     <ContainerWithNavigation>
       <Header title="Minesweeper game" />
-      <Grid columns={3}>
+      <Grid columns={2}>
         <div>
           <SweeperToolbar
             elapsedSeconds={timer}
@@ -233,16 +235,14 @@ const Sweeper = () => {
             </div>
           </div>
         </div>
-        <div>
-          <Scores scores={scores} />
-        </div>
-        <div>
-          <p style={{ textAlign: "left" }}>
-            Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
-            get a bit creative with it. Hope you enjoy it!
-          </p>
-        </div>
+        <Scores gameId={gameId} scores={scores} />
       </Grid>
+      {/* <div>
+        <p style={{ textAlign: "left" }}>
+          Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
+          get a bit creative with it. Hope you enjoy it!
+        </p>
+      </div> */}
     </ContainerWithNavigation>
   )
 }

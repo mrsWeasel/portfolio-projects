@@ -25,4 +25,5 @@
 | 27.7. | 1    | Query for getting best results in MongoDB leaderboard + modify how time is saved in MongoDB when game ends                            |
 | 27.7. | 0.5  | Add new index for minesweeper collection (leaderboard) for searching by time (in MongoDB Atlas admin panel)                           |
 | 27.7. | 1    | Add high scores to UI                                                                                                                 |
-|   -   | 42   | Total hours                                                                                                                           |
+| 28.7. | 1    | Update high scores after game won + highlight current game if present in score table                                                  |
+|   -   | 43   | Total hours                                                                                                                           |

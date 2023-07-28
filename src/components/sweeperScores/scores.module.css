@@ -1,0 +1,57 @@
+.scoresContainer {
+  width: 100%;
+  border: 1px solid var(--light-grey);
+}
+
+.scoreList {
+  list-style-type: none;
+  font-size: 0.8rem;
+  line-height: 1.8rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.scoreListItem {
+  background-color: transparent;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 0.5rem;
+}
+
+.latestGame {
+  background-color: var(--lemon-chiffon);
+}
+
+.scoreListItem:not(:last-child) {
+  border-bottom: 1px solid var(--light-grey);
+}
+
+.scoreListItem:first-child .position::before,
+.scoreListItem:nth-child(2) .position::before,
+.scoreListItem:nth-child(3) .position::before {
+  font-size: 1.2rem;
+  margin-right: 0.4rem;
+}
+
+.scoreListItem:first-child .position::before {
+  content: "🥇";
+}
+
+.scoreListItem:nth-child(2) .position::before {
+  content: "🥈";
+}
+
+.scoreListItem:nth-child(3) .position::before {
+  content: "🥉";
+}
+
+.time {
+}
+
+.date {
+  font-weight: 400;
+}

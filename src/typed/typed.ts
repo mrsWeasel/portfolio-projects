@@ -3,7 +3,3 @@ export interface Score {
   time: number
   startTime: string
 }
-
-export interface Scores {
-  scores: Score[]
-}
