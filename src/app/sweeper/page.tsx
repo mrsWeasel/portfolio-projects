@@ -17,6 +17,7 @@ import Header from "@/components/header/header"
 import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
+import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
 import { Score } from "@/typed/typed"
 
 enum GameStatus {
@@ -238,12 +239,12 @@ const Sweeper = () => {
         </div>
         <Scores gameId={gameId} scores={scores} />
       </Grid>
-      {/* <div>
-        <p style={{ textAlign: "left" }}>
+      <PortfolioItemDetails>
+        <p>
           Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
           get a bit creative with it. Hope you enjoy it!
         </p>
-      </div> */}
+      </PortfolioItemDetails>
     </ContainerWithNavigation>
   )
 }

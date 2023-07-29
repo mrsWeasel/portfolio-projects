@@ -2,7 +2,7 @@ import ContainerWithNavigation from "@/components/containerWithNavigation/contai
 import styles from "./page.module.css"
 
 const Home = () => {
-  return <ContainerWithNavigation>as</ContainerWithNavigation>
+  return <ContainerWithNavigation></ContainerWithNavigation>
 }
 
 export default Home
