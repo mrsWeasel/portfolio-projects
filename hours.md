@@ -28,4 +28,5 @@
 | 28.7. | 1    | Update high scores after game won + highlight current game if present in score table                                                  |
 | 28.7. | 1    | Component tests for Timer, figuring out how to mock google fonts for Jest                                                             |
 | 28.7. | 0.5  | Start styling the portfolio item description                                                                                          |
-|   -   | 44.5 | Total hours                                                                                                                           |
+| 29.9. | 1    | base64 encoding for mines when fetching from API, commenting out stuff that is not needed for phase 1, adding footer                  |
+|   -   | 45.5 | Total hours                                                                                                                           |

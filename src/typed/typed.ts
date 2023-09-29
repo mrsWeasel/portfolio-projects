@@ -3,3 +3,10 @@ export interface Score {
   time: number
   startTime: string
 }
+
+export enum GameStatus {
+  INITIATED = "INITIATED",
+  PLAYING = "PLAYING",
+  LOST = "LOST",
+  WON = "WON",
+}

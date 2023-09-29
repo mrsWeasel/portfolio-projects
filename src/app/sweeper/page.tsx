@@ -18,34 +18,28 @@ import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
 import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
-import { Score } from "@/typed/typed"
-
-enum GameStatus {
-  INITIATED = "INITIATED",
-  PLAYING = "PLAYING",
-  LOST = "LOST",
-  WON = "WON",
-}
+import { Score, GameStatus } from "@/typed/typed"
 
 let interval: number | undefined
+
 const Sweeper = () => {
   const [mineGrid, setMineGrid] = useState<number[][] | null>(null)
   const [visitedGrid, setVisitedGrid] = useState<number[][]>(generateGrid(10))
   const [flaggedGrid, setFlaggedGrid] = useState<number[][]>(generateGrid(10))
   const [flagging, setFlagging] = useState(false)
-  const [timer, setTimer] = useState(0)
+  const [timer, setTimer] = useState<number>(0)
   const [gameStatus, setGameStatus] = useState<GameStatus | null>(null)
   const [gameId, setGameId] = useState<string | null>(null)
   const [scores, setScores] = useState<Score[]>([])
 
   const reset = () => {
-    if (interval) clearInterval(interval)
     setGameId(null)
+    setTimer(0)
   }
 
   const initiateGame = async () => {
     reset()
-    setTimer(0)
+
     try {
       const res = await axios.post(`/api/sweeper/initGame`)
 
@@ -89,7 +83,7 @@ const Sweeper = () => {
 
       const { data } = res || {}
       console.log(data)
-      // reset()
+
       if (interval) clearInterval(interval)
     } catch (e) {
       if (e instanceof Error) {
@@ -98,20 +92,26 @@ const Sweeper = () => {
     }
   }
 
-  const setHighScores = async () => {
+  const fetchHighScores = async () => {
     try {
       const res = await axios.get("/api/sweeper/getScores")
 
       const { data } = res || {}
       setScores(data)
-    } catch (e) {}
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log(e.message)
+      }
+    }
   }
 
   useEffect(() => {
     initiateGame()
-    setHighScores()
+    fetchHighScores()
 
-    return () => clearInterval(interval)
+    return () => {
+      if (interval) clearInterval(interval)
+    }
   }, [])
 
   let tempVisited
@@ -141,7 +141,8 @@ const Sweeper = () => {
     if (isGameWon(tempVisited, mineGrid)) {
       setGameStatus(GameStatus.WON)
       await endGame(tempVisited)
-      setHighScores()
+      // TODO: maybe only fetch if time is better than 10. result of list?
+      fetchHighScores()
     }
   }
 
@@ -191,12 +192,11 @@ const Sweeper = () => {
     if (isGameWon(tempVisitedGrid, mineGrid)) {
       setGameStatus(GameStatus.WON)
       await endGame(tempVisitedGrid)
-      setHighScores()
+      fetchHighScores()
     }
   }
 
-  const handleStartNewGame = async () => {
-    // setMineGrid(generateMineGrid(10))
+  const handleInitNewGame = async () => {
     await initiateGame()
     setGameStatus(GameStatus.INITIATED)
     setVisitedGrid(generateGrid(10))
@@ -205,14 +205,14 @@ const Sweeper = () => {
 
   return (
     <ContainerWithNavigation>
-      <Header title="Minesweeper game" />
+      <Header title="Project: Minesweeper game" />
       <Grid columns={2}>
         <div>
           <SweeperToolbar
             elapsedSeconds={timer}
             flagging={flagging}
             setFlagging={setFlagging}
-            handleStartNewGame={handleStartNewGame}
+            handleInitNewGame={handleInitNewGame}
           />
           <div>
             <div className={styles.gridContainer}>
@@ -240,10 +240,10 @@ const Sweeper = () => {
         <Scores gameId={gameId} scores={scores} />
       </Grid>
       <PortfolioItemDetails>
-        <p>
+        {/* <p>
           Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
           get a bit creative with it. Hope you enjoy it!
-        </p>
+        </p> */}
       </PortfolioItemDetails>
     </ContainerWithNavigation>
   )

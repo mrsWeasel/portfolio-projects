@@ -29,17 +29,13 @@ export const randomizeMines = (size = 10): number[] => {
   return sortedMines
 }
 
-export const obfuscateMines = (mines: number[]): number[] => {
-  // TODO: use encrypt / decrypt instead?
-  return mines.map((m) => {
-    return (m - mines.length) * -mines.length
-  })
+export const obfuscateMines = (mines: number[]): string => {
+  console.log(mines)
+  return btoa(JSON.stringify(mines))
 }
 
-export const unobfuscateMines = (mines: number[]): number[] => {
-  return mines.map((m) => {
-    return m / -mines.length + mines.length
-  })
+export const unobfuscateMines = (obfuscatedMines: string): number[] => {
+  return JSON.parse(atob(obfuscatedMines))
 }
 
 export const generateMineGrid = (mines = randomizeMines(10), size = 10): number[][] => {

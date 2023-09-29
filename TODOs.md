@@ -17,3 +17,5 @@
 
 - Set automatic deletion for leaderboard db entries
 - Vercel deployment
+- Husky: run lint + unit / component tests on commit
+- CI/CD

@@ -5,10 +5,10 @@ interface Props {
   elapsedSeconds: number
   flagging: boolean
   setFlagging: (flagging: boolean) => void
-  handleStartNewGame: () => void
+  handleInitNewGame: () => void
 }
 
-const SweeperToolbar = ({ elapsedSeconds, flagging, setFlagging, handleStartNewGame }: Props) => {
+const SweeperToolbar = ({ elapsedSeconds, flagging, setFlagging, handleInitNewGame }: Props) => {
   return (
     <div>
       <div className={styles.toolBar}>
@@ -26,7 +26,7 @@ const SweeperToolbar = ({ elapsedSeconds, flagging, setFlagging, handleStartNewG
           <Timer elapsedSeconds={elapsedSeconds} />
         </div>
 
-        <button className={`${styles.toolBarButton}`} onClick={() => handleStartNewGame()}>
+        <button className={`${styles.toolBarButton}`} onClick={() => handleInitNewGame()}>
           🌟
         </button>
       </div>
