@@ -31,4 +31,5 @@
 | 29.9. | 1    | base64 encoding for mines when fetching from API, commenting out stuff that is not needed for phase 1, adding footer                  |
 | 29.9. | 1    | Set up Vercel deployment (in Vercel admin panel)                                                                                      |
 | 30.9. | 0.5  | Styling (background color and some borders + drop shadows)                                                                            |
-|   -   | 47   | Total hours                                                                                                                           |
+| 30.9. | 0.5  | Add headers (CSP etc.)                                                                                                                |
+|   -   | 47.5 | Total hours                                                                                                                           |
