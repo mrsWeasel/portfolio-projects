@@ -33,4 +33,5 @@
 | 30.9. | 0.5  | Styling (background color and some borders + drop shadows)                                                                            |
 | 30.9. | 0.5  | Add headers (CSP etc.)                                                                                                                |
 | 30.9. | 1    | Troubleshooting how to disable caching in prod deployment for getScores api route                                                     |
-|   -   | 48.5 | Total hours                                                                                                                           |
+| 30.9. | 2    | Troubleshooting for how to reuse database connection in serverless setting                                                            |
+|   -   | 50.5 | Total hours                                                                                                                           |

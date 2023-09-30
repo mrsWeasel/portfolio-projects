@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { generateMineGrid, isGameWon } from "@/services/sweeperService"
 
@@ -17,10 +17,9 @@ export async function PUT(request: Request) {
 
     const objectId = new ObjectId(id)
 
-    const client = await clientPromise
-    const db = client.db(MONGODB_LEADERBOARD_DB)
+    const { database } = (await clientPromise()) || {}
 
-    const game = await db.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
+    const game = await database.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
     if (!game) {
       throw new Error("Game not found in database")
     }
@@ -43,7 +42,7 @@ export async function PUT(request: Request) {
       time: Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000),
     }
 
-    await db.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
+    await database.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
     return NextResponse.json({ status: `Game won, time: ${updatedGame.time} seconds` })
   } catch (error) {
     let errorMessage = "Error handling request"

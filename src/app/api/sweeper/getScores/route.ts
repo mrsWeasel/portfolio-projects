@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import { clientPromise } from "@/lib/mongodb"
 
 export const revalidate = 0
 
@@ -11,17 +11,16 @@ export async function GET() {
       throw new Error("Database details missing")
     }
 
-    const client = await clientPromise
-    const db = client.db(MONGODB_LEADERBOARD_DB)
+    const { database } = (await clientPromise()) || {}
 
     const results: any[] = []
 
-    await db
+    await database
       .collection(MONGODB_MINESWEEPER_COLLECTION)
       .find({ time: { $exists: true } })
       .sort({ time: 1, startTime: 1 })
       .limit(10)
-      .forEach((r) => {
+      .forEach((r: any) => {
         results.push(r)
       })
 

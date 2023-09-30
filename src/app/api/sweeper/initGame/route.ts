@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import { clientPromise } from "@/lib/mongodb"
 import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
 
+let client: any = null
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
   try {
@@ -11,12 +12,11 @@ export async function POST() {
       throw new Error("Database details missing")
     }
 
-    const client = await clientPromise
-    const db = client.db(MONGODB_LEADERBOARD_DB)
+    const { database } = (await clientPromise()) || {}
 
     const mines = randomizeMines(10)
 
-    const result = await db.collection(MONGODB_MINESWEEPER_COLLECTION).insertOne({ mines })
+    const result = await database.collection(MONGODB_MINESWEEPER_COLLECTION).insertOne({ mines })
 
     // obscure response a bit so user can't see directly from it where mines are at
     const responseMines = obfuscateMines(mines)

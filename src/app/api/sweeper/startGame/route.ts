@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 
 export async function PUT(request: Request) {
@@ -15,10 +15,9 @@ export async function PUT(request: Request) {
     if (!id) throw new Error("Player id missing from request")
     const objectId = new ObjectId(id)
 
-    const client = await clientPromise
-    const db = client.db(MONGODB_LEADERBOARD_DB)
+    const { database } = (await clientPromise()) || {}
 
-    const game = await db.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
+    const game = await database.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
     if (!game) {
       throw new Error("Game not found in database")
     }
@@ -31,7 +30,7 @@ export async function PUT(request: Request) {
       startTime: new Date(),
     }
 
-    await db.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
+    await database.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
     return NextResponse.json({ status: `Started new game at ${updatedGame.startTime}` })
   } catch (error) {
     let errorMessage = "Error handling request"
