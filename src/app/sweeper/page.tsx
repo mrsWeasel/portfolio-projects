@@ -39,6 +39,8 @@ const Sweeper = () => {
 
   const initiateGame = async () => {
     reset()
+    if (interval) clearInterval(interval)
+    setTimer(0)
 
     try {
       const res = await axios.post(`/api/sweeper/initGame`)
