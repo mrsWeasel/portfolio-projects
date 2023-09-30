@@ -29,4 +29,6 @@
 | 28.7. | 1    | Component tests for Timer, figuring out how to mock google fonts for Jest                                                             |
 | 28.7. | 0.5  | Start styling the portfolio item description                                                                                          |
 | 29.9. | 1    | base64 encoding for mines when fetching from API, commenting out stuff that is not needed for phase 1, adding footer                  |
-|   -   | 45.5 | Total hours                                                                                                                           |
+| 29.9. | 1    | Set up Vercel deployment (in Vercel admin panel)                                                                                      |
+| 30.9. | 0.5  | Styling (background color and some borders + drop shadows)                                                                            |
+|   -   | 47   | Total hours                                                                                                                           |

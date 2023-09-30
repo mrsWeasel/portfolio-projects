@@ -9,6 +9,7 @@
   --light-grey: #d3d3d3;
   --medium-grey: #bbbbbb;
   --dark-grey: #222;
+  --light-lila: #f2eff5;
 
   --lemon-chiffon: #fbf8cc;
   --champagne-pink: #fde4cf;
@@ -36,7 +37,7 @@ body {
 
 body {
   color: var(--black);
-  background: var(--white);
+  background: var(--light-lila);
   font-size: 1.125rem;
   color: var(--dark-grey);
 }
