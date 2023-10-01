@@ -35,4 +35,5 @@
 | 30.9. | 1    | Troubleshooting how to disable caching in prod deployment for getScores api route                                                     |
 | 30.9. | 2    | Troubleshooting for how to reuse database connection in serverless setting                                                            |
 | 30.9. | 0.5  | Fixing timer bug (starting a new game when previous was not completed didn't clear interval)                                          |
-|   -   | 51   | Total hours                                                                                                                           |
+| 1.10. | 0.5  | Prevent actions when waiting response from api                                                                                        |
+|   -   | 51.5 | Total hours                                                                                                                           |

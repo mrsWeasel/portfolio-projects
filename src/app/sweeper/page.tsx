@@ -23,6 +23,7 @@ import { Score, GameStatus } from "@/typed/typed"
 let interval: number | undefined
 
 const Sweeper = () => {
+  const [loading, setLoading] = useState(false)
   const [mineGrid, setMineGrid] = useState<number[][] | null>(null)
   const [visitedGrid, setVisitedGrid] = useState<number[][]>(generateGrid(10))
   const [flaggedGrid, setFlaggedGrid] = useState<number[][]>(generateGrid(10))
@@ -33,17 +34,17 @@ const Sweeper = () => {
   const [scores, setScores] = useState<Score[]>([])
 
   const reset = () => {
+    if (interval) clearInterval(interval)
     setGameId(null)
     setTimer(0)
   }
 
   const initiateGame = async () => {
     reset()
-    if (interval) clearInterval(interval)
-    setTimer(0)
-
+    setLoading(true)
     try {
       const res = await axios.post(`/api/sweeper/initGame`)
+      setLoading(false)
 
       const { data } = res || {}
       const { id, mines } = data || {}
@@ -60,15 +61,17 @@ const Sweeper = () => {
       if (e instanceof Error) {
         console.log(e.message)
       }
+      setLoading(false)
     }
   }
 
   const startGame = async () => {
+    setLoading(true)
     try {
       const res = await axios.put("/api/sweeper/startGame", { id: gameId })
-
+      setLoading(false)
       const { data } = res || {}
-      console.log(data)
+
       interval = window?.setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1)
       }, 1000)
@@ -76,6 +79,7 @@ const Sweeper = () => {
       if (e instanceof Error) {
         console.log(e.message)
       }
+      setLoading(false)
     }
   }
 
@@ -84,7 +88,6 @@ const Sweeper = () => {
       const res = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
 
       const { data } = res || {}
-      console.log(data)
 
       if (interval) clearInterval(interval)
     } catch (e) {
@@ -151,6 +154,7 @@ const Sweeper = () => {
   const handleClick = async (i: number, j: number) => {
     if (!mineGrid) return
 
+    if (loading) return
     if (gameStatus === GameStatus.WON) return
     if (gameStatus === GameStatus.LOST) return
 
@@ -213,6 +217,7 @@ const Sweeper = () => {
           <SweeperToolbar
             elapsedSeconds={timer}
             flagging={flagging}
+            loading={loading}
             setFlagging={setFlagging}
             handleInitNewGame={handleInitNewGame}
           />

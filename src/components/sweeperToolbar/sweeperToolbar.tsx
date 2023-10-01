@@ -4,11 +4,12 @@ import Timer from "@/components/timer/timer"
 interface Props {
   elapsedSeconds: number
   flagging: boolean
+  loading: boolean
   setFlagging: (flagging: boolean) => void
   handleInitNewGame: () => void
 }
 
-const SweeperToolbar = ({ elapsedSeconds, flagging, setFlagging, handleInitNewGame }: Props) => {
+const SweeperToolbar = ({ elapsedSeconds, flagging, loading, setFlagging, handleInitNewGame }: Props) => {
   return (
     <div>
       <div className={styles.toolBar}>
@@ -26,7 +27,7 @@ const SweeperToolbar = ({ elapsedSeconds, flagging, setFlagging, handleInitNewGa
           <Timer elapsedSeconds={elapsedSeconds} />
         </div>
 
-        <button className={`${styles.toolBarButton}`} onClick={() => handleInitNewGame()}>
+        <button className={`${styles.toolBarButton}`} disabled={loading} onClick={() => handleInitNewGame()}>
           🌟
         </button>
       </div>
