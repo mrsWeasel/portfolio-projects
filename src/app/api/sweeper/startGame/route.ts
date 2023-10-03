@@ -3,7 +3,7 @@ import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 
 export async function PUT(request: Request) {
-  const data = request.json()
+  const data = await request.json()
 
   try {
     const { MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
