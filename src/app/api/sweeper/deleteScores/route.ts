@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 
-/* Delete all scores */
+/* Delete all scores - used for api tests and cron job only */
 export async function DELETE(request: Request) {
   try {
-    // used for api tests only
+    if (process.env.NODE_ENV === "development") {
+      request.headers.set("authorization", `Bearer ${process.env.CRON_SECRET}`)
+    }
 
-    // TODO: get authorization header and use for cron jobs too
-    // process.env.CRON_SECRET
-    if (process.env.NODE_ENV !== "development") {
+    const authToken = request.headers.get("authorization")?.replace("Bearer ", "") || ""
+
+    if (!authToken || authToken !== process.env.CRON_SECRET) {
       return NextResponse.json(
         {
           message: "Unauthorized",
