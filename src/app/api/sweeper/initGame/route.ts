@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
 
-let client: any = null
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
   try {
