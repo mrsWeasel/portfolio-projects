@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "countHours": "node utils/countHours.js"
   },
   "prettier": {
     "tabWidth": 2,
