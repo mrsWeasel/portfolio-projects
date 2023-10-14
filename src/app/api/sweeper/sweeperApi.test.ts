@@ -5,11 +5,11 @@ const baseUrl = "http://localhost:3000/api/sweeper"
 
 describe("initGame api route", () => {
   beforeEach(async () => {
-    await request(baseUrl).delete("/deleteScores")
+    await request(baseUrl).delete("/deleteScores?delete=all")
   })
 
   afterAll(async () => {
-    await request(baseUrl).delete("/deleteScores")
+    await request(baseUrl).delete("/deleteScores?delete=all")
   })
 
   test("initGame api route", async () => {
@@ -23,11 +23,11 @@ describe("initGame api route", () => {
 
 describe("startGame api route", () => {
   beforeEach(async () => {
-    await request(baseUrl).delete("/deleteScores")
+    await request(baseUrl).delete("/deleteScores?delete=all")
   })
 
   afterAll(async () => {
-    await request(baseUrl).delete("/deleteScores")
+    await request(baseUrl).delete("/deleteScores?delete=all")
   })
 
   test("startGame api route", async () => {
