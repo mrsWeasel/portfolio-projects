@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "jest",
     "cypress:open": "cypress open",
-    "countHours": "node utils/countHours.js"
+    "countHours": "node utils/countHours.js",
+    "db:local:seed": "bash cypress/utils/seed_db.sh",
+    "db:local:clear": "bash cypress/utils/clear_db.sh"
   },
   "prettier": {
     "tabWidth": 2,

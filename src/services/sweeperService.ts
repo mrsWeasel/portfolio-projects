@@ -30,7 +30,6 @@ export const randomizeMines = (size = 10): number[] => {
 }
 
 export const obfuscateMines = (mines: number[]): string => {
-  console.log(mines)
   return btoa(JSON.stringify(mines))
 }
 

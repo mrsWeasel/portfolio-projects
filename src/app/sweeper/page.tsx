@@ -241,6 +241,7 @@ const Sweeper = () => {
                   <div
                     key={`item-${i}-${j}`}
                     id={`item-${i}-${j}`}
+                    data-test-id={`item-${i}-${j}`}
                     className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
                     onClick={(e) => handleClick(i, j)}
                   >
