@@ -3,8 +3,11 @@ import { clientPromise } from "@/lib/mongodb"
 
 type DeleteSettings = "all" | "onlyNotWon"
 
-/* Delete all scores - used for api tests and cron job only */
-export async function DELETE(request: Request) {
+/* 
+Method needs to be GET for now - Vercel does not support anything else for cron jobs
+This api route is for deleting scores - used by api tests and cron jobs only 
+*/
+export async function GET(request: Request) {
   const url = new URL(request.url)
 
   const deleteSettings = url?.searchParams?.get("delete") as DeleteSettings
