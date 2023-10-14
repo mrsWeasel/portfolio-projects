@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import confetti from "canvas-confetti"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
 import {
   generateMineGrid,
@@ -145,6 +146,12 @@ const Sweeper = () => {
     // check if game is won
     if (isGameWon(tempVisited, mineGrid)) {
       setGameStatus(GameStatus.WON)
+      confetti({
+        shapes: ["square", "circle"],
+        spread: 80,
+        scalar: 0.9,
+        colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
+      })
       await endGame(tempVisited)
       // TODO: maybe only fetch if time is better than 10. result of list?
       fetchHighScores()
@@ -197,6 +204,12 @@ const Sweeper = () => {
     // check if game is won
     if (isGameWon(tempVisitedGrid, mineGrid)) {
       setGameStatus(GameStatus.WON)
+      confetti({
+        shapes: ["square", "circle"],
+        spread: 80,
+        scalar: 0.9,
+        colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
+      })
       await endGame(tempVisitedGrid)
       fetchHighScores()
     }
