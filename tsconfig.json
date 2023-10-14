@@ -31,6 +31,6 @@
     ".next/types/**/*.ts",
     "build/types/**/*.ts",
     "release/types/**/*.ts"
-  ],
+, "utils/countHours.js"  ],
   "exclude": ["node_modules"]
 }

@@ -7,15 +7,11 @@
 - Loading animations for minegrid / score table
 - Disable 'reset' button when game is not started (sweeper/page.tsx)
 - Score table: shared position if same result
+- Don't fetch best scores after game has ended IF result was not good enough to make it to the top 10
 
 ## Backend
 
-- Configure headers for requests
-- API tests with Jest
-
 ## General
 
-- Set automatic deletion for leaderboard db entries
-- Vercel deployment
-- Husky: run lint + unit / component tests on commit
+- Husky: run lint
 - CI/CD
