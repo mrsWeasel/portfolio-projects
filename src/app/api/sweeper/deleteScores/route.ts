@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 
+type DeleteSettings = "all" | "onlyNotWon"
+
 /* Delete all scores - used for api tests and cron job only */
 export async function DELETE(request: Request) {
+  const url = new URL(request.url)
+
+  const deleteSettings = url?.searchParams?.get("delete") as DeleteSettings
+
   try {
     if (process.env.NODE_ENV === "development") {
       request.headers.set("authorization", `Bearer ${process.env.CRON_SECRET}`)
@@ -23,7 +29,10 @@ export async function DELETE(request: Request) {
 
     const { database } = (await clientPromise()) || {}
 
-    const result = await database.collection(process.env.MONGODB_MINESWEEPER_COLLECTION).deleteMany({})
+    // delete either everything OR just the games that do not have field "time" (lost / unfinished ones)
+    const filter = deleteSettings === "all" ? {} : { time: { $exists: false } }
+
+    const result = await database.collection(process.env.MONGODB_MINESWEEPER_COLLECTION).deleteMany(filter)
 
     return NextResponse.json(result)
   } catch (e) {
