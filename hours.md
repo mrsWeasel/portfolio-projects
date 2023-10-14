@@ -40,4 +40,5 @@
 | 3.10.  | 3    | Add serverless function to delete all scores from leaderboard (for testing), get started with API tests, install Supertest            |
 | 10.10. | 3    | Studying Vercel cron jobs and how to secure api routes used by them, adding CRON_SECRET env variable                                  |
 | 14.10. | 1    | Add more logic to deleteScores api route: delete all / delete just unfinished or lost games (to keep database tidy)                   |
-|   -    | 58.5 | Total hours                                                                                                                           |
+| 14.10. | 0.5  | Set up 2 cron jobs: delete all games from db monthly, delete unfinished / lost games weekly                                           |
+|   -    | ?    | Total hours                                                                                                                           |
