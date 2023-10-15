@@ -16,13 +16,17 @@ const Scores = ({ scores, gameId }: Props) => {
         <h2>Best scores (all players)</h2>
       </div>
       <div className={redHatMono.className}>
-        <ul className={styles.scoreList}>
+        <ul data-test-id="scores-list" className={styles.scoreList}>
           {scores.map((s, index) => {
             const { time, startTime, _id } = s || {}
             if (!time || !startTime || !_id) return null
 
             return (
-              <li key={_id} className={`${styles.scoreListItem} ${gameId === _id && styles.latestGame}`}>
+              <li
+                data-test-id={`game-${_id}`}
+                key={_id}
+                className={`${styles.scoreListItem} ${gameId === _id && styles.latestGame}`}
+              >
                 <span className={styles.position}>{`${index + 1}. `}</span>
                 <span className={styles.time}>{`${time} sec `}</span>
                 <span className={styles.date}>{`(${new Date(startTime).toLocaleDateString("en-GB")})`}</span>

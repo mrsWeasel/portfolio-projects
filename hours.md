@@ -45,5 +45,6 @@
 | 14.10. | 6    | Looking into how to install local MongoDB, installing local MongoDBm, struggling with seeding database using mongosh scripts 🤯       |
 | 15.10. | 5    | Finally solve how to give mongosh script AND cypress access to env variables                                                          |
 | 15.10. | 0.5  | Add assertions to first Cypress test + add data-test-ids where needed                                                                 |
+| 15.10. | 0.5  | Add Cypress test for losing a game                                                                                                    |
 
-## Total hours: 73
+## Total hours: 73.5
