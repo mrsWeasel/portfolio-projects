@@ -44,5 +44,6 @@
 | 14.10. | 2    | Add util function + npm script for summing up project hours                                                                           |
 | 14.10. | 6    | Looking into how to install local MongoDB, installing local MongoDBm, struggling with seeding database using mongosh scripts 🤯       |
 | 15.10. | 5    | Finally solve how to give mongosh script AND cypress access to env variables                                                          |
+| 15.10. | 0.5  | Add assertions to first Cypress test + add data-test-ids where needed                                                                 |
 
-## Total hours: 72.5
+## Total hours: 73

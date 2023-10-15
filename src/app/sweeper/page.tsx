@@ -235,7 +235,7 @@ const Sweeper = () => {
             handleInitNewGame={handleInitNewGame}
           />
           <div>
-            <div className={styles.gridContainer}>
+            <div data-test-id="sweeper-grid-container" className={styles.gridContainer}>
               {mineGrid?.map((row, i) =>
                 row.map((cell, j) => (
                   <div

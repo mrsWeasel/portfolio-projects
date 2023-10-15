@@ -13,10 +13,15 @@ const SweeperToolbar = ({ elapsedSeconds, flagging, loading, setFlagging, handle
   return (
     <div>
       <div className={styles.toolBar}>
-        <button className={`${styles.toolBarButton} ${flagging && styles.selected}`} onClick={() => setFlagging(true)}>
+        <button
+          data-test-id="toolbar-button-flagging"
+          className={`${styles.toolBarButton} ${flagging && styles.selected}`}
+          onClick={() => setFlagging(true)}
+        >
           🚩
         </button>
         <button
+          data-test-id="toolbar-button-poking"
           className={`${styles.toolBarButton} ${!flagging && styles.selected}`}
           onClick={() => setFlagging(false)}
         >
@@ -24,10 +29,15 @@ const SweeperToolbar = ({ elapsedSeconds, flagging, loading, setFlagging, handle
         </button>
 
         <div className={styles.timer}>
-          <Timer elapsedSeconds={elapsedSeconds} />
+          <Timer data-test-id="sweeper-toolbar-timer" elapsedSeconds={elapsedSeconds} />
         </div>
 
-        <button className={`${styles.toolBarButton}`} disabled={loading} onClick={() => handleInitNewGame()}>
+        <button
+          data-test-id="toolbar-button-init"
+          className={`${styles.toolBarButton}`}
+          disabled={loading}
+          onClick={() => handleInitNewGame()}
+        >
           🌟
         </button>
       </div>
