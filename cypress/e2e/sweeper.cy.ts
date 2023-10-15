@@ -74,15 +74,58 @@ describe("Sweeper game", () => {
     cy.get('[data-test-id="game-64a0629d6cd31da8c69f4f67"]').should("exist")
   })
 
-  it("Loses when hits a cell with mine", () => {
+  it("Wins game when all non-mined cells are revealed, last clicked item being empty (no number)", () => {
     cy.wait("@initGame")
+
+    // Assert toolbar
+    assertToolBar()
 
     // Assert leaderboard
     cy.get('[data-test-id="scores-list"]').should("exist")
     cy.get('[data-test-id="game-64a0629d6cd31da8c69f4f67"]').should("not.exist")
 
+    // Assert grid
+    cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
+
+    cy.get(`[data-test-id="item-0-1"]`).click()
+    cy.get(`[data-test-id="item-0-1"]`).should("contain", "2")
+
+    // Wait to get some time on timer
+    cy.wait(2000)
+    cy.get('[data-test-id="sweeper-toolbar-timer"]').should("contain", "00:00")
+    cy.get('[data-test-id="sweeper-toolbar-timer"]').should("not.contain", "00:00:00")
+
+    cy.get(`[data-test-id="item-8-9"]`).click()
+    cy.get(`[data-test-id="item-8-9"]`).should("contain", "2")
+
+    cy.get(`[data-test-id="item-1-0"]`).click()
+    cy.get(`[data-test-id="item-1-0"]`).should("contain", "2")
+
+    cy.get(`[data-test-id="item-9-8"]`).click()
+    cy.get(`[data-test-id="item-9-8"]`).should("contain", "2")
+
+    cy.get(`[data-test-id="item-0-3"]`).click()
+    cy.get(`[data-test-id="item-0-3"]`).should("be.empty")
+
+    cy.get(`[data-test-id="item-3-0"]`).click()
+    cy.get(`[data-test-id="item-3-0"]`).should("be.empty")
+
+    cy.get(`[data-test-id="item-0-0"]`).should("contain", "🦄")
+
+    // Assert leaderboard
+    cy.get('[data-test-id="scores-list"]').should("exist")
+    cy.get('[data-test-id="game-64a0629d6cd31da8c69f4f67"]').should("exist")
+  })
+
+  it("Loses when hits a cell with mine", () => {
+    cy.wait("@initGame")
+
     // Assert toolbar
     assertToolBar()
+
+    // Assert leaderboard
+    cy.get('[data-test-id="scores-list"]').should("exist")
+    cy.get('[data-test-id="game-64a0629d6cd31da8c69f4f67"]').should("not.exist")
 
     // Assert grid
     cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
@@ -99,5 +142,38 @@ describe("Sweeper game", () => {
     // Assert leaderboard
     cy.get('[data-test-id="scores-list"]').should("exist")
     cy.get('[data-test-id="game-64a0629d6cd31da8c69f4f67"]').should("not.exist")
+  })
+
+  it("Toggles between clicking cells open and marking them with flag", () => {
+    cy.wait("@initGame")
+
+    // Assert toolbar
+    assertToolBar()
+
+    // Switch to "flagging" mode
+    cy.get('[data-test-id="toolbar-button-flagging"]').click()
+
+    cy.get(`[data-test-id="item-0-1"]`).click()
+    cy.get(`[data-test-id="item-0-1"]`).should("contain", "🚩")
+
+    // Switch away from "flagging" mode
+    cy.get('[data-test-id="toolbar-button-poking"]').click()
+
+    cy.get(`[data-test-id="item-0-1"]`).click()
+    // Flagged item is "protected" and should not be opened
+    cy.get(`[data-test-id="item-0-1"]`).should("contain", "🚩")
+
+    // Switch to "flagging" mode
+    cy.get('[data-test-id="toolbar-button-flagging"]').click()
+
+    cy.get(`[data-test-id="item-0-1"]`).click()
+    cy.get(`[data-test-id="item-0-1"]`).should("be.empty")
+
+    // Switch away from "flagging" mode
+    cy.get('[data-test-id="toolbar-button-poking"]').click()
+
+    cy.get(`[data-test-id="item-0-1"]`).click()
+
+    cy.get(`[data-test-id="item-0-1"]`).should("contain", "2")
   })
 })
