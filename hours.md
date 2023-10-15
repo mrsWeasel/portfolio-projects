@@ -42,5 +42,7 @@
 | 14.10. | 1    | Add more logic to deleteScores api route: delete all / delete just unfinished or lost games (to keep database tidy)                   |
 | 14.10. | 0.5  | Set up 2 cron jobs: delete all games from db monthly, delete unfinished / lost games weekly                                           |
 | 14.10. | 2    | Add util function + npm script for summing up project hours                                                                           |
+| 14.10. | 6    | Looking into how to install local MongoDB, installing local MongoDBm, struggling with seeding database using mongosh scripts 🤯       |
+| 15.10. | 5    | Finally solve how to give mongosh script AND cypress access to env variables                                                          |
 
-## Total hours: 61.5
+## Total hours: 72.5

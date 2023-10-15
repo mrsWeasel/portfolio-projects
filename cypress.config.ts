@@ -1,9 +1,10 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from "cypress"
+const path = require("path")
+require("dotenv").config({ path: ".env.local" })
 
 export default defineConfig({
+  env: { ...process.env },
   e2e: {
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
+    setupNodeEvents(on, config): void {},
   },
-});
+})

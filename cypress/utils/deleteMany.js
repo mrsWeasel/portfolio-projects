@@ -1,7 +1,7 @@
 const { db } = require("mongodb")
 
-db.connect("mongodb://localhost:27017")
+db.connect(process.env.MONGODB_URI)
 
-db = db.getSiblingDB("localdb")
+db = db.getSiblingDB(process.env.MONGODB_LEADERBOARD_DB)
 
-db.localcollection.deleteMany({})
+db[process.env.MONGODB_MINESWEEPER_COLLECTION].drop()

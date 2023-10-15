@@ -1,12 +1,19 @@
-import { obfuscateMines } from "@/services/sweeperService"
-
 const id = "64a0629d6cd31da8c69f4f67"
 const mines = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99]
 
 describe("Sweeper game", () => {
   beforeEach(() => {
-    cy.exec(`npm run db:local:clear`)
-    cy.exec(`npm run db:local:seed`)
+    cy.exec(
+      `env MONGODB_URI=${Cypress.env("MONGODB_URI")} MONGODB_LEADERBOARD_DB=${Cypress.env(
+        "MONGODB_LEADERBOARD_DB"
+      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:clear`
+    )
+    cy.exec(
+      `env MONGODB_URI=${Cypress.env("MONGODB_URI")} MONGODB_LEADERBOARD_DB=${Cypress.env(
+        "MONGODB_LEADERBOARD_DB"
+      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:seed`
+    )
+
     cy.intercept("POST", "/api/sweeper/initGame", {
       statusCode: 200,
       body: {
