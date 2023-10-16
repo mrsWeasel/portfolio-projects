@@ -40,6 +40,21 @@ const Sweeper = () => {
     setTimer(0)
   }
 
+  const handleWin = async (tempVisited: number[][]) => {
+    if (gameStatus === GameStatus.WON) return
+
+    setGameStatus(GameStatus.WON)
+    confetti({
+      shapes: ["square", "circle"],
+      spread: 80,
+      scalar: 0.9,
+      colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
+    })
+    await endGame(tempVisited)
+    // TODO: maybe only fetch if time is better than 10. result of list?
+    fetchHighScores()
+  }
+
   const initiateGame = async () => {
     reset()
     setLoading(true)
@@ -122,9 +137,12 @@ const Sweeper = () => {
 
   let tempVisited
 
-  const revealConnectedEmptyCells = async (i: number, j: number, visitedCells: number[][]) => {
-    if (!mineGrid) return
+  // for stopping recursion in case game is already won
+  let forceStop = false
 
+  const revealConnectedEmptyCells = async (i: number, j: number, visitedCells: number[][]) => {
+    if (forceStop) return
+    if (!mineGrid) return
     tempVisited = JSON.parse(JSON.stringify(visitedCells))
     tempVisited[i][j] = 1
     setVisitedGrid(tempVisited)
@@ -136,25 +154,18 @@ const Sweeper = () => {
     const adjacent = [up, upRight, right, downRight, down, downLeft, left, upLeft]
 
     for (let l = 0; l < adjacent.length; l++) {
+      if (forceStop) break
+
       const curr = adjacent[l]
       if (!isInRange(curr.y, curr.x, mineGrid)) continue
       if (cellHasValueInGrid(curr.y, curr.x, tempVisited)) continue
-
       revealConnectedEmptyCells(curr.y, curr.x, tempVisited)
     }
 
     // check if game is won
-    if (isGameWon(tempVisited, mineGrid)) {
-      setGameStatus(GameStatus.WON)
-      confetti({
-        shapes: ["square", "circle"],
-        spread: 80,
-        scalar: 0.9,
-        colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
-      })
-      await endGame(tempVisited)
-      // TODO: maybe only fetch if time is better than 10. result of list?
-      fetchHighScores()
+    if (!forceStop && isGameWon(tempVisited, mineGrid)) {
+      forceStop = true
+      handleWin(tempVisited)
     }
   }
 
@@ -203,15 +214,7 @@ const Sweeper = () => {
 
     // check if game is won
     if (isGameWon(tempVisitedGrid, mineGrid)) {
-      setGameStatus(GameStatus.WON)
-      confetti({
-        shapes: ["square", "circle"],
-        spread: 80,
-        scalar: 0.9,
-        colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
-      })
-      await endGame(tempVisitedGrid)
-      fetchHighScores()
+      handleWin(tempVisitedGrid)
     }
   }
 
