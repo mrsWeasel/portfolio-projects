@@ -40,21 +40,7 @@ const Sweeper = () => {
     setTimer(0)
   }
 
-  const handleWin = async (tempVisited: number[][]) => {
-    if (gameStatus === GameStatus.WON) return
-
-    setGameStatus(GameStatus.WON)
-    confetti({
-      shapes: ["square", "circle"],
-      spread: 80,
-      scalar: 0.9,
-      colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
-    })
-    await endGame(tempVisited)
-    // TODO: maybe only fetch if time is better than 10. result of list?
-    fetchHighScores()
-  }
-
+  // posts new game to db, returns id and generated minefield
   const initiateGame = async () => {
     reset()
     setLoading(true)
@@ -81,6 +67,7 @@ const Sweeper = () => {
     }
   }
 
+  // starts timer, posts starting time to db
   const startGame = async () => {
     setLoading(true)
     try {
@@ -99,6 +86,7 @@ const Sweeper = () => {
     }
   }
 
+  // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
       const res = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
@@ -113,6 +101,7 @@ const Sweeper = () => {
     }
   }
 
+  // gets 10 top scores from db
   const fetchHighScores = async () => {
     try {
       const res = await axios.get("/api/sweeper/getScores")
@@ -135,8 +124,8 @@ const Sweeper = () => {
     }
   }, [])
 
+  // for storing temporarily the state of visited cells when traversing through grid
   let tempVisited
-
   // for stopping recursion in case game is already won
   let forceStop = false
 
@@ -169,7 +158,7 @@ const Sweeper = () => {
     }
   }
 
-  const handleClick = async (i: number, j: number) => {
+  const handleClickCell = async (i: number, j: number) => {
     if (!mineGrid) return
 
     if (loading) return
@@ -225,6 +214,21 @@ const Sweeper = () => {
     setFlaggedGrid(generateGrid(10))
   }
 
+  const handleWin = async (tempVisited: number[][]) => {
+    if (gameStatus === GameStatus.WON) return
+
+    setGameStatus(GameStatus.WON)
+    confetti({
+      shapes: ["square", "circle"],
+      spread: 80,
+      scalar: 0.9,
+      colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
+    })
+    await endGame(tempVisited)
+    // TODO: maybe only fetch if time is better than 10. result of list?
+    fetchHighScores()
+  }
+
   return (
     <ContainerWithNavigation>
       <Header title="Project: Minesweeper game" />
@@ -246,7 +250,7 @@ const Sweeper = () => {
                     id={`item-${i}-${j}`}
                     data-test-id={`item-${i}-${j}`}
                     className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
-                    onClick={(e) => handleClick(i, j)}
+                    onClick={(e) => handleClickCell(i, j)}
                   >
                     {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
                     {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
