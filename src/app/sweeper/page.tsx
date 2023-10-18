@@ -12,7 +12,6 @@ import {
   isGameWon,
   unobfuscateMines,
 } from "@/services/sweeperService"
-import styles from "./sweeper.module.css"
 import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
 import axios from "axios"
@@ -20,6 +19,7 @@ import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
 import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
 import { Score, GameStatus } from "@/typed/typed"
+import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
 
 let interval: number | undefined
 
@@ -192,6 +192,7 @@ const Sweeper = () => {
 
     // empty without neighboring mines found -> reveal all connected similar cells
     if (!getAmountOfSurroundingMines(i, j, mineGrid)) {
+      // recursively open all 'empty' cells that are connected
       revealConnectedEmptyCells(i, j, visitedGrid)
       return
     }
@@ -241,29 +242,13 @@ const Sweeper = () => {
             setFlagging={setFlagging}
             handleInitNewGame={handleInitNewGame}
           />
-          <div>
-            <div data-test-id="sweeper-grid-container" className={styles.gridContainer}>
-              {mineGrid?.map((row, i) =>
-                row.map((cell, j) => (
-                  <div
-                    key={`item-${i}-${j}`}
-                    id={`item-${i}-${j}`}
-                    data-test-id={`item-${i}-${j}`}
-                    className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
-                    onClick={(e) => handleClickCell(i, j)}
-                  >
-                    {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
-                    {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
-                    {cellHasValueInGrid(i, j, flaggedGrid) &&
-                      !cellHasValueInGrid(i, j, visitedGrid) &&
-                      gameStatus === GameStatus.PLAYING &&
-                      "🚩"}
-                    {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          <SweeperGrid
+            mineGrid={mineGrid}
+            visitedGrid={visitedGrid}
+            flaggedGrid={flaggedGrid}
+            handleClickCell={handleClickCell}
+            gameStatus={gameStatus}
+          />
         </div>
         <Scores gameId={gameId} scores={scores} />
       </Grid>

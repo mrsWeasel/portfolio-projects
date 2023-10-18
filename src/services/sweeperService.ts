@@ -94,13 +94,14 @@ export const getAmountOfSurroundingMines = (i: number, j: number, mineGrid: numb
   return sum
 }
 
+// TODO: use more describing names for checking different grids. Use this only internally
 export const cellHasValueInGrid = (i: number, j: number, arr: number[][]) => {
   try {
     if (arr[i][j]) {
       return true
     }
   } catch (e) {
-    return true
+    throw new Error(`Error trying to find ${i}, ${j} in grid`)
   }
   return false
 }

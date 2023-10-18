@@ -48,5 +48,6 @@
 | 15.10. | 0.5  | Add Cypress test for losing a game                                                                                                    |
 | 15.10. | 0.5  | Add Cypress test for winning when last clicked item is empty (without number) + for flagging suspicious cells                         |
 | 16.10. | 1    | Bug hunt 🐛 and fix: when game is won while recursively traversing cells, handler for win case was called multiple times              |
+| 18.10. | 0.5  | Refactor Sweeper grid to its own module                                                                                               |
 
-## Total hours: 75
+## Total hours: 75.5
