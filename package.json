@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev:local": "NODE_ENV=development next dev",
+    "dev:test": "NODE_ENV=test next dev",
     "build": "next build",
     "lint": "next lint",
     "test": "jest",
-    "countHours": "node utils/countHours.js"
+    "cypress:open": "cypress open",
+    "countHours": "node utils/countHours.js",
+    "db:local:seed": "bash cypress/utils/seed_db.sh",
+    "db:local:clear": "bash cypress/utils/clear_db.sh"
   },
   "prettier": {
     "tabWidth": 2,
@@ -25,6 +29,7 @@
     "@types/react-dom": "18.2.4",
     "axios": "^1.4.0",
     "canvas-confetti": "^1.9.0",
+    "dotenv": "^16.3.1",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
     "mongodb": "^5.6.0",
@@ -42,6 +47,7 @@
     "@types/canvas-confetti": "^1.6.1",
     "@types/jest": "^29.5.3",
     "@types/supertest": "^2.0.14",
+    "cypress": "^13.3.1",
     "husky": "^8.0.0",
     "jest": "^29.6.1",
     "jest-environment-jsdom": "^29.6.1",

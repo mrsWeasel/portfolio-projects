@@ -6,7 +6,7 @@ interface Props {
   elapsedSeconds: number
 }
 
-const Timer = ({ elapsedSeconds = 0 }: Props) => {
+const Timer = ({ elapsedSeconds = 0, ...rest }: Props) => {
   const getHours = (): string => {
     const hours = Math.floor(elapsedSeconds / 60 / 60)
     if (hours < 10) return `0${hours}`
@@ -25,7 +25,7 @@ const Timer = ({ elapsedSeconds = 0 }: Props) => {
     return seconds.toString()
   }
 
-  return <div className={redHatMono.className}>{`${getHours()}:${getMinutes()}:${getSeconds()}`}</div>
+  return <div className={redHatMono.className} {...rest}>{`${getHours()}:${getMinutes()}:${getSeconds()}`}</div>
 }
 
 export default Timer

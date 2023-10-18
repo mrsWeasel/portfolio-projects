@@ -12,7 +12,6 @@ import {
   isGameWon,
   unobfuscateMines,
 } from "@/services/sweeperService"
-import styles from "./sweeper.module.css"
 import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
 import axios from "axios"
@@ -20,6 +19,7 @@ import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
 import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
 import { Score, GameStatus } from "@/typed/typed"
+import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
 
 let interval: number | undefined
 
@@ -40,6 +40,7 @@ const Sweeper = () => {
     setTimer(0)
   }
 
+  // posts new game to db, returns id and generated minefield
   const initiateGame = async () => {
     reset()
     setLoading(true)
@@ -66,6 +67,7 @@ const Sweeper = () => {
     }
   }
 
+  // starts timer, posts starting time to db
   const startGame = async () => {
     setLoading(true)
     try {
@@ -84,6 +86,7 @@ const Sweeper = () => {
     }
   }
 
+  // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
       const res = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
@@ -98,6 +101,7 @@ const Sweeper = () => {
     }
   }
 
+  // gets 10 top scores from db
   const fetchHighScores = async () => {
     try {
       const res = await axios.get("/api/sweeper/getScores")
@@ -120,11 +124,14 @@ const Sweeper = () => {
     }
   }, [])
 
+  // for storing temporarily the state of visited cells when traversing through grid
   let tempVisited
+  // for stopping recursion in case game is already won
+  let forceStop = false
 
   const revealConnectedEmptyCells = async (i: number, j: number, visitedCells: number[][]) => {
+    if (forceStop) return
     if (!mineGrid) return
-
     tempVisited = JSON.parse(JSON.stringify(visitedCells))
     tempVisited[i][j] = 1
     setVisitedGrid(tempVisited)
@@ -136,29 +143,22 @@ const Sweeper = () => {
     const adjacent = [up, upRight, right, downRight, down, downLeft, left, upLeft]
 
     for (let l = 0; l < adjacent.length; l++) {
+      if (forceStop) break
+
       const curr = adjacent[l]
       if (!isInRange(curr.y, curr.x, mineGrid)) continue
       if (cellHasValueInGrid(curr.y, curr.x, tempVisited)) continue
-
       revealConnectedEmptyCells(curr.y, curr.x, tempVisited)
     }
 
     // check if game is won
-    if (isGameWon(tempVisited, mineGrid)) {
-      setGameStatus(GameStatus.WON)
-      confetti({
-        shapes: ["square", "circle"],
-        spread: 80,
-        scalar: 0.9,
-        colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
-      })
-      await endGame(tempVisited)
-      // TODO: maybe only fetch if time is better than 10. result of list?
-      fetchHighScores()
+    if (!forceStop && isGameWon(tempVisited, mineGrid)) {
+      forceStop = true
+      handleWin(tempVisited)
     }
   }
 
-  const handleClick = async (i: number, j: number) => {
+  const handleClickCell = async (i: number, j: number) => {
     if (!mineGrid) return
 
     if (loading) return
@@ -192,6 +192,7 @@ const Sweeper = () => {
 
     // empty without neighboring mines found -> reveal all connected similar cells
     if (!getAmountOfSurroundingMines(i, j, mineGrid)) {
+      // recursively open all 'empty' cells that are connected
       revealConnectedEmptyCells(i, j, visitedGrid)
       return
     }
@@ -203,15 +204,7 @@ const Sweeper = () => {
 
     // check if game is won
     if (isGameWon(tempVisitedGrid, mineGrid)) {
-      setGameStatus(GameStatus.WON)
-      confetti({
-        shapes: ["square", "circle"],
-        spread: 80,
-        scalar: 0.9,
-        colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
-      })
-      await endGame(tempVisitedGrid)
-      fetchHighScores()
+      handleWin(tempVisitedGrid)
     }
   }
 
@@ -220,6 +213,21 @@ const Sweeper = () => {
     setGameStatus(GameStatus.INITIATED)
     setVisitedGrid(generateGrid(10))
     setFlaggedGrid(generateGrid(10))
+  }
+
+  const handleWin = async (tempVisited: number[][]) => {
+    if (gameStatus === GameStatus.WON) return
+
+    setGameStatus(GameStatus.WON)
+    confetti({
+      shapes: ["square", "circle"],
+      spread: 80,
+      scalar: 0.9,
+      colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
+    })
+    await endGame(tempVisited)
+    // TODO: maybe only fetch if time is better than 10. result of list?
+    fetchHighScores()
   }
 
   return (
@@ -234,28 +242,13 @@ const Sweeper = () => {
             setFlagging={setFlagging}
             handleInitNewGame={handleInitNewGame}
           />
-          <div>
-            <div className={styles.gridContainer}>
-              {mineGrid?.map((row, i) =>
-                row.map((cell, j) => (
-                  <div
-                    key={`item-${i}-${j}`}
-                    id={`item-${i}-${j}`}
-                    className={`${styles.gridItem} ${cellHasValueInGrid(i, j, visitedGrid) ? styles.visited : ""}`}
-                    onClick={(e) => handleClick(i, j)}
-                  >
-                    {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.LOST && "💩"}
-                    {cellHasValueInGrid(i, j, mineGrid) && gameStatus === GameStatus.WON && "🦄"}
-                    {cellHasValueInGrid(i, j, flaggedGrid) &&
-                      !cellHasValueInGrid(i, j, visitedGrid) &&
-                      gameStatus === GameStatus.PLAYING &&
-                      "🚩"}
-                    {(cellHasValueInGrid(i, j, visitedGrid) && getAmountOfSurroundingMines(i, j, mineGrid)) || ""}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          <SweeperGrid
+            mineGrid={mineGrid}
+            visitedGrid={visitedGrid}
+            flaggedGrid={flaggedGrid}
+            handleClickCell={handleClickCell}
+            gameStatus={gameStatus}
+          />
         </div>
         <Scores gameId={gameId} scores={scores} />
       </Grid>

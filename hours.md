@@ -42,5 +42,12 @@
 | 14.10. | 1    | Add more logic to deleteScores api route: delete all / delete just unfinished or lost games (to keep database tidy)                   |
 | 14.10. | 0.5  | Set up 2 cron jobs: delete all games from db monthly, delete unfinished / lost games weekly                                           |
 | 14.10. | 2    | Add util function + npm script for summing up project hours                                                                           |
+| 14.10. | 6    | Looking into how to install local MongoDB, installing local MongoDBm, struggling with seeding database using mongosh scripts 🤯       |
+| 15.10. | 5    | Finally solve how to give mongosh script AND cypress access to env variables                                                          |
+| 15.10. | 0.5  | Add assertions to first Cypress test + add data-test-ids where needed                                                                 |
+| 15.10. | 0.5  | Add Cypress test for losing a game                                                                                                    |
+| 15.10. | 0.5  | Add Cypress test for winning when last clicked item is empty (without number) + for flagging suspicious cells                         |
+| 16.10. | 1    | Bug hunt 🐛 and fix: when game is won while recursively traversing cells, handler for win case was called multiple times              |
+| 18.10. | 0.5  | Refactor Sweeper grid to its own module                                                                                               |
 
-## Total hours: 61.5
+## Total hours: 75.5
