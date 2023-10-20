@@ -49,5 +49,7 @@
 | 15.10. | 0.5  | Add Cypress test for winning when last clicked item is empty (without number) + for flagging suspicious cells                         |
 | 16.10. | 1    | Bug hunt 🐛 and fix: when game is won while recursively traversing cells, handler for win case was called multiple times              |
 | 18.10. | 0.5  | Refactor Sweeper grid to its own module                                                                                               |
+| 20.10. | 0.5  | In Vercels admin ui, configure env variables separate for preview development (use dev database instead of prod)                      |
+| 20.10. | 1    | Getting started with CI/CD - reading through Vercels documentation about integrating with Github Actions, installing Vercel CLI       |
 
-## Total hours: 75.5
+## Total hours: 77
