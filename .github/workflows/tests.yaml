@@ -1,0 +1,47 @@
+name: Run tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    environment: local
+    strategy:
+      matrix:
+        node-version: [18.x]
+        mongodb-version: ['7.0']
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+
+    - name: 'Use Node.js ${{ matrix.node-version }}'
+      uses: actions/setup-node@v3
+      with:
+        node-version: '${{ matrix.node-version }}'
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.10.0
+      with:
+        mongodb-version: '${{ matrix.mongodb-version }}'
+
+    - run: npm install
+
+    - run: chmod +x ./cypress/utils/clear_db.sh
+
+    - run: chmod +x ./cypress/utils/seed_db.sh
+
+    - run: npm run db:local:clear
+
+    - name: Cypress
+      uses: cypress-io/github-action@v6
+      with:
+        browser: chrome
+        start: npm run dev:local
+        wait-on: 'http://localhost:3000'
+        env: true
+      env:
+        MONGODB_URI: ${{ vars.MONGODB_URI }}
+        MONGODB_LEADERBOARD_DB: ${{ vars.MONGODB_LEADERBOARD_DB }}
+        MONGODB_MINESWEEPER_COLLECTION: ${{ vars.MONGODB_MINESWEEPER_COLLECTION }}
+        CRON_SECRET: ${{ vars.CRON_SECRET }}
