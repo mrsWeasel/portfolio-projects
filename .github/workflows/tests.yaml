@@ -31,8 +31,6 @@ jobs:
 
     - run: chmod +x ./cypress/utils/seed_db.sh
 
-    - run: npm run db:local:clear
-
     - name: Cypress
       uses: cypress-io/github-action@v6
       with:
@@ -41,7 +39,7 @@ jobs:
         wait-on: 'http://localhost:3000'
         env: true
       env:
-        MONGODB_URI: ${{ vars.MONGODB_URI }}
-        MONGODB_LEADERBOARD_DB: ${{ vars.MONGODB_LEADERBOARD_DB }}
-        MONGODB_MINESWEEPER_COLLECTION: ${{ vars.MONGODB_MINESWEEPER_COLLECTION }}
-        CRON_SECRET: ${{ vars.CRON_SECRET }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        MONGODB_LEADERBOARD_DB: ${{ secrets.MONGODB_LEADERBOARD_DB }}
+        MONGODB_MINESWEEPER_COLLECTION: ${{ secrets.MONGODB_MINESWEEPER_COLLECTION }}
+        CRON_SECRET: ${{ secrets.CRON_SECRET }}

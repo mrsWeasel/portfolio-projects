@@ -51,5 +51,6 @@
 | 18.10. | 0.5  | Refactor Sweeper grid to its own module                                                                                               |
 | 20.10. | 0.5  | In Vercels admin ui, configure env variables separate for preview development (use dev database instead of prod)                      |
 | 20.10. | 1    | Getting started with CI/CD - reading through Vercels documentation about integrating with Github Actions, installing Vercel CLI       |
+|  8.1.  | 5    | Github Actions for CI/CD pipeline: setup local MongoDB and run e2e tests. Troubleshoot why db connection not working.                 |
 
-## Total hours: 77
+## Total hours: 82
