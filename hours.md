@@ -52,5 +52,6 @@
 | 20.10. | 0.5  | In Vercels admin ui, configure env variables separate for preview development (use dev database instead of prod)                      |
 | 20.10. | 1    | Getting started with CI/CD - reading through Vercels documentation about integrating with Github Actions, installing Vercel CLI       |
 |  8.1.  | 5    | Github Actions for CI/CD pipeline: setup local MongoDB and run e2e tests. Troubleshoot why db connection not working.                 |
+|  9.1.  | 2    | Github Actions continued: add production deployment job, make it depend on e2e tests                                                  |
 
-## Total hours: 82
+## Total hours: 84
