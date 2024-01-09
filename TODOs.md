@@ -13,4 +13,3 @@
 ## General
 
 - Husky: run lint
-- CI/CD
