@@ -1,0 +1,66 @@
+name: Vercel Production Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  e2e:
+    runs-on: ubuntu-20.04
+    environment: local
+    strategy:
+      matrix:
+        node-version: [18.x]
+        mongodb-version: ['7.0']
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+
+    - name: 'Use Node.js ${{ matrix.node-version }}'
+      uses: actions/setup-node@v3
+      with:
+        node-version: '${{ matrix.node-version }}'
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.10.0
+      with:
+        mongodb-version: '${{ matrix.mongodb-version }}'
+
+    - run: npm install
+
+    - run: chmod +x ./cypress/utils/clear_db.sh
+
+    - run: chmod +x ./cypress/utils/seed_db.sh
+
+    - name: Cypress
+      uses: cypress-io/github-action@v6
+      with:
+        browser: chrome
+        build: npm run build
+        start: npm start
+        wait-on: 'http://localhost:3000'
+        env: true
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        MONGODB_LEADERBOARD_DB: ${{ secrets.MONGODB_LEADERBOARD_DB }}
+        MONGODB_MINESWEEPER_COLLECTION: ${{ secrets.MONGODB_MINESWEEPER_COLLECTION }}
+        CRON_SECRET: ${{ secrets.CRON_SECRET }}
+
+  Deploy-Production:
+    needs: e2e
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
