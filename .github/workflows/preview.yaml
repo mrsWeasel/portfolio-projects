@@ -1,6 +1,9 @@
-name: Run tests
+name: CI / CD pipeline feature branches
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
 
 jobs:
   e2e:
@@ -44,3 +47,4 @@ jobs:
         MONGODB_LEADERBOARD_DB: ${{ secrets.MONGODB_LEADERBOARD_DB }}
         MONGODB_MINESWEEPER_COLLECTION: ${{ secrets.MONGODB_MINESWEEPER_COLLECTION }}
         CRON_SECRET: ${{ secrets.CRON_SECRET }}
+
