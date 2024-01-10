@@ -7,6 +7,7 @@
   justify-items: center;
 }
 
+.grid-1,
 .grid-2,
 .grid-3 {
   composes: grid;

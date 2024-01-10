@@ -18,7 +18,7 @@ const Home = () => {
             <p>Reverse engineering project</p>
           </div>
         </Link>
-        <Link className={styles.link} href="/sweeper">
+        <Link className={styles.link} href="/contact">
           <div className={styles.tableRow}>
             <p>💌 Contact</p>
             <p>Email address and such</p>

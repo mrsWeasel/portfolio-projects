@@ -14,3 +14,13 @@
     margin-bottom: 4rem;
   }
 }
+
+.linkToHome {
+  text-align: left;
+  transform: translateY(-1.5rem);
+}
+
+.linkToHome::before {
+  content: "←";
+  margin-right: 0.25rem;
+}
