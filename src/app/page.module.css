@@ -1,0 +1,40 @@
+@value breakpoints: "../styles/breakpoints.css";
+@value tablet from breakpoints;
+
+.tableHeading {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  font-weight: bold;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--light-grey);
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--light-grey);
+}
+
+.tableRow > *:nth-child(2),
+.tableHeading > *:nth-child(2) {
+  display: none;
+}
+
+.link:hover .tableRow,
+.link:focus .tableRow {
+  background-color: var(--medium-lila);
+}
+
+@media tablet {
+  .tableRow,
+  .tableHeading {
+    grid-template-columns: 1fr 2fr;
+  }
+  .tableRow > *:nth-child(2),
+  .tableHeading > *:nth-child(2) {
+    display: block;
+  }
+}
