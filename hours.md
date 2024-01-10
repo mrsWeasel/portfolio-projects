@@ -53,5 +53,6 @@
 | 20.10. | 1    | Getting started with CI/CD - reading through Vercels documentation about integrating with Github Actions, installing Vercel CLI       |
 |  8.1.  | 5    | Github Actions for CI/CD pipeline: setup local MongoDB and run e2e tests. Troubleshoot why db connection not working.                 |
 |  9.1.  | 2    | Github Actions continued: add production deployment job, make it depend on e2e tests                                                  |
+| 10.1.  | 2    | Added content and designs to front page, update header + footer + global styles                                                       |
 
-## Total hours: 84
+## Total hours: 86
