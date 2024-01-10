@@ -4,6 +4,7 @@
 .main {
   margin: 0 auto;
   max-width: var(--max-content-width);
+  min-height: 100%;
 }
 
 .container {
