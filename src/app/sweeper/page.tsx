@@ -232,7 +232,7 @@ const Sweeper = () => {
 
   return (
     <ContainerWithNavigation>
-      <Header title="Project: Minesweeper game" />
+      <Header title="Project: Minesweeper game" linkToHome />
       <Grid columns={2}>
         <div>
           <SweeperToolbar
