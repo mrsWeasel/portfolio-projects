@@ -6,7 +6,7 @@ import Header from "@/components/header/header"
 const Home = () => {
   return (
     <ContainerWithNavigation>
-      <Header title="Index of /laura_heino/portfolio" alignment="left" />
+      <Header title="Index of /projects" alignment="left" />
       <div>
         <div className={styles.tableHeading}>
           <div>Name</div>
@@ -14,8 +14,8 @@ const Home = () => {
         </div>
         <Link className={styles.link} href="/sweeper">
           <div className={styles.tableRow}>
-            <p>🚩 Project: Minesweeper game</p>
-            <p>Reverse engineering project</p>
+            <p>🚩 Minesweeper game</p>
+            <p>Reverse engineered classic</p>
           </div>
         </Link>
         <Link className={styles.link} href="/contact">

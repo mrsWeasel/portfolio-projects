@@ -232,7 +232,7 @@ const Sweeper = () => {
 
   return (
     <ContainerWithNavigation>
-      <Header title="Project: Minesweeper game" linkToHome />
+      <Header title="Minesweeper game" linkToHome />
       <Grid columns={2}>
         <div>
           <SweeperToolbar
@@ -252,12 +252,12 @@ const Sweeper = () => {
         </div>
         <Scores gameId={gameId} scores={scores} />
       </Grid>
-      <PortfolioItemDetails>
-        {/* <p>
+      {/* <PortfolioItemDetails> */}
+      {/* <p>
           Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
           get a bit creative with it. Hope you enjoy it!
         </p> */}
-      </PortfolioItemDetails>
+      {/* </PortfolioItemDetails> */}
     </ContainerWithNavigation>
   )
 }
