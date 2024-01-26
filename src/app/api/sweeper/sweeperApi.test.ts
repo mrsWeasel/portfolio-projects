@@ -30,13 +30,18 @@ describe("startGame api route", () => {
     await request(baseUrl).get("/deleteScores?delete=all")
   })
 
-  test("startGame api route", async () => {
+  test("startGame api route - when request body is valid, response should be ok", async () => {
     const initResponse = await request(baseUrl).post("/initGame")
     const { id } = initResponse.body
-    console.log(id)
 
     const response = await request(baseUrl).put("/startGame").send({ id }).expect(200)
 
     expect(response.body.message).toBeDefined()
+  })
+
+  test("startGame api route - when request body is missing id, should get error response", async () => {
+    const response = await request(baseUrl).put("/startGame").send({ id: undefined }).expect(400)
+
+    expect(response.body.message).toBe("INVALID_REQUEST")
   })
 })
