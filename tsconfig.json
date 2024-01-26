@@ -30,7 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "build/types/**/*.ts",
-    "release/types/**/*.ts"
-, "utils/countHours.js"  ],
-  "exclude": ["node_modules"]
+    "release/types/**/*.ts",
+    "utils/countHours.js"
+  ],
+  "exclude": ["node_modules", "./cypress.config.ts"]
 }

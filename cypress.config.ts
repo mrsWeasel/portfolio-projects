@@ -5,6 +5,6 @@ require("dotenv").config({ path: ".env.local" })
 export default defineConfig({
   env: { ...process.env },
   e2e: {
-    setupNodeEvents(on, config): void {},
+    setupNodeEvents(_on, _config): void {},
   },
 })

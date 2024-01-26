@@ -56,5 +56,6 @@
 | 10.1.  | 2    | Added content and designs to front page, update header + footer + global styles                                                       |
 | 10.1.  | 0.5  | Added content to contact page, improve styling of links with an arrow                                                                 |
 | 26.1.  | 1.5  | Add middleware to make api implementation cleaner                                                                                     |
+| 26.1.  | 0.5  | Add api test with invalid request body, fix Cypress / Jest types conflicting                                                          |
 
-## Total hours: 88
+## Total hours: 88.5
