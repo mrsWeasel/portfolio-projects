@@ -1,0 +1,13 @@
+.socialLinksContainer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.socialLink {
+  padding: 0.25rem;
+}
+
+.socialLink::after {
+  content: "→";
+  margin-left: 0.25rem;
+}

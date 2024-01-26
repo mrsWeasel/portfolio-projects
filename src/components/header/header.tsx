@@ -1,3 +1,4 @@
+import Link from "next/link"
 import styles from "./header.module.css"
 import { Red_Hat_Display } from "next/font/google"
 
@@ -5,11 +6,18 @@ const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700
 
 interface Props {
   title: string
+  alignment?: "left" | "center" | "right"
+  linkToHome?: boolean
 }
 
-const Header = ({ title }: Props) => {
+const Header = ({ title, alignment, linkToHome }: Props) => {
   return (
-    <div className={styles.header}>
+    <div className={styles.header} style={{ textAlign: alignment || "center" }}>
+      {linkToHome && (
+        <div className={styles.linkToHome}>
+          <Link href="/">Back</Link>
+        </div>
+      )}
       <h1 className={redHatDisplay.className}>{title}</h1>
     </div>
   )

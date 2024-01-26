@@ -10,6 +10,7 @@
   --medium-grey: #bbbbbb;
   --dark-grey: #222;
   --light-lila: #f2eff5;
+  --medium-lila: #e0d9e7;
 
   --lemon-chiffon: #fbf8cc;
   --champagne-pink: #fde4cf;
@@ -33,6 +34,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  height: 100%;
 }
 
 body {
@@ -40,11 +42,16 @@ body {
   background: var(--light-lila);
   font-size: 1.125rem;
   color: var(--dark-grey);
+  min-height: 100%;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 h1,
