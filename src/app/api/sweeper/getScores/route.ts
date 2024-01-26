@@ -5,11 +5,7 @@ export const revalidate = 0
 
 export async function GET() {
   try {
-    const { MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
-
-    if (!MONGODB_LEADERBOARD_DB || !MONGODB_MINESWEEPER_COLLECTION) {
-      throw new Error("Database details missing")
-    }
+    const { MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
 
     const { database } = (await clientPromise()) || {}
 

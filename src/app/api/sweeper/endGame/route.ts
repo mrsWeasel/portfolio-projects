@@ -7,10 +7,7 @@ export async function PUT(request: Request) {
   const data = await request.json()
 
   try {
-    const { MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
-    if (!MONGODB_LEADERBOARD_DB || !MONGODB_MINESWEEPER_COLLECTION) {
-      throw new Error("Database details missing")
-    }
+    const { MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
 
     const { id, visited } = data || {}
     if (!id) throw new Error("Data missing from request")

@@ -5,11 +5,7 @@ import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
   try {
-    const { MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
-
-    if (!MONGODB_LEADERBOARD_DB || !MONGODB_MINESWEEPER_COLLECTION) {
-      throw new Error("Database details missing")
-    }
+    const { MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
 
     const { database } = (await clientPromise()) || {}
 
