@@ -12,7 +12,7 @@ export async function PUT(request: Request) {
 
     const { id, visited } = data || {}
 
-    if (!id || !visited) {
+    if (!id) {
       return NextResponse.json({ message: ApiErrors.InvalidRequest }, { status: 400 })
     }
 
