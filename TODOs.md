@@ -10,6 +10,9 @@
 
 ## Backend
 
+- API test for /endGame
+- Typing API responses / requests + typeguards / validation
+
 ## General
 
 - Husky: run lint
