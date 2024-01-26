@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
+import { ApiErrors } from "@/middleware"
 
 export const revalidate = 0
 
 export async function GET() {
   try {
-    const { MONGODB_LEADERBOARD_DB, MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
-
-    if (!MONGODB_LEADERBOARD_DB || !MONGODB_MINESWEEPER_COLLECTION) {
-      throw new Error("Database details missing")
-    }
+    const { MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
 
     const { database } = (await clientPromise()) || {}
 
@@ -26,8 +23,7 @@ export async function GET() {
 
     return NextResponse.json(results)
   } catch (e) {
-    if (e instanceof Error) {
-      console.log(e.message)
-    }
+    console.error(e)
+    return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
+import { ApiErrors } from "@/middleware"
 
 type DeleteSettings = "all" | "onlyNotWon"
 
@@ -40,5 +41,6 @@ export async function GET(request: Request) {
     return NextResponse.json(result)
   } catch (e) {
     console.error(e)
+    return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
   }
 }
