@@ -37,6 +37,6 @@ describe("startGame api route", () => {
 
     const response = await request(baseUrl).put("/startGame").send({ id }).expect(200)
 
-    expect(response.body.status).toBeDefined()
+    expect(response.body.message).toBeDefined()
   })
 })

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
+import { ApiErrors } from "@/middleware"
 
 export const revalidate = 0
 
@@ -22,8 +23,7 @@ export async function GET() {
 
     return NextResponse.json(results)
   } catch (e) {
-    if (e instanceof Error) {
-      console.log(e.message)
-    }
+    console.error(e)
+    return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
   }
 }

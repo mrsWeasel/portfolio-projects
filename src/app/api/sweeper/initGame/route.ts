@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
+import { ApiErrors } from "@/middleware"
 
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
@@ -19,5 +20,6 @@ export async function POST() {
     return NextResponse.json({ mines: responseMines, id: result.insertedId })
   } catch (e) {
     console.error(e)
+    return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
   }
 }
