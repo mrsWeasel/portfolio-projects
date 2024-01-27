@@ -1,3 +1,4 @@
+import React from "react"
 import styles from "./sweeperToolbar.module.css"
 import Timer from "@/components/timer/timer"
 

@@ -59,5 +59,6 @@
 | 26.1.  | 0.5  | Add api test with invalid request body, fix Cypress / Jest types conflicting                                                          |
 | 27.1.  | 1    | Timer broke due to api changes - assert in e2e tests that timer stops after game over. Also fix type errors.                          |
 | 27.1.  | 1    | Add linting to pre-commit git hook, allow 0 warnings & fix lint errors                                                                |
+| 27.1.  | 2    | Fight with RTL matchers giving type errors, no good solution found - finally using regular Jest matchers provided workaround          |
 
-## Total hours: 90.5
+## Total hours: 92.5
