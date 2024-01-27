@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import confetti from "canvas-confetti"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
 import {
@@ -41,12 +41,11 @@ const Sweeper = () => {
   }
 
   // posts new game to db, returns id and generated minefield
-  const initiateGame = async () => {
+  const initiateGame = useCallback(async () => {
     reset()
     setLoading(true)
     try {
       const res = await axios.post(`/api/sweeper/initGame`)
-      setLoading(false)
 
       const { data } = res || {}
       const { id, mines } = data || {}
@@ -59,13 +58,14 @@ const Sweeper = () => {
       setGameStatus(GameStatus.INITIATED)
 
       setMineGrid(generateMineGrid(unobfuscateMines(mines), 10))
+      setLoading(false)
     } catch (e) {
       if (e instanceof Error) {
         console.log(e.message)
       }
       setLoading(false)
     }
-  }
+  }, [])
 
   // starts timer, posts starting time to db
   const startGame = async () => {
@@ -122,7 +122,7 @@ const Sweeper = () => {
     return () => {
       if (interval) clearInterval(interval)
     }
-  }, [])
+  }, [initiateGame])
 
   // for storing temporarily the state of visited cells when traversing through grid
   let tempVisited

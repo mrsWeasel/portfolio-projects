@@ -58,5 +58,6 @@
 | 26.1.  | 1.5  | Add middleware to make api implementation cleaner                                                                                     |
 | 26.1.  | 0.5  | Add api test with invalid request body, fix Cypress / Jest types conflicting                                                          |
 | 27.1.  | 1    | Timer broke due to api changes - assert in e2e tests that timer stops after game over. Also fix type errors.                          |
+| 27.1.  | 1    | Add linting to pre-commit git hook, allow 0 warnings & fix lint errors                                                                |
 
-## Total hours: 89.5
+## Total hours: 90.5
