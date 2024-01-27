@@ -89,9 +89,7 @@ const Sweeper = () => {
   // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
-      const res = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
-
-      const { data } = res || {}
+      await axios.put("/api/sweeper/endGame", { id: gameId, visited })
 
       if (interval) clearInterval(interval)
     } catch (e) {
@@ -209,6 +207,9 @@ const Sweeper = () => {
   }
 
   const handleInitNewGame = async () => {
+    // no need to initiate new game if already initiated game hasn't been started
+    if (gameStatus === GameStatus.INITIATED) return
+
     await initiateGame()
     setGameStatus(GameStatus.INITIATED)
     setVisitedGrid(generateGrid(10))
@@ -238,7 +239,7 @@ const Sweeper = () => {
           <SweeperToolbar
             elapsedSeconds={timer}
             flagging={flagging}
-            loading={loading}
+            initGameDisabled={loading || gameStatus === GameStatus.INITIATED}
             setFlagging={setFlagging}
             handleInitNewGame={handleInitNewGame}
           />
