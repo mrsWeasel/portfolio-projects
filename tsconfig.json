@@ -33,5 +33,6 @@
     "release/types/**/*.ts",
     "utils/countHours.js"
   ],
-  "exclude": ["node_modules", "./cypress.config.ts"]
+  "exclude": ["node_modules", "./cypress.config.ts"],
+  "types": ["cypress"]
 }
