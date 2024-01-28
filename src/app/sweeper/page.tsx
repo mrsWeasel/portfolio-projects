@@ -11,6 +11,7 @@ import {
   generateGrid,
   isGameWon,
   unobfuscateMines,
+  shouldFetchHighScores,
 } from "@/services/sweeperService"
 import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
@@ -89,11 +90,10 @@ const Sweeper = () => {
   // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
-      const res = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
-
-      const { data } = res || {}
+      const game = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
 
       if (interval) clearInterval(interval)
+      return game
     } catch (e) {
       if (e instanceof Error) {
         console.log(e.message)
@@ -209,6 +209,9 @@ const Sweeper = () => {
   }
 
   const handleInitNewGame = async () => {
+    // no need to initiate new game if already initiated game hasn't been started
+    if (gameStatus === GameStatus.INITIATED) return
+
     await initiateGame()
     setGameStatus(GameStatus.INITIATED)
     setVisitedGrid(generateGrid(10))
@@ -225,8 +228,13 @@ const Sweeper = () => {
       scalar: 0.9,
       colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
     })
-    await endGame(tempVisited)
-    // TODO: maybe only fetch if time is better than 10. result of list?
+    const gameResponse = await endGame(tempVisited)
+
+    console.log(gameResponse)
+
+    const { data } = gameResponse || {}
+    // Only fetch updated scores if game has a chance to be in the top 10
+    if (!shouldFetchHighScores(scores, data?.time)) return
     fetchHighScores()
   }
 
@@ -238,7 +246,7 @@ const Sweeper = () => {
           <SweeperToolbar
             elapsedSeconds={timer}
             flagging={flagging}
-            loading={loading}
+            initGameDisabled={loading || gameStatus === GameStatus.INITIATED}
             setFlagging={setFlagging}
             handleInitNewGame={handleInitNewGame}
           />

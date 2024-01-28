@@ -1,15 +1,16 @@
+import React from "react"
 import styles from "./sweeperToolbar.module.css"
 import Timer from "@/components/timer/timer"
 
 interface Props {
   elapsedSeconds: number
   flagging: boolean
-  loading: boolean
+  initGameDisabled: boolean
   setFlagging: (flagging: boolean) => void
   handleInitNewGame: () => void
 }
 
-const SweeperToolbar = ({ elapsedSeconds, flagging, loading, setFlagging, handleInitNewGame }: Props) => {
+const SweeperToolbar = ({ elapsedSeconds, flagging, initGameDisabled, setFlagging, handleInitNewGame }: Props) => {
   return (
     <div>
       <div className={styles.toolBar}>
@@ -35,7 +36,7 @@ const SweeperToolbar = ({ elapsedSeconds, flagging, loading, setFlagging, handle
         <button
           data-test-id="toolbar-button-init"
           className={`${styles.toolBarButton}`}
-          disabled={loading}
+          disabled={initGameDisabled}
           onClick={() => handleInitNewGame()}
         >
           🌟

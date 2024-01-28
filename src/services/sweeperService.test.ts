@@ -1,3 +1,6 @@
+import { createMockScores } from "../../mock/scores"
+import { shouldFetchHighScores } from "./sweeperService"
+
 const { generateGrid, generateMineGrid, isGameWon, isInRange } = require("./sweeperService")
 
 describe("generateGrid", () => {
@@ -47,5 +50,28 @@ describe("isInRange", () => {
     expect(isInRange(-1, 0, grid)).toBeFalsy()
     expect(isInRange(0, -1, grid)).toBeFalsy()
     expect(isInRange(10, 10, grid)).toBeFalsy()
+  })
+})
+
+describe("shouldFetchHighScores", () => {
+  it("Returns true when scores table only has 9 items", () => {
+    const scores = createMockScores(9)
+
+    const shouldFetch = shouldFetchHighScores(scores, 50)
+    expect(shouldFetch).toBe(true)
+  })
+
+  it("Returns false when scores table is full and time is not good enough to make it", () => {
+    const scores = createMockScores(10)
+
+    const shouldFetch = shouldFetchHighScores(scores, 50)
+    expect(shouldFetch).toBe(false)
+  })
+
+  it("Returns true when scores table is full but time is good enough to make it", () => {
+    const scores = createMockScores(10)
+
+    const shouldFetch = shouldFetchHighScores(scores, 7)
+    expect(shouldFetch).toBe(true)
   })
 })

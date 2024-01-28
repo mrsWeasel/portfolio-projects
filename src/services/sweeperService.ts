@@ -1,3 +1,5 @@
+import { Score } from "@/typed/typed"
+
 export const getDirections = (i: number, j: number) => ({
   up: { y: i - 1, x: j },
   upRight: { y: i - 1, x: j + 1 },
@@ -103,5 +105,15 @@ export const cellHasValueInGrid = (i: number, j: number, arr: number[][]) => {
   } catch (e) {
     throw new Error(`Error trying to find ${i}, ${j} in grid`)
   }
+  return false
+}
+
+export const shouldFetchHighScores = (scores: Score[], seconds: number): boolean => {
+  if (scores.length < 10) return true
+
+  const slowest = scores[scores.length - 1]
+
+  if (seconds <= slowest.time) return true
+
   return false
 }
