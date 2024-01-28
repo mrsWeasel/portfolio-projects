@@ -229,10 +229,12 @@ const Sweeper = () => {
       colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
     })
     const gameResponse = await endGame(tempVisited)
-    const { data } = gameResponse?.data || {}
 
+    console.log(gameResponse)
+
+    const { data } = gameResponse || {}
     // Only fetch updated scores if game has a chance to be in the top 10
-    if (!shouldFetchHighScores(scores, data.time)) return
+    if (!shouldFetchHighScores(scores, data?.time)) return
     fetchHighScores()
   }
 

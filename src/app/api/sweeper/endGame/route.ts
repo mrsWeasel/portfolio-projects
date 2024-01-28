@@ -21,7 +21,7 @@ export async function PUT(request: Request) {
     const { database } = (await clientPromise()) || {}
 
     const game = await database.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
-    if (!game || !game.startTime || game.endTime) {
+    if (!game || !game.startTime || game.time) {
       return NextResponse.json({ message: ApiErrors.InvalidRequest }, { status: 400 })
     }
 
@@ -35,8 +35,10 @@ export async function PUT(request: Request) {
       time: Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000),
     }
 
-    await database.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
-    return NextResponse.json({ ...updatedGame }, { status: 200 })
+    const dbGame = await database
+      .collection(MONGODB_MINESWEEPER_COLLECTION)
+      .updateOne({ _id: objectId }, { $set: { ...updatedGame } })
+    return NextResponse.json({ ...dbGame }, { status: 200 })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })

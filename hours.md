@@ -59,6 +59,8 @@
 | 26.1.  | 0.5  | Add api test with invalid request body, fix Cypress / Jest types conflicting                                                          |
 | 27.1.  | 1    | Timer broke due to api changes - assert in e2e tests that timer stops after game over. Also fix type errors.                          |
 | 27.1.  | 1    | Add linting to pre-commit git hook, allow 0 warnings & fix lint errors                                                                |
+| 27.1.  | 1    | Prevent initializing new game if one has been initialized already and not started yet + update tests                                  |
 | 27.1.  | 2    | Fight with RTL matchers giving type errors, no good solution found - finally using regular Jest matchers provided workaround          |
+| 28.1.  | 1    | Only fetch top scores if current (ended) game has a chance to be in top 10 (BE + FE + unit tests and mocks + update Cypress tests)    |
 
-## Total hours: 92.5
+## Total hours: 94.5
