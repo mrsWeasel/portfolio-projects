@@ -1,7 +1,7 @@
 const assertToolBar = () => {
   cy.get('[data-test-id="toolbar-button-flagging"]').should("exist")
   cy.get('[data-test-id="toolbar-button-poking"]').should("exist")
-  cy.get('[data-test-id="toolbar-button-init"]').should("not.have.attr", "disabled")
+  cy.get('[data-test-id="toolbar-button-init"]').should("have.attr", "disabled")
   cy.get('[data-test-id="sweeper-toolbar-timer"]').should("contain", "00:00:00")
 }
 
