@@ -62,5 +62,6 @@
 | 27.1.  | 1    | Prevent initializing new game if one has been initialized already and not started yet + update tests                                  |
 | 27.1.  | 2    | Fight with RTL matchers giving type errors, no good solution found - finally using regular Jest matchers provided workaround          |
 | 28.1.  | 1    | Only fetch top scores if current (ended) game has a chance to be in top 10 (BE + FE + unit tests and mocks + update Cypress tests)    |
+| 28.1.  | 0.5  | Update documentation in README.md                                                                                                     |
 
-## Total hours: 94.5
+## Total hours: 95

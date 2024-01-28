@@ -230,8 +230,6 @@ const Sweeper = () => {
     })
     const gameResponse = await endGame(tempVisited)
 
-    console.log(gameResponse)
-
     const { data } = gameResponse || {}
     // Only fetch updated scores if game has a chance to be in the top 10
     if (!shouldFetchHighScores(scores, data?.time)) return
