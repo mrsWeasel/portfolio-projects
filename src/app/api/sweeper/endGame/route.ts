@@ -35,10 +35,8 @@ export async function PUT(request: Request) {
       time: Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000),
     }
 
-    const dbGame = await database
-      .collection(MONGODB_MINESWEEPER_COLLECTION)
-      .updateOne({ _id: objectId }, { $set: { ...updatedGame } })
-    return NextResponse.json({ ...dbGame }, { status: 200 })
+    await database.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
+    return NextResponse.json({ ...updatedGame }, { status: 200 })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
