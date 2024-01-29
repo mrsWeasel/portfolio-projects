@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { ApiErrors } from "@/middleware"
+import { StartedGame } from "@/typed/typed"
 
 export async function PUT(request: Request) {
   const data = await request.json()
@@ -9,13 +10,13 @@ export async function PUT(request: Request) {
   try {
     const { MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
 
-    const { id } = data || {}
+    const { _id } = data || {}
 
-    if (!id) {
+    if (!_id) {
       return NextResponse.json({ message: ApiErrors.InvalidRequest }, { status: 400 })
     }
 
-    const objectId = new ObjectId(id)
+    const objectId = new ObjectId(_id)
 
     const { database } = (await clientPromise()) || {}
 
@@ -25,12 +26,15 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: ApiErrors.InvalidRequest }, { status: 400 })
     }
 
-    const updatedGame = {
+    const updatedGame: Pick<StartedGame, "startTime"> = {
       startTime: new Date(),
     }
 
-    await database.collection(MONGODB_MINESWEEPER_COLLECTION).updateOne({ _id: objectId }, { $set: { ...updatedGame } })
-    return NextResponse.json({ message: `Started new game at ${updatedGame.startTime}` }, { status: 200 })
+    await database
+      .collection(MONGODB_MINESWEEPER_COLLECTION)
+      .updateOne({ _id: objectId }, { $set: { startTime: updatedGame.startTime } })
+
+    return NextResponse.json({ ...updatedGame })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
