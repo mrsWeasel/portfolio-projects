@@ -18,7 +18,7 @@ import Header from "@/components/header/header"
 import axios from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
-import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
+// import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
 import { Score, GameStatus } from "@/typed/typed"
 import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
 
@@ -49,16 +49,16 @@ const Sweeper = () => {
       const res = await axios.post(`/api/sweeper/initGame`)
 
       const { data } = res || {}
-      const { id, mines } = data || {}
+      const { _id, obfuscatedMines } = data || {}
 
-      if (!id || !mines) {
+      if (!_id || !obfuscatedMines) {
         throw new Error("Response data missing")
       }
 
-      setGameId(id)
+      setGameId(_id)
       setGameStatus(GameStatus.INITIATED)
 
-      setMineGrid(generateMineGrid(unobfuscateMines(mines), 10))
+      setMineGrid(generateMineGrid(unobfuscateMines(obfuscatedMines), 10))
       setLoading(false)
     } catch (e) {
       if (e instanceof Error) {
@@ -72,9 +72,8 @@ const Sweeper = () => {
   const startGame = async () => {
     setLoading(true)
     try {
-      const res = await axios.put("/api/sweeper/startGame", { id: gameId })
+      await axios.put("/api/sweeper/startGame", { _id: gameId })
       setLoading(false)
-      const { data } = res || {}
 
       interval = window?.setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1)
@@ -90,7 +89,7 @@ const Sweeper = () => {
   // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
-      const game = await axios.put("/api/sweeper/endGame", { id: gameId, visited })
+      const game = await axios.put("/api/sweeper/endGame", { _id: gameId, visited })
 
       if (interval) clearInterval(interval)
       return game

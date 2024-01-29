@@ -14,8 +14,7 @@ const assertTimerIsStopped = () => {
   })
 }
 
-const id = "64a0629d6cd31da8c69f4f67"
-const mines = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99]
+const _id = "64a0629d6cd31da8c69f4f67"
 
 describe("Sweeper game", () => {
   beforeEach(() => {
@@ -33,8 +32,9 @@ describe("Sweeper game", () => {
     cy.intercept("POST", "/api/sweeper/initGame", {
       statusCode: 200,
       body: {
-        mines: "WzAsMTEsMjIsMzMsNDQsNTUsNjYsNzcsODgsOTld",
-        id,
+        // decodes to [0, 11, 22, 33, 44, 55, 66, 77, 88, 99]
+        obfuscatedMines: "WzAsMTEsMjIsMzMsNDQsNTUsNjYsNzcsODgsOTld",
+        _id,
       },
     }).as("initGame")
 
