@@ -64,5 +64,6 @@
 | 28.1.  | 1    | Only fetch top scores if current (ended) game has a chance to be in top 10 (BE + FE + unit tests and mocks + update Cypress tests)    |
 | 28.1.  | 0.5  | Update documentation in README.md                                                                                                     |
 | 29.1.  | 1.5  | Add typing to the API                                                                                                                 |
+| 30.1.  | 1    | Remove cron job for deleting all scores, to truly see how db performs. Add indexing for 'time' field in db collection.                |
 
-## Total hours: 96.5
+## Total hours: 97.5
