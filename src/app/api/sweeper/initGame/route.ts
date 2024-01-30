@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
 import { ApiError, InitiatedGame } from "@/typed/typed"
+import { getInitiatedGame, isInitiatedGame } from "@/services/apiValidation"
 
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
@@ -18,11 +19,11 @@ export async function POST() {
 
     const result = await database.collection(sweeperCollection).insertOne({ mines })
 
-    const game: InitiatedGame = {
+    const game = getInitiatedGame({
       _id: result.insertedId.toString(),
       // obfuscate response a bit so user can't see directly from it where mines are at
       obfuscatedMines: obfuscateMines(mines),
-    }
+    })
 
     return NextResponse.json({ ...game })
   } catch (e) {

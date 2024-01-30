@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { generateMineGrid, isGameWon } from "@/services/sweeperService"
-import { ApiError, WonGame } from "@/typed/typed"
+import { ApiError } from "@/typed/typed"
+import { getStartedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   try {
@@ -23,16 +24,14 @@ export async function PUT(request: Request) {
       throw new Error("database details missing")
     }
 
-    const game = (await database.collection(sweeperCollection).findOne({ _id: objectId })) as WonGame | null
-
-    if (!game || !game.startTime || game.time) {
-      return NextResponse.json({ message: ApiError.InvalidRequest }, { status: 400 })
-    }
+    // fetch game from db and validate
+    const gameResult = (await database.collection(sweeperCollection).findOne({ _id: objectId })) as unknown
+    const game = getStartedGame(gameResult)
 
     const mineGrid = generateMineGrid(game.mines, 10)
 
     if (!isGameWon(visited, mineGrid)) {
-      return NextResponse.json({ message: "Game lost" }, { status: 200 })
+      return NextResponse.json({ message: "Game lost" })
     }
 
     const updatedTime = Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000)

@@ -1,9 +1,3 @@
-export interface Score {
-  _id: string
-  time: number
-  startTime: string
-}
-
 export interface BaseGame {
   _id: string
 }
@@ -20,6 +14,8 @@ export interface StartedGame extends BaseGame {
 export interface WonGame extends StartedGame {
   time: number
 }
+
+export type Score = Omit<WonGame, "mines">
 
 export enum GameStatus {
   INITIATED = "INITIATED",

@@ -66,5 +66,6 @@
 | 29.1.  | 1.5  | Add typing to the API                                                                                                                 |
 | 30.1.  | 1    | Remove cron job for deleting all scores, to truly see how db performs. Add indexing for 'time' field in db collection.                |
 | 30.1.  | 1    | Address type errors that resulted from importing MongoDB types, remove middleware as a result too                                     |
+| 30.1.  | 0.5  | Create typeguards / validation util functions for api responses                                                                       |
 
-## Total hours: 98.5
+## Total hours: 99

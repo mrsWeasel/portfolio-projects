@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
-import { ApiError, WonGame } from "@/typed/typed"
+import { ApiError } from "@/typed/typed"
+import { getHighScores } from "@/services/apiValidation"
 
 export const revalidate = 0
 
@@ -14,21 +15,21 @@ export async function GET() {
       throw new Error("database details missing")
     }
 
-    const results: Omit<WonGame, "mines">[] = []
+    const results: unknown[] = []
 
+    // TODO: mines could be removed even in db query!
     await database
       .collection(sweeperCollection)
       .find({ time: { $exists: true } })
       .sort({ time: 1, startTime: 1 })
       .limit(10)
       .forEach((r) => {
-        results.push({ _id: r._id.toString(), time: r.time, startTime: new Date(r.startTime) } as Omit<
-          WonGame,
-          "mines"
-        >)
+        results.push({ _id: r._id.toString(), time: r.time, startTime: new Date(r.startTime) })
       })
 
-    return NextResponse.json([...results])
+    const scores = getHighScores(results)
+
+    return NextResponse.json([...scores])
   } catch (e) {
     console.error(e)
     return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
-import { ApiError, InitiatedGame, StartedGame } from "@/typed/typed"
+import { ApiError, StartedGame } from "@/typed/typed"
+import { getInitiatedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   const data = await request.json()
@@ -23,12 +24,9 @@ export async function PUT(request: Request) {
       throw new Error("database details missing")
     }
 
-    // TODO: can't use type InitiatedGame here
-    const game = await database.collection(sweeperCollection).findOne({ _id: objectId })
+    const gameResult = await database.collection(sweeperCollection).findOne({ _id: objectId })
 
-    if (!game || game.startTime) {
-      return NextResponse.json({ message: ApiError.InvalidRequest }, { status: 400 })
-    }
+    const game = getInitiatedGame(gameResult)
 
     const updatedGame: Pick<StartedGame, "startTime"> = {
       startTime: new Date(),
