@@ -27,3 +27,8 @@ export enum GameStatus {
   LOST = "LOST",
   WON = "WON",
 }
+
+export enum ApiError {
+  InternalError = "INTERNAL_ERROR",
+  InvalidRequest = "INVALID_REQUEST",
+}

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
-import { ApiErrors } from "@/middleware"
+import { ApiError } from "@/typed/typed"
 
 type DeleteSettings = "all" | "onlyNotWon"
 
@@ -31,16 +31,21 @@ export async function GET(request: Request) {
       )
     }
 
+    const { MONGODB_MINESWEEPER_COLLECTION: sweeperCollection } = process.env
     const { database } = (await clientPromise()) || {}
+
+    if (!database || !sweeperCollection) {
+      throw new Error("database details missing")
+    }
 
     // delete either everything OR just the games that do not have field "time" (lost / unfinished ones)
     const filter = deleteSettings === "all" ? {} : { time: { $exists: false } }
 
-    const result = await database.collection(process.env.MONGODB_MINESWEEPER_COLLECTION).deleteMany(filter)
+    const result = await database.collection(sweeperCollection).deleteMany(filter)
 
     return NextResponse.json(result)
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
+    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
   }
 }
