@@ -3,7 +3,7 @@ import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { generateMineGrid, isGameWon } from "@/services/sweeperService"
 import { ApiError } from "@/typed/typed"
-import { getStartedGame } from "@/services/apiValidation"
+import { validateDbStartedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   try {
@@ -25,8 +25,8 @@ export async function PUT(request: Request) {
     }
 
     // fetch game from db and validate
-    const gameResult = (await database.collection(sweeperCollection).findOne({ _id: objectId })) as unknown
-    const game = getStartedGame(gameResult)
+    const result = (await database.collection(sweeperCollection).findOne({ _id: objectId })) as unknown
+    const game = validateDbStartedGame(result)
 
     const mineGrid = generateMineGrid(game.mines, 10)
 
@@ -37,7 +37,7 @@ export async function PUT(request: Request) {
     const updatedTime = Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000)
 
     await database.collection(sweeperCollection).updateOne({ _id: objectId }, { $set: { time: updatedTime } })
-    return NextResponse.json({ ...game, time: updatedTime })
+    return NextResponse.json({ message: "Game won!" })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })

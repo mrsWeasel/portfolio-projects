@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ApiError } from "@/typed/typed"
-import { getHighScores } from "@/services/apiValidation"
+import { validateScores } from "@/services/apiValidation"
 
 export const revalidate = 0
 
@@ -17,17 +17,17 @@ export async function GET() {
 
     const results: unknown[] = []
 
-    // TODO: mines could be removed even in db query!
     await database
       .collection(sweeperCollection)
       .find({ time: { $exists: true } })
+      .project({ time: 1, startTime: 1 })
       .sort({ time: 1, startTime: 1 })
       .limit(10)
       .forEach((r) => {
         results.push({ _id: r._id.toString(), time: r.time, startTime: new Date(r.startTime) })
       })
 
-    const scores = getHighScores(results)
+    const scores = validateScores(results)
 
     return NextResponse.json([...scores])
   } catch (e) {

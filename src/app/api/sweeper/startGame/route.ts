@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { ApiError, StartedGame } from "@/typed/typed"
-import { getInitiatedGame } from "@/services/apiValidation"
+import { validateDbInitiatedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   const data = await request.json()
@@ -16,17 +16,16 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: ApiError.InvalidRequest }, { status: 400 })
     }
 
-    const objectId = new ObjectId(_id)
-
     const { database } = (await clientPromise()) || {}
 
     if (!database || !sweeperCollection) {
       throw new Error("database details missing")
     }
 
-    const gameResult = await database.collection(sweeperCollection).findOne({ _id: objectId })
+    const objectId = new ObjectId(_id)
 
-    const game = getInitiatedGame(gameResult)
+    const result = await database.collection(sweeperCollection).findOne({ _id: objectId })
+    validateDbInitiatedGame(result)
 
     const updatedGame: Pick<StartedGame, "startTime"> = {
       startTime: new Date(),
