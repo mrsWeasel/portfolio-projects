@@ -12,6 +12,25 @@
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.1);
 }
 
+.skeletonContainer {
+  width: 20rem;
+  height: 20rem;
+  background: var(--tea-rose-red);
+  animation: skeleton 2000ms ease-in-out infinite;
+}
+
+@keyframes skeleton {
+  0% {
+    background-color: var(--tea-rose-red);
+  }
+  70% {
+    background-color: var(--pink-lavender);
+  }
+  100% {
+    background-color: var(--tea-rose-red);
+  }
+}
+
 .gridItem {
   display: flex;
   justify-content: center;
