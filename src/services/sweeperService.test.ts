@@ -1,7 +1,7 @@
 import { createMockScores } from "../../mock/scores"
 import { shouldFetchHighScores } from "./sweeperService"
 
-const { generateGrid, generateMineGrid, isGameWon, isInRange } = require("./sweeperService")
+const { generateGrid, generateMineGrid, isInRange } = require("./sweeperService")
 
 describe("generateGrid", () => {
   it("Generates 10 x 10 grid when size not given as argument", () => {

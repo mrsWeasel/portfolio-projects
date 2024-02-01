@@ -9,7 +9,6 @@
 
 ## Backend
 
-- API test for /endGame
 - More helpful error handling for api
 
 ## General

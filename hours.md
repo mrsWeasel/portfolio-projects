@@ -68,5 +68,6 @@
 | 30.1.  | 1    | Address type errors that resulted from importing MongoDB types, remove middleware as a result too                                     |
 | 30.1.  | 1    | Create typeguards / validation util functions for api responses                                                                       |
 | 31.1.  | 2    | Continue working on typeguards, add more types for api                                                                                |
+|  1.2.  | 0.5  | Add unit test coverage for /endGame api route                                                                                         |
 
-## Total hours: 101.5
+## Total hours: 102
