@@ -7,7 +7,7 @@ export const createMockScores = (amount = 1): Score[] => {
     scores.push({
       _id: "1234567",
       time: 20 + i,
-      startTime: "2024-01-27T14:00:39.766Z",
+      startTime: new Date(),
     })
   }
 

@@ -1,9 +1,8 @@
 {
-    "crons": [{
-      "path": "/api/sweeper/deleteScores?delete=all",
-      "schedule": "0 3 1 * *"
-    }, {
+  "crons": [
+    {
       "path": "/api/sweeper/deleteScores?delete=onlyNotWon",
       "schedule": "0 1 * * 0"
-    }]
-  }
+    }
+  ]
+}

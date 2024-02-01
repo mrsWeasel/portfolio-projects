@@ -1,42 +1,43 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
-import { ApiErrors } from "@/middleware"
-import { StartedGame } from "@/typed/typed"
+import { ApiError, StartedGame } from "@/typed/typed"
+import { validateDbInitiatedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   const data = await request.json()
 
   try {
-    const { MONGODB_MINESWEEPER_COLLECTION } = process.env || {}
+    const { MONGODB_MINESWEEPER_COLLECTION: sweeperCollection } = process.env || {}
 
     const { _id } = data || {}
 
     if (!_id) {
-      return NextResponse.json({ message: ApiErrors.InvalidRequest }, { status: 400 })
+      return NextResponse.json({ message: ApiError.InvalidRequest }, { status: 400 })
+    }
+
+    const { database } = (await clientPromise()) || {}
+
+    if (!database || !sweeperCollection) {
+      throw new Error("database details missing")
     }
 
     const objectId = new ObjectId(_id)
 
-    const { database } = (await clientPromise()) || {}
-
-    const game = await database.collection(MONGODB_MINESWEEPER_COLLECTION).findOne({ _id: objectId })
-
-    if (!game || game.startTime) {
-      return NextResponse.json({ message: ApiErrors.InvalidRequest }, { status: 400 })
-    }
+    const result = await database.collection(sweeperCollection).findOne({ _id: objectId })
+    validateDbInitiatedGame(result)
 
     const updatedGame: Pick<StartedGame, "startTime"> = {
       startTime: new Date(),
     }
 
     await database
-      .collection(MONGODB_MINESWEEPER_COLLECTION)
+      .collection(sweeperCollection)
       .updateOne({ _id: objectId }, { $set: { startTime: updatedGame.startTime } })
 
     return NextResponse.json({ ...updatedGame })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ message: ApiErrors.InternalError }, { status: 500 })
+    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
   }
 }
