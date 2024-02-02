@@ -69,5 +69,6 @@
 | 30.1.  | 1    | Create typeguards / validation util functions for api responses                                                                       |
 | 31.1.  | 2    | Continue working on typeguards, add more types for api                                                                                |
 |  1.2.  | 0.5  | Add unit test coverage for /endGame api route                                                                                         |
+|  1.2.  | 0.5  | Loading animation / skeleton for minesweeper grid, fix footer text overlapping page content                                           |
 
-## Total hours: 102
+## Total hours: 102.5
