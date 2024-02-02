@@ -5,6 +5,7 @@
   margin: 0 auto;
   max-width: var(--max-content-width);
   min-height: 100%;
+  padding-bottom: 3rem;
 }
 
 .container {
