@@ -1,6 +1,4 @@
-import { Red_Hat_Mono } from "next/font/google"
-
-const redHatMono = Red_Hat_Mono({ subsets: ["latin"], weight: ["500"] })
+import { redHatMono } from "@/services/fonts"
 
 interface Props {
   elapsedSeconds: number

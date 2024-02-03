@@ -5,8 +5,8 @@ import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import Timer from "./timer"
 
-jest.mock("next/font/google", () => ({
-  Red_Hat_Mono: () => ({
+jest.mock("@/services/fonts", () => ({
+  redHatMono: () => ({
     style: {
       fontFamily: "mocked",
     },

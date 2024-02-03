@@ -1,10 +1,8 @@
 import Link from "next/link"
 import React from "react"
 import styles from "./containerWithNavigation.module.css"
-import { Red_Hat_Display } from "next/font/google"
 import Footer from "../footer/footer"
-
-const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
+import { redHatDisplay } from "@/services/fonts"
 
 interface Props {
   children?: React.ReactNode

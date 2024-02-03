@@ -1,8 +1,6 @@
 import Link from "next/link"
 import styles from "./header.module.css"
-import { Red_Hat_Display } from "next/font/google"
-
-const redHatDisplay = Red_Hat_Display({ subsets: ["latin"], weight: ["400", "700"] })
+import { redHatDisplay } from "@/services/fonts"
 
 interface Props {
   title: string

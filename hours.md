@@ -72,5 +72,6 @@
 |  1.2.  | 0.5  | Loading animation / skeleton for minesweeper grid, fix footer text overlapping page content                                           |
 |  3.2.  | 2.5  | Looking into more compatible options for confetti effect, ended up with js-confetti and implemented it                                |
 |  3.2.  | 0.5  | Fix bug 🐛: if scores length is over 10, high scores were not fetched from api                                                        |
+|  3.2.  | 1.5  | Centralized font service, investigete how to fix Jest mocking for fonts as it got broken                                              |
 
-## Total hours: 105.5
+## Total hours: 107
