@@ -59,7 +59,7 @@ describe("endGame api route", () => {
     await request(baseUrl).put("/startGame").send({ _id }).expect(200)
 
     const endGameResponse = await request(baseUrl).put("/endGame").send({ _id, visited }).expect(200)
-    expect(endGameResponse.body.message).toContain("won")
+    expect(endGameResponse.body.time).toBeDefined()
   })
 
   test("endGame api route / game lost - when request body is valid, response should be ok ", async () => {

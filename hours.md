@@ -71,5 +71,6 @@
 |  1.2.  | 0.5  | Add unit test coverage for /endGame api route                                                                                         |
 |  1.2.  | 0.5  | Loading animation / skeleton for minesweeper grid, fix footer text overlapping page content                                           |
 |  3.2.  | 2.5  | Looking into more compatible options for confetti effect, ended up with js-confetti and implemented it                                |
+|  3.2.  | 0.5  | Fix bug 🐛: if scores length is over 10, high scores were not fetched from api                                                        |
 
-## Total hours: 105
+## Total hours: 105.5
