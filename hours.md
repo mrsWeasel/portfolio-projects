@@ -70,5 +70,6 @@
 | 31.1.  | 2    | Continue working on typeguards, add more types for api                                                                                |
 |  1.2.  | 0.5  | Add unit test coverage for /endGame api route                                                                                         |
 |  1.2.  | 0.5  | Loading animation / skeleton for minesweeper grid, fix footer text overlapping page content                                           |
+|  3.2.  | 2.5  | Looking into more compatible options for confetti effect, ended up with js-confetti and implemented it                                |
 
-## Total hours: 102.5
+## Total hours: 105
