@@ -21,6 +21,8 @@ import Scores from "@/components/sweeperScores/scores"
 // import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
 import { Score, GameStatus } from "@/typed/typed"
 import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
+import JSConfetti from "js-confetti"
+import Confetti from "@/components/confetti/Confetti"
 
 let interval: number | undefined
 
@@ -221,12 +223,6 @@ const Sweeper = () => {
     if (gameStatus === GameStatus.WON) return
 
     setGameStatus(GameStatus.WON)
-    confetti({
-      shapes: ["square", "circle"],
-      spread: 80,
-      scalar: 0.9,
-      colors: ["#D33FB6", "#FF999E", "#F3EA6C", "#8EECF5"],
-    })
     const gameResponse = await endGame(tempVisited)
 
     const { data } = gameResponse || {}
@@ -263,6 +259,7 @@ const Sweeper = () => {
           get a bit creative with it. Hope you enjoy it!
         </p> */}
       {/* </PortfolioItemDetails> */}
+      <Confetti showConfetti={gameStatus === GameStatus.WON} />
     </ContainerWithNavigation>
   )
 }
