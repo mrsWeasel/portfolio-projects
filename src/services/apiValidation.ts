@@ -175,7 +175,7 @@ export const getApiErrorResponse = (error: unknown): ApiErrorResponse => {
   }
 
   if (error.message.includes(ApiError.NotFoundError)) {
-    return { message: ApiError.InvalidRequest, status: 400 }
+    return { message: ApiError.NotFoundError, status: 404 }
   }
 
   return { message: ApiError.InternalError, status: 500 }

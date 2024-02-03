@@ -47,6 +47,13 @@ describe("startGame api route", () => {
 })
 
 describe("endGame api route", () => {
+  beforeEach(async () => {
+    await request(baseUrl).get("/deleteScores?delete=all")
+  })
+
+  afterAll(async () => {
+    await request(baseUrl).get("/deleteScores?delete=all")
+  })
   test("endGame api route / game won - when request body is valid, response should be ok ", async () => {
     const initResponse = await request(baseUrl).post("/initGame")
     const { _id, obfuscatedMines } = initResponse.body
