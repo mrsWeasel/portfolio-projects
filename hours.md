@@ -73,5 +73,6 @@
 |  3.2.  | 2.5  | Looking into more compatible options for confetti effect, ended up with js-confetti and implemented it                                |
 |  3.2.  | 0.5  | Fix bug 🐛: if scores length is over 10, high scores were not fetched from api                                                        |
 |  3.2.  | 1.5  | Centralized font service, investigete how to fix Jest mocking for fonts as it got broken                                              |
+|  3.2.  | 0.5  | Add more helpful messages to api errors                                                                                               |
 
-## Total hours: 107
+## Total hours: 107.5

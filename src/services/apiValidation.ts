@@ -15,7 +15,7 @@ const isDate = (param: unknown): param is Date => {
 
 const isNumericArray = (arr: unknown): arr is number[] => {
   if (!arr || !Array.isArray(arr)) {
-    throw new Error(ApiError.InternalError)
+    return false
   }
 
   if (arr.length < 1) return true
@@ -27,15 +27,15 @@ const isNumericArray = (arr: unknown): arr is number[] => {
 
 const isScore = (object: unknown): object is Score => {
   if (!object || typeof object !== "object") {
-    throw new Error(ApiError.InternalError)
+    return false
   }
 
   if (!("_id" in object && "startTime" in object && "time" in object)) {
-    throw new Error(ApiError.InternalError)
+    return false
   }
 
   if (!(isString(object._id) && isDate(object.startTime) && isNumber(object.time))) {
-    throw new Error(ApiError.InternalError)
+    return false
   }
 
   return true
@@ -48,26 +48,28 @@ const isObjectId = (param: unknown): param is ObjectId => {
 
 export const validateScores = (arr: unknown): Score[] => {
   if (!arr || !Array.isArray(arr)) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(`${ApiError.InternalError}: ${arr} does not match with type Score[]`)
   }
 
   if (arr.length < 1) return arr
 
   // if array has any scores, they must be correct form
-  if (arr.some((v) => !isScore(v))) {
-    throw new Error(ApiError.InternalError)
-  }
+  arr.some((v) => {
+    if (!isScore(v)) {
+      throw new Error(`${ApiError.InternalError}: ${v} does not match with type Score`)
+    }
+  })
 
   return arr as Score[]
 }
 
 export const validateDbInsertedOneResult = (object: unknown): DbInsertOneResult => {
   if (!object || typeof object !== "object") {
-    throw new Error(ApiError.InternalError)
+    throw new Error(`${ApiError.InternalError}: ${object} does not match with type DbInsertOneResult`)
   }
 
   if (Object.keys(object).length > 2) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(`${ApiError.InternalError}: ${object} has too many keys: DbInsertOneResult should have 2`)
   }
 
   if (!("insertedId" in object && "acknowledged" in object)) {
@@ -75,7 +77,9 @@ export const validateDbInsertedOneResult = (object: unknown): DbInsertOneResult 
   }
 
   if (!isObjectId(object.insertedId) || object.acknowledged !== true) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(
+      `${ApiError.InternalError}: ${object} does not match with type DbInsertOneResult: must have insertedId and acknowledged field`
+    )
   }
 
   return object as DbInsertOneResult
@@ -83,19 +87,23 @@ export const validateDbInsertedOneResult = (object: unknown): DbInsertOneResult 
 
 export const validateDbInitiatedGame = (object: unknown): DbInitiatedGame => {
   if (!object || typeof object !== "object") {
-    throw new Error(ApiError.InternalError)
+    throw new Error(`${ApiError.InternalError}: ${object} does not match with type DbInitiatedGame`)
   }
 
   if (Object.keys(object).length > 2) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(`${ApiError.InternalError}: ${object} has too many keys: DbInitiatedGame should have 2`)
   }
 
   if (!("_id" in object && "mines" in object)) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(
+      `${ApiError.InternalError}: ${object} does not match with type DbInitiatedGame: _id and mines are mandatory fields`
+    )
   }
 
   if (!(isObjectId(object._id) && isNumericArray(object.mines))) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(
+      `${ApiError.InternalError}: ${object} does not match with type DbInitiatedGame: _id or mines invalid`
+    )
   }
 
   return object as DbInitiatedGame
@@ -103,19 +111,21 @@ export const validateDbInitiatedGame = (object: unknown): DbInitiatedGame => {
 
 export const validateDbStartedGame = (object: unknown): DbStartedGame => {
   if (!object || typeof object !== "object") {
-    throw new Error(ApiError.NotFoundError)
+    throw new Error(`${ApiError.InternalError}: ${object} does not match with type DbStartedGame`)
   }
 
   if (Object.keys(object).length > 3) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(`${ApiError.InternalError}: ${object} has too many keys: DbStartedGame should have 3`)
   }
 
   if (!("_id" in object && "startTime" in object && "mines" in object)) {
-    throw new Error(ApiError.InternalError)
+    throw new Error(
+      `${ApiError.InternalError}: ${object} does not match with type DbStartedGame: _id, mines and startTime are mandatory fields`
+    )
   }
 
   if (!(isObjectId(object._id) && isNumericArray(object.mines) && isDate(object.startTime))) {
-    throw new Error(ApiError.InternalError)
+    ;`${ApiError.InternalError}: ${object} does not match with type DbInitiatedGame: _id or mines or startTime invalid`
   }
 
   return object as DbStartedGame
