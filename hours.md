@@ -75,5 +75,6 @@
 |  3.2.  | 1.5  | Centralized font service, investigete how to fix Jest mocking for fonts as it got broken                                               |
 |  3.2.  | 0.5  | Add more helpful messages to api errors                                                                                                |
 |  3.2.  | 0.5  | Generating error response (message and status code) from api error message using a util function, logging the full error for debugging |
+|  3.2.  | 0.5  | Investigate and fix yet another corner case issue with fetching high scores + create a new test case for it                            |
 
-## Total hours: 108
+## Total hours: 108.5
