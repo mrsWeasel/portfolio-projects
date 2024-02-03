@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { obfuscateMines, randomizeMines } from "@/services/sweeperService"
 import { ApiError, InitiatedGame } from "@/typed/typed"
-import { validateDbInsertedOneResult } from "@/services/apiValidation"
+import { getApiErrorResponse, validateDbInsertedOneResult } from "@/services/apiValidation"
 
 /* Initialize new game: generate id and fresh minegrid for user + save */
 export async function POST() {
@@ -12,7 +12,8 @@ export async function POST() {
     const { database } = (await clientPromise()) || {}
 
     if (!database || !sweeperCollection) {
-      throw new Error("database details missing")
+      console.error("Database details missing")
+      return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
     }
 
     const mines = randomizeMines(10)
@@ -26,8 +27,8 @@ export async function POST() {
     }
 
     return NextResponse.json({ ...game })
-  } catch (e) {
-    console.error(e)
-    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
+  } catch (error) {
+    const { message, status } = getApiErrorResponse(error)
+    return NextResponse.json({ message }, { status })
   }
 }

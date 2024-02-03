@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ApiError } from "@/typed/typed"
-import { validateScores } from "@/services/apiValidation"
+import { getApiErrorResponse, validateScores } from "@/services/apiValidation"
 
 export const revalidate = 0
 
@@ -12,7 +12,8 @@ export async function GET() {
     const { database } = (await clientPromise()) || {}
 
     if (!database || !sweeperCollection) {
-      throw new Error("database details missing")
+      console.error("Database details missing")
+      return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
     }
 
     const results: unknown[] = []
@@ -30,8 +31,8 @@ export async function GET() {
     const scores = validateScores(results)
 
     return NextResponse.json([...scores])
-  } catch (e) {
-    console.error(e)
-    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
+  } catch (error) {
+    const { message, status } = getApiErrorResponse(error)
+    return NextResponse.json({ message }, { status })
   }
 }

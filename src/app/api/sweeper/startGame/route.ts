@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { ApiError, StartedGame } from "@/typed/typed"
-import { validateDbInitiatedGame } from "@/services/apiValidation"
+import { getApiErrorResponse, validateDbInitiatedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   const data = await request.json()
@@ -19,7 +19,8 @@ export async function PUT(request: Request) {
     const { database } = (await clientPromise()) || {}
 
     if (!database || !sweeperCollection) {
-      throw new Error("database details missing")
+      console.error("Database details missing")
+      return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
     }
 
     const objectId = new ObjectId(_id)
@@ -37,7 +38,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ ...updatedGame })
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
+    const { message, status } = getApiErrorResponse(error)
+    return NextResponse.json({ message }, { status })
   }
 }

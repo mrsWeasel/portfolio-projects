@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ApiError } from "@/typed/typed"
+import { getApiErrorResponse } from "@/services/apiValidation"
 
 type DeleteSettings = "all" | "onlyNotWon"
 
@@ -35,7 +36,8 @@ export async function GET(request: Request) {
     const { database } = (await clientPromise()) || {}
 
     if (!database || !sweeperCollection) {
-      throw new Error("database details missing")
+      console.error("Database details missing")
+      return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
     }
 
     // delete either everything OR just the games that do not have field "time" (lost / unfinished ones)
@@ -44,8 +46,8 @@ export async function GET(request: Request) {
     const result = await database.collection(sweeperCollection).deleteMany(filter)
 
     return NextResponse.json(result)
-  } catch (e) {
-    console.error(e)
-    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
+  } catch (error) {
+    const { message, status } = getApiErrorResponse(error)
+    return NextResponse.json({ message }, { status })
   }
 }

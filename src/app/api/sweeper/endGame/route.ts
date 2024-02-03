@@ -3,7 +3,7 @@ import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { generateMineGrid, isGameWon } from "@/services/sweeperService"
 import { ApiError } from "@/typed/typed"
-import { validateDbStartedGame } from "@/services/apiValidation"
+import { getApiErrorResponse, validateDbStartedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
   try {
@@ -12,6 +12,7 @@ export async function PUT(request: Request) {
     const { _id, visited } = data || {}
 
     if (!_id) {
+      console.error("Field _id missing from request")
       return NextResponse.json({ message: ApiError.InvalidRequest }, { status: 400 })
     }
 
@@ -21,7 +22,8 @@ export async function PUT(request: Request) {
     const { database } = (await clientPromise()) || {}
 
     if (!database || !sweeperCollection) {
-      throw new Error("database details missing")
+      console.error("Database details missing")
+      return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
     }
 
     // fetch game from db and validate
@@ -39,7 +41,7 @@ export async function PUT(request: Request) {
     await database.collection(sweeperCollection).updateOne({ _id: objectId }, { $set: { time: updatedTime } })
     return NextResponse.json({ time: updatedTime })
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
+    const { message, status } = getApiErrorResponse(error)
+    return NextResponse.json({ message }, { status })
   }
 }
