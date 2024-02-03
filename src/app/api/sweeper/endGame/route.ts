@@ -37,7 +37,7 @@ export async function PUT(request: Request) {
     const updatedTime = Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000)
 
     await database.collection(sweeperCollection).updateOne({ _id: objectId }, { $set: { time: updatedTime } })
-    return NextResponse.json({ message: "Game won!" })
+    return NextResponse.json({ time: updatedTime })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: ApiError.InternalError }, { status: 500 })
