@@ -74,4 +74,11 @@ describe("shouldFetchHighScores", () => {
     const shouldFetch = shouldFetchHighScores(scores, 7)
     expect(shouldFetch).toBe(true)
   })
+
+  it("Returns false when scores table is full and time matches the last positions time", () => {
+    const scores = createMockScores(10)
+
+    const shouldFetch = shouldFetchHighScores(scores, 29)
+    expect(shouldFetch).toBe(false)
+  })
 })

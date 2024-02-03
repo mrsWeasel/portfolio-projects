@@ -58,3 +58,8 @@ export interface DbInsertOneResult {
   insertedId: ObjectId
   acknowledged: boolean
 }
+
+export interface ApiErrorResponse {
+  message: string
+  status: number
+}
