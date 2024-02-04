@@ -1,20 +1,50 @@
 # Hello!
 
-This is my sandbox project for small experiments, such as games. It is a fullstack [Next.js](https://nextjs.org/) project with MongoDB.
+This project functions as a platform for hosting fun little browser games. Games will be able to share common resources (such as database, UI components and so on.) For now, there is one game - reverse engineered classic Minesweeper.
+
+The project is deployed in Vercel: https://portfolio-projects-phi.vercel.app/
+
+Play some minesweeper: https://portfolio-projects-phi.vercel.app/sweeper
 
 ## Hours
 
 This project is also a study assignment where bookkeeping of hours is required. The hours can be found in [hours.md file](/hours.md)
 
-## Install dependencies
+## Tooling
+
+This is a fullstack [Next.js](https://nextjs.org/) project with MongoDB. Some central technologies are:
+
+### Development
+
+- JavaScript / TypeScript
+- React.js
+- Next.js
+- Node.js
+- MongoDB
+
+### Testing
+
+- Cypress for E2E testing
+- Jest for unit tests / api tests
+- React Testing Library for component tests
+
+Automated tests also run on pipelines (E2E) / on pre-commit hook (Jest / RTL) to make sure that new code does not (likely) cause issues in production.
+
+### CI/CD
+
+- Github Actions
+
+For all branches, E2E tests are run in pipelines. When pushing to master branch, production deployment is automated too (depends on E2E tests succeeding.)
+
+## Setup
+
+### Install dependencies
 
 On root level, run install script:
 
 ```bash
 npm install
 ```
-
-## Setup
 
 You can either use local MongoDB or create a free tier account in MongoDB Atlas.
 
@@ -33,7 +63,7 @@ CRON_SECRET=yoursecret
 
 ### Setting up with remote db
 
-First, create a free tier account in MongoDB Atlas. Set up a cluster and create a new database. Save database details in `env.test`. Note that if you use `env.local`, that will clash with running e2e tests locally (they need to run against local database.) You will need the same env variables as stated above.
+First, create a free tier account in MongoDB Atlas. Set up a cluster and create a new database. Save database details in `env.test`.
 
 ## Running the project
 
@@ -69,7 +99,21 @@ npm run dev:test
 
 Project should now be running in http://localhost:3000
 
-## e2e tests
+### Production build
+
+If you wish to create a production build locally, run:
+
+```bash
+npm run build
+```
+
+and then start the project by running:
+
+```bash
+npm start
+```
+
+## E2E tests
 
 This project uses Cypress for e2e tests. If you wish to run e2e tests locally, first set up local db as instructed above. Tests also use 2 shell scripts to manipulate database state. You need to give execution permission for those files.
 
