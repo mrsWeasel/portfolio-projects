@@ -77,5 +77,6 @@
 |  3.2.  | 0.5  | Generating error response (message and status code) from api error message using a util function, logging the full error for debugging |
 |  3.2.  | 0.5  | Investigate and fix yet another corner case issue with fetching high scores + create a new test case for it                            |
 |  3.2.  | 1    | Improve documentation                                                                                                                  |
+|  8.2.  | 1.5  | Use types in frontend when handling API responses, improve types and update tests                                                      |
 
-## Total hours: 109.5
+## Total hours: 111

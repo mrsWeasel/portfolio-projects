@@ -1,18 +1,11 @@
 import { ObjectId } from "mongodb"
 
-/**
- * Frontend types
- * */
 export enum GameStatus {
   INITIATED = "INITIATED",
   PLAYING = "PLAYING",
   LOST = "LOST",
   WON = "WON",
 }
-
-/**
- * API types
- * */
 
 export enum ApiError {
   InternalError = "INTERNAL_ERROR",
@@ -32,11 +25,12 @@ export interface StartedGame extends BaseGame {
   startTime: Date
 }
 
-export interface WonGame extends StartedGame {
-  time: number
+export interface EndedGame extends StartedGame {
+  time?: number
+  result: GameStatus.WON | GameStatus.LOST
 }
 
-export type Score = Omit<WonGame, "mines">
+export type Score = Omit<EndedGame, "result">
 
 export interface DbBaseGame {
   _id: ObjectId

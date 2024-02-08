@@ -113,7 +113,7 @@ export const shouldFetchHighScores = (scores: Score[], seconds: number): boolean
 
   const slowest = scores[scores.length - 1]
 
-  if (seconds < slowest.time) return true
+  if (seconds < (slowest.time ?? 0)) return true
 
   return false
 }

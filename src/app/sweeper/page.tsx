@@ -15,14 +15,15 @@ import {
 } from "@/services/sweeperService"
 import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
 // import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
-import { Score, GameStatus } from "@/typed/typed"
+import { Score, GameStatus, EndedGame, InitiatedGame, ApiErrorResponse, StartedGame } from "@/typed/typed"
 import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
 import JSConfetti from "js-confetti"
 import Confetti from "@/components/confetti/Confetti"
+import { isApiErrorResponse } from "@/services/apiValidation"
 
 let interval: number | undefined
 
@@ -48,14 +49,14 @@ const Sweeper = () => {
     reset()
     setLoading(true)
     try {
-      const res = await axios.post(`/api/sweeper/initGame`)
+      const res: AxiosResponse<InitiatedGame | ApiErrorResponse> = await axios.post(`/api/sweeper/initGame`)
 
       const { data } = res || {}
-      const { _id, obfuscatedMines } = data || {}
 
-      if (!_id || !obfuscatedMines) {
-        throw new Error("Response data missing")
-      }
+      // TODO: error notification in ui
+      if (!data || isApiErrorResponse(data)) return
+
+      const { _id, obfuscatedMines } = data || {}
 
       setGameId(_id)
       setGameStatus(GameStatus.INITIATED)
@@ -74,8 +75,15 @@ const Sweeper = () => {
   const startGame = async () => {
     setLoading(true)
     try {
-      await axios.put("/api/sweeper/startGame", { _id: gameId })
+      const res: AxiosResponse<StartedGame | ApiErrorResponse> = await axios.put("/api/sweeper/startGame", {
+        _id: gameId,
+      })
       setLoading(false)
+
+      const { data } = res || {}
+
+      // TODO: error notification in ui
+      if (!data || isApiErrorResponse(data)) return
 
       interval = window?.setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1)
@@ -91,10 +99,15 @@ const Sweeper = () => {
   // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
-      const game = await axios.put("/api/sweeper/endGame", { _id: gameId, visited })
+      const res: AxiosResponse<EndedGame | ApiErrorResponse> = await axios.put("/api/sweeper/endGame", {
+        _id: gameId,
+        visited,
+      })
 
       if (interval) clearInterval(interval)
-      return game
+
+      const { data } = res || {}
+      if (!data || !isApiErrorResponse(data)) return data
     } catch (e) {
       if (e instanceof Error) {
         console.log(e.message)
@@ -105,9 +118,12 @@ const Sweeper = () => {
   // gets 10 top scores from db
   const fetchHighScores = async () => {
     try {
-      const res = await axios.get("/api/sweeper/getScores")
-
+      const res: AxiosResponse<Score[] | ApiErrorResponse> = await axios.get("/api/sweeper/getScores")
       const { data } = res || {}
+
+      // TODO: add error notification in ui
+      if (!data || isApiErrorResponse(data)) return
+
       setScores(data)
     } catch (e) {
       if (e instanceof Error) {
@@ -223,11 +239,12 @@ const Sweeper = () => {
     if (gameStatus === GameStatus.WON) return
 
     setGameStatus(GameStatus.WON)
-    const gameResponse = await endGame(tempVisited)
+    const data = await endGame(tempVisited)
+    const { time } = data || {}
+    if (!time) return
 
-    const { data } = gameResponse || {}
     // Only fetch updated scores if game has a chance to be in the top 10
-    if (!shouldFetchHighScores(scores, data?.time)) return
+    if (!shouldFetchHighScores(scores, time)) return
     fetchHighScores()
   }
 

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { generateMineGrid, isGameWon } from "@/services/sweeperService"
-import { ApiError } from "@/typed/typed"
+import { ApiError, GameStatus } from "@/typed/typed"
 import { getApiErrorResponse, validateDbStartedGame } from "@/services/apiValidation"
 
 export async function PUT(request: Request) {
@@ -33,13 +33,13 @@ export async function PUT(request: Request) {
     const mineGrid = generateMineGrid(game.mines, 10)
 
     if (!isGameWon(visited, mineGrid)) {
-      return NextResponse.json({ message: "Game lost" })
+      return NextResponse.json({ _id, result: GameStatus.LOST })
     }
 
     const updatedTime = Math.floor((new Date().getTime() - game.startTime.getTime()) / 1000)
 
     await database.collection(sweeperCollection).updateOne({ _id: objectId }, { $set: { time: updatedTime } })
-    return NextResponse.json({ time: updatedTime })
+    return NextResponse.json({ _id, time: updatedTime, result: GameStatus.WON })
   } catch (error) {
     const { message, status } = getApiErrorResponse(error)
     return NextResponse.json({ message }, { status })
