@@ -9,6 +9,7 @@ interface SweeperGridProps {
   handleClickCell: (i: number, j: number) => Promise<void>
   gameStatus: GameStatus | null
   hasError: boolean
+  loading: boolean
 }
 
 const SweeperGrid = ({
@@ -18,10 +19,18 @@ const SweeperGrid = ({
   handleClickCell,
   gameStatus,
   hasError,
+  loading,
 }: SweeperGridProps) => {
+  const isLoading = loading || !(mineGrid && flaggedGrid && visitedGrid)
+
   if (hasError) {
-    return <div className={styles.skeletonContainer}>Error</div>
-  } else if (!(mineGrid && flaggedGrid && visitedGrid)) {
+    return (
+      <div className={styles.errorContainer}>
+        <div>😭</div>
+        <div>Oops! Something went wrong.</div>
+      </div>
+    )
+  } else if (isLoading) {
     return <div className={styles.skeletonContainer}></div>
   } else {
     return (

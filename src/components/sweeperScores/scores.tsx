@@ -5,9 +5,10 @@ import { redHatMono } from "@/services/fonts"
 interface Props {
   scores: Score[]
   gameId: string | null
+  hasError: boolean
 }
 
-const Scores = ({ scores, gameId }: Props) => {
+const Scores = ({ scores, gameId, hasError }: Props) => {
   return (
     <div className={styles.scoresContainer}>
       <div className={styles.header}>
@@ -17,6 +18,8 @@ const Scores = ({ scores, gameId }: Props) => {
         <ul data-test-id="scores-list" className={styles.scoreList}>
           {scores.map((s, index) => {
             const { time, startTime, _id } = s || {}
+            // TODO: if hasError, return error view "Not able to fetch scores" etc.
+
             if (!time || !startTime || !_id) return null
 
             return (

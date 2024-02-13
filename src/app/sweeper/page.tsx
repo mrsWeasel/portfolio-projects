@@ -48,6 +48,7 @@ const Sweeper = () => {
     setGameStatus(null)
     setFlagging(false)
     setTimer(0)
+    setLoading(false)
   }
 
   const handleError = (errorMessage: string): void => {
@@ -58,8 +59,8 @@ const Sweeper = () => {
   // posts new game to db, returns id and generated minefield
   const initiateGame = useCallback(async () => {
     reset()
-    setGameError("")
     setLoading(true)
+    setGameError("")
     try {
       const res: AxiosResponse<InitiatedGame | ApiErrorResponse> = await axios.post(`/api/sweeper/initGame`)
 
@@ -279,9 +280,10 @@ const Sweeper = () => {
             handleClickCell={handleClickCell}
             gameStatus={gameStatus}
             hasError={!!gameError}
+            loading={loading}
           />
         </div>
-        <Scores gameId={gameId} scores={scores} />
+        <Scores gameId={gameId} scores={scores} hasError={!!scoresError} />
       </Grid>
       {/* <PortfolioItemDetails> */}
       {/* <p>

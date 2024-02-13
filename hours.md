@@ -79,5 +79,6 @@
 |  3.2.  | 1    | Improve documentation                                                                                                                  |
 |  8.2.  | 1.5  | Use types in frontend when handling API responses, improve types and update tests                                                      |
 | 13.2.  | 2.5  | Show notification in frontend if an error occurs, remove after timeout                                                                 |
+| 13.2.  | 0.5  | Show error component instead of sweeper grid after an error                                                                            |
 
-## Total hours: 113.5
+## Total hours: 114
