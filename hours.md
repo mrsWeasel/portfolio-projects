@@ -80,5 +80,6 @@
 |  8.2.  | 1.5  | Use types in frontend when handling API responses, improve types and update tests                                                      |
 | 13.2.  | 2.5  | Show notification in frontend if an error occurs, remove after timeout                                                                 |
 | 13.2.  | 0.5  | Show error component instead of sweeper grid after an error                                                                            |
+| 13.2.  | 0.5  | Style error component and extract it to another component, tweak loading state                                                         |
 
-## Total hours: 114
+## Total hours: 114.5

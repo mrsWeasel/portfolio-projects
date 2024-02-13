@@ -49,6 +49,7 @@ const Sweeper = () => {
     setFlagging(false)
     setTimer(0)
     setLoading(false)
+    setMineGrid(null)
   }
 
   const handleError = (errorMessage: string): void => {
@@ -280,7 +281,6 @@ const Sweeper = () => {
             handleClickCell={handleClickCell}
             gameStatus={gameStatus}
             hasError={!!gameError}
-            loading={loading}
           />
         </div>
         <Scores gameId={gameId} scores={scores} hasError={!!scoresError} />
