@@ -78,5 +78,6 @@
 |  3.2.  | 0.5  | Investigate and fix yet another corner case issue with fetching high scores + create a new test case for it                            |
 |  3.2.  | 1    | Improve documentation                                                                                                                  |
 |  8.2.  | 1.5  | Use types in frontend when handling API responses, improve types and update tests                                                      |
+| 13.2.  | 2    | Show notification in frontend if an error occurs                                                                                       |
 
-## Total hours: 111
+## Total hours: 113

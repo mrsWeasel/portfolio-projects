@@ -24,6 +24,7 @@ import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
 import JSConfetti from "js-confetti"
 import Confetti from "@/components/confetti/Confetti"
 import { isApiErrorResponse } from "@/services/apiValidation"
+import ErrorNotification from "@/components/notification/errorNotification"
 
 let interval: number | undefined
 
@@ -38,23 +39,36 @@ const Sweeper = () => {
   const [gameId, setGameId] = useState<string | null>(null)
   const [scores, setScores] = useState<Score[]>([])
 
+  const [gameError, setGameError] = useState("")
+  const [scoresError, setScoresError] = useState("")
+
   const reset = () => {
     if (interval) clearInterval(interval)
     setGameId(null)
+    setGameStatus(null)
+    setFlagging(false)
     setTimer(0)
+  }
+
+  const handleError = (errorMessage: string): void => {
+    setLoading(false)
+    setGameError(errorMessage)
   }
 
   // posts new game to db, returns id and generated minefield
   const initiateGame = useCallback(async () => {
     reset()
+    setGameError("")
     setLoading(true)
     try {
       const res: AxiosResponse<InitiatedGame | ApiErrorResponse> = await axios.post(`/api/sweeper/initGame`)
 
       const { data } = res || {}
 
-      // TODO: error notification in ui
-      if (!data || isApiErrorResponse(data)) return
+      if (!data || isApiErrorResponse(data)) {
+        handleError("Error trying to initiate a game")
+        return
+      }
 
       const { _id, obfuscatedMines } = data || {}
 
@@ -64,10 +78,7 @@ const Sweeper = () => {
       setMineGrid(generateMineGrid(unobfuscateMines(obfuscatedMines), 10))
       setLoading(false)
     } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
-      }
-      setLoading(false)
+      handleError("Error trying to initiate a game")
     }
   }, [])
 
@@ -82,17 +93,16 @@ const Sweeper = () => {
 
       const { data } = res || {}
 
-      // TODO: error notification in ui
-      if (!data || isApiErrorResponse(data)) return
+      if (!data || isApiErrorResponse(data)) {
+        handleError("Error trying to start a game")
+        return
+      }
 
       interval = window?.setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1)
       }, 1000)
     } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
-      }
-      setLoading(false)
+      handleError("Error trying to start a game")
     }
   }
 
@@ -107,11 +117,13 @@ const Sweeper = () => {
       if (interval) clearInterval(interval)
 
       const { data } = res || {}
-      if (!data || !isApiErrorResponse(data)) return data
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
+
+      if (!data || isApiErrorResponse(data)) {
+        handleError("Error trying to end the game")
+        return
       }
+    } catch (e) {
+      handleError("Error trying to end the game")
     }
   }
 
@@ -121,14 +133,14 @@ const Sweeper = () => {
       const res: AxiosResponse<Score[] | ApiErrorResponse> = await axios.get("/api/sweeper/getScores")
       const { data } = res || {}
 
-      // TODO: add error notification in ui
-      if (!data || isApiErrorResponse(data)) return
+      if (!data || isApiErrorResponse(data)) {
+        setScoresError("Error fetching scores")
+        return
+      }
 
       setScores(data)
     } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
-      }
+      setScoresError("Error fetching scores")
     }
   }
 
@@ -176,9 +188,11 @@ const Sweeper = () => {
   }
 
   const handleClickCell = async (i: number, j: number) => {
+    if (gameError) return
     if (!mineGrid) return
 
     if (loading) return
+    if (!gameStatus) return
     if (gameStatus === GameStatus.WON) return
     if (gameStatus === GameStatus.LOST) return
 
@@ -239,12 +253,10 @@ const Sweeper = () => {
     if (gameStatus === GameStatus.WON) return
 
     setGameStatus(GameStatus.WON)
-    const data = await endGame(tempVisited)
-    const { time } = data || {}
-    if (!time) return
+    await endGame(tempVisited)
 
     // Only fetch updated scores if game has a chance to be in the top 10
-    if (!shouldFetchHighScores(scores, time)) return
+    if (!shouldFetchHighScores(scores, timer)) return
     fetchHighScores()
   }
 
@@ -266,6 +278,7 @@ const Sweeper = () => {
             flaggedGrid={flaggedGrid}
             handleClickCell={handleClickCell}
             gameStatus={gameStatus}
+            hasError={!!gameError}
           />
         </div>
         <Scores gameId={gameId} scores={scores} />
@@ -276,7 +289,9 @@ const Sweeper = () => {
           get a bit creative with it. Hope you enjoy it!
         </p> */}
       {/* </PortfolioItemDetails> */}
+
       <Confetti showConfetti={gameStatus === GameStatus.WON} />
+      {gameError && <ErrorNotification message={gameError} />}
     </ContainerWithNavigation>
   )
 }

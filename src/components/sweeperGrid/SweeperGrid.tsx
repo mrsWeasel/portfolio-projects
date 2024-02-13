@@ -8,10 +8,20 @@ interface SweeperGridProps {
   visitedGrid: number[][] | null
   handleClickCell: (i: number, j: number) => Promise<void>
   gameStatus: GameStatus | null
+  hasError: boolean
 }
 
-const SweeperGrid = ({ mineGrid, flaggedGrid, visitedGrid, handleClickCell, gameStatus }: SweeperGridProps) => {
-  if (!(mineGrid && flaggedGrid && visitedGrid)) {
+const SweeperGrid = ({
+  mineGrid,
+  flaggedGrid,
+  visitedGrid,
+  handleClickCell,
+  gameStatus,
+  hasError,
+}: SweeperGridProps) => {
+  if (hasError) {
+    return <div className={styles.skeletonContainer}>Error</div>
+  } else if (!(mineGrid && flaggedGrid && visitedGrid)) {
     return <div className={styles.skeletonContainer}></div>
   } else {
     return (
