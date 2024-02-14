@@ -53,6 +53,7 @@ const Sweeper = () => {
   }
 
   const handleError = (errorMessage: string): void => {
+    if (interval) clearInterval(interval)
     setLoading(false)
     setGameError(errorMessage)
   }

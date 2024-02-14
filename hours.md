@@ -81,5 +81,6 @@
 | 13.2.  | 2.5  | Show notification in frontend if an error occurs, remove after timeout                                                                 |
 | 13.2.  | 0.5  | Show error component instead of sweeper grid after an error                                                                            |
 | 13.2.  | 0.5  | Style error component and extract it to another component, tweak loading state                                                         |
+| 14.2.  | 0.5  | Cypress tests for api errors, fix timer not stopping after error                                                                       |
 
-## Total hours: 114.5
+## Total hours: 115
