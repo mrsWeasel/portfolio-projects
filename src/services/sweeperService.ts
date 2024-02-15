@@ -1,6 +1,11 @@
 import { Score } from "@/typed/typed"
 
-export const getDirections = (i: number, j: number) => ({
+interface Direction {
+  y: number
+  x: number
+}
+
+export const getDirections = (i: number, j: number): Record<string, Direction> => ({
   up: { y: i - 1, x: j },
   upRight: { y: i - 1, x: j + 1 },
   right: { y: i, x: j + 1 },

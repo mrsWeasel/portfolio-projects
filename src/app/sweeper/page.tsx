@@ -167,9 +167,8 @@ const Sweeper = () => {
 
     if (getAmountOfSurroundingMines(i, j, mineGrid)) return
 
-    // TODO: refactor to use Object keys directly
-    const { up, down, left, right, upLeft, upRight, downLeft, downRight } = getDirections(i, j) || {}
-    const adjacent = [up, upRight, right, downRight, down, downLeft, left, upLeft]
+    const directions = getDirections(i, j) || {}
+    const adjacent = Object.keys(directions).map((key) => directions[key])
 
     for (let l = 0; l < adjacent.length; l++) {
       if (forceStop.current) break
