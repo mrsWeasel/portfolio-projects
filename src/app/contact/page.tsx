@@ -1,4 +1,4 @@
-import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
+import Container from "@/components/container/container"
 import Link from "next/link"
 import Header from "@/components/header/header"
 import Grid from "@/components/grid/grid"
@@ -6,7 +6,7 @@ import styles from "./contact.module.css"
 
 const Contact = () => {
   return (
-    <ContainerWithNavigation>
+    <Container>
       <Header title="Contact" alignment="center" linkToHome />
       <Grid columns={1}>
         <div>
@@ -25,7 +25,7 @@ const Contact = () => {
           </div>
         </div>
       </Grid>
-    </ContainerWithNavigation>
+    </Container>
   )
 }
 

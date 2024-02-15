@@ -1,11 +1,11 @@
-import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
+import Container from "@/components/container/container"
 import styles from "./home.module.css"
 import Link from "next/link"
 import Header from "@/components/header/header"
 
 const Home = () => {
   return (
-    <ContainerWithNavigation>
+    <Container>
       <Header title="Index of /projects" alignment="left" />
       <div>
         <div className={styles.tableHeading}>
@@ -25,7 +25,7 @@ const Home = () => {
           </div>
         </Link>
       </div>
-    </ContainerWithNavigation>
+    </Container>
   )
 }
 

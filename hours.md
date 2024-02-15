@@ -90,6 +90,6 @@
 | 15.2.  | 1    | Visual tweaks: add custom favicon, remove loading text, add tooltip to start game button                                               |
 | 15.2.  | 1    | Custom 404 page, bump Next.js version because of a bug in previous version (404 page reloads infinitely)                               |
 | 15.2.  | 0.5  | E2E tests for 404 page, figuring out how to not make Cypress fail on 404 and unhandled NEXT_NOT_FOUND error                            |
-| 15.2.  | 0.25 | Clean globals.css (remove unused styles)                                                                                               |
+| 15.2.  | 0.5  | Clean globals.css (remove unused styles), rename ContainerWithNavigation and remove commented unused code                              |
 
-## Total hours: 120
+## Total hours: 120.25
