@@ -88,5 +88,6 @@
 | 15.2.  | 0.5  | Use refs for variables that should not be affected by Reacts lifecycle                                                                 |
 | 15.2.  | 0.5  | Address TODOs in code                                                                                                                  |
 | 15.2.  | 1    | Visual tweaks: add custom favicon, remove loading text, add tooltip to start game button                                               |
+| 15.2.  | 1    | Custom 404 page, bump Next.js version because of a bug in previous version (404 page reloads infinitely)                               |
 
-## Total hours: 118.25
+## Total hours: 119.25
