@@ -75,7 +75,6 @@ export const isInRange = (i: number, j: number, mineGrid: number[][]) => {
 }
 
 export const isGameWon = (visited: number[][], mineGrid: number[][]): boolean => {
-  // TODO: throw error instead of returning false
   if (!visited || !mineGrid) return false
 
   for (let i = 0; i < visited.flat().length; i++) {
@@ -96,19 +95,21 @@ export const getAmountOfSurroundingMines = (i: number, j: number, mineGrid: numb
     const { x, y } = current || {}
     try {
       if (mineGrid[y][x]) sum++
-    } catch (e) {}
+    } catch (e) {
+      // errors are most likely due to not all cells having adjacent cells (on edges) -> no need to do anything
+    }
   })
   return sum
 }
 
-// TODO: use more describing names for checking different grids. Use this only internally
 export const cellHasValueInGrid = (i: number, j: number, arr: number[][]) => {
   try {
     if (arr[i][j]) {
       return true
     }
-  } catch (e) {
     throw new Error(`Error trying to find ${i}, ${j} in grid`)
+  } catch (e) {
+    // errors are most likely due to not all cells having adjacent cells (on edges) -> no need to do anything
   }
   return false
 }
