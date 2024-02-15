@@ -25,7 +25,7 @@ const SweeperGrid = ({
   if (hasError) {
     return <Error />
   } else if (isLoading) {
-    return <div className={styles.skeletonContainer}>Setting up...</div>
+    return <div className={styles.skeletonContainer} />
   } else {
     return (
       <div data-test-id="sweeper-grid-container" className={styles.gridContainer}>
