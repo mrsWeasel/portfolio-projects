@@ -1,6 +1,5 @@
 "use client"
 import { useCallback, useEffect, useState } from "react"
-import confetti from "canvas-confetti"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
 import {
   generateMineGrid,
@@ -18,10 +17,8 @@ import Header from "@/components/header/header"
 import axios, { AxiosResponse } from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
-// import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
 import { Score, GameStatus, EndedGame, InitiatedGame, ApiErrorResponse, StartedGame } from "@/typed/typed"
 import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
-import JSConfetti from "js-confetti"
 import Confetti from "@/components/confetti/Confetti"
 import { isApiErrorResponse } from "@/services/apiValidation"
 import ErrorNotification from "@/components/notification/errorNotification"
@@ -286,13 +283,6 @@ const Sweeper = () => {
         </div>
         <Scores gameId={gameId} scores={scores} />
       </Grid>
-      {/* <PortfolioItemDetails> */}
-      {/* <p>
-          Minesweeper, one of my favorite childhood games! I just <strong>had to</strong> reverse engineer it and also
-          get a bit creative with it. Hope you enjoy it!
-        </p> */}
-      {/* </PortfolioItemDetails> */}
-
       <Confetti showConfetti={gameStatus === GameStatus.WON} />
       {gameError && <ErrorNotification message={gameError} />}
       {scoresError && <ErrorNotification message={scoresError} />}
