@@ -14,7 +14,11 @@ const ErrorNotification = ({ message }: ErrorNotificationProps) => {
     return () => clearTimeout(timeout)
   }, [])
 
-  return visible ? <div className={styles.error}>{message}</div> : null
+  return visible ? (
+    <div data-test-id="error-notification" className={styles.error}>
+      {message}
+    </div>
+  ) : null
 }
 
 export default ErrorNotification

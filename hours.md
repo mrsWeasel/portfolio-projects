@@ -82,5 +82,6 @@
 | 13.2.  | 0.5  | Show error component instead of sweeper grid after an error                                                                            |
 | 13.2.  | 0.5  | Style error component and extract it to another component, tweak loading state                                                         |
 | 14.2.  | 0.5  | Cypress tests for api errors, fix timer not stopping after error                                                                       |
+| 15.2.  | 0.5  | Show error notification when fetching scores fails, add Cypress test case                                                              |
 
-## Total hours: 115
+## Total hours: 115.5

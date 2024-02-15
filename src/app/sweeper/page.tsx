@@ -52,7 +52,7 @@ const Sweeper = () => {
     setMineGrid(null)
   }
 
-  const handleError = (errorMessage: string): void => {
+  const handleGameError = (errorMessage: string): void => {
     if (interval) clearInterval(interval)
     setLoading(false)
     setGameError(errorMessage)
@@ -69,7 +69,7 @@ const Sweeper = () => {
       const { data } = res || {}
 
       if (!data || isApiErrorResponse(data)) {
-        handleError("Error trying to initiate a game")
+        handleGameError("Error trying to initiate a game")
         return
       }
 
@@ -81,7 +81,7 @@ const Sweeper = () => {
       setMineGrid(generateMineGrid(unobfuscateMines(obfuscatedMines), 10))
       setLoading(false)
     } catch (e) {
-      handleError("Error trying to initiate a game")
+      handleGameError("Error trying to initiate a game")
     }
   }, [])
 
@@ -97,7 +97,7 @@ const Sweeper = () => {
       const { data } = res || {}
 
       if (!data || isApiErrorResponse(data)) {
-        handleError("Error trying to start a game")
+        handleGameError("Error trying to start a game")
         return
       }
 
@@ -105,7 +105,7 @@ const Sweeper = () => {
         setTimer((prevTimer) => prevTimer + 1)
       }, 1000)
     } catch (e) {
-      handleError("Error trying to start a game")
+      handleGameError("Error trying to start a game")
     }
   }
 
@@ -122,11 +122,11 @@ const Sweeper = () => {
       const { data } = res || {}
 
       if (!data || isApiErrorResponse(data)) {
-        handleError("Error trying to end the game")
+        handleGameError("Error trying to end the game")
         return
       }
     } catch (e) {
-      handleError("Error trying to end the game")
+      handleGameError("Error trying to end the game")
     }
   }
 
@@ -284,7 +284,7 @@ const Sweeper = () => {
             hasError={!!gameError}
           />
         </div>
-        <Scores gameId={gameId} scores={scores} hasError={!!scoresError} />
+        <Scores gameId={gameId} scores={scores} />
       </Grid>
       {/* <PortfolioItemDetails> */}
       {/* <p>
@@ -295,6 +295,7 @@ const Sweeper = () => {
 
       <Confetti showConfetti={gameStatus === GameStatus.WON} />
       {gameError && <ErrorNotification message={gameError} />}
+      {scoresError && <ErrorNotification message={scoresError} />}
     </ContainerWithNavigation>
   )
 }
