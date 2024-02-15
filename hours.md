@@ -77,5 +77,11 @@
 |  3.2.  | 0.5  | Generating error response (message and status code) from api error message using a util function, logging the full error for debugging |
 |  3.2.  | 0.5  | Investigate and fix yet another corner case issue with fetching high scores + create a new test case for it                            |
 |  3.2.  | 1    | Improve documentation                                                                                                                  |
+|  8.2.  | 1.5  | Use types in frontend when handling API responses, improve types and update tests                                                      |
+| 13.2.  | 2.5  | Show notification in frontend if an error occurs, remove after timeout                                                                 |
+| 13.2.  | 0.5  | Show error component instead of sweeper grid after an error                                                                            |
+| 13.2.  | 0.5  | Style error component and extract it to another component, tweak loading state                                                         |
+| 14.2.  | 0.5  | Cypress tests for api errors, fix timer not stopping after error                                                                       |
+| 15.2.  | 0.5  | Show error notification when fetching scores fails, add Cypress test case                                                              |
 
-## Total hours: 109.5
+## Total hours: 115.5

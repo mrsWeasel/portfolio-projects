@@ -15,14 +15,16 @@ import {
 } from "@/services/sweeperService"
 import Grid from "@/components/grid/grid"
 import Header from "@/components/header/header"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import SweeperToolbar from "@/components/sweeperToolbar/sweeperToolbar"
 import Scores from "@/components/sweeperScores/scores"
 // import PortfolioItemDetails from "@/components/portfolioItem/portfolioItemDetails"
-import { Score, GameStatus } from "@/typed/typed"
+import { Score, GameStatus, EndedGame, InitiatedGame, ApiErrorResponse, StartedGame } from "@/typed/typed"
 import SweeperGrid from "@/components/sweeperGrid/SweeperGrid"
 import JSConfetti from "js-confetti"
 import Confetti from "@/components/confetti/Confetti"
+import { isApiErrorResponse } from "@/services/apiValidation"
+import ErrorNotification from "@/components/notification/errorNotification"
 
 let interval: number | undefined
 
@@ -37,25 +39,41 @@ const Sweeper = () => {
   const [gameId, setGameId] = useState<string | null>(null)
   const [scores, setScores] = useState<Score[]>([])
 
+  const [gameError, setGameError] = useState("")
+  const [scoresError, setScoresError] = useState("")
+
   const reset = () => {
     if (interval) clearInterval(interval)
     setGameId(null)
+    setGameStatus(null)
+    setFlagging(false)
     setTimer(0)
+    setLoading(false)
+    setMineGrid(null)
+  }
+
+  const handleGameError = (errorMessage: string): void => {
+    if (interval) clearInterval(interval)
+    setLoading(false)
+    setGameError(errorMessage)
   }
 
   // posts new game to db, returns id and generated minefield
   const initiateGame = useCallback(async () => {
     reset()
     setLoading(true)
+    setGameError("")
     try {
-      const res = await axios.post(`/api/sweeper/initGame`)
+      const res: AxiosResponse<InitiatedGame | ApiErrorResponse> = await axios.post(`/api/sweeper/initGame`)
 
       const { data } = res || {}
-      const { _id, obfuscatedMines } = data || {}
 
-      if (!_id || !obfuscatedMines) {
-        throw new Error("Response data missing")
+      if (!data || isApiErrorResponse(data)) {
+        handleGameError("Error trying to initiate a game")
+        return
       }
+
+      const { _id, obfuscatedMines } = data || {}
 
       setGameId(_id)
       setGameStatus(GameStatus.INITIATED)
@@ -63,10 +81,7 @@ const Sweeper = () => {
       setMineGrid(generateMineGrid(unobfuscateMines(obfuscatedMines), 10))
       setLoading(false)
     } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
-      }
-      setLoading(false)
+      handleGameError("Error trying to initiate a game")
     }
   }, [])
 
@@ -74,45 +89,61 @@ const Sweeper = () => {
   const startGame = async () => {
     setLoading(true)
     try {
-      await axios.put("/api/sweeper/startGame", { _id: gameId })
+      const res: AxiosResponse<StartedGame | ApiErrorResponse> = await axios.put("/api/sweeper/startGame", {
+        _id: gameId,
+      })
       setLoading(false)
+
+      const { data } = res || {}
+
+      if (!data || isApiErrorResponse(data)) {
+        handleGameError("Error trying to start a game")
+        return
+      }
 
       interval = window?.setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1)
       }, 1000)
     } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
-      }
-      setLoading(false)
+      handleGameError("Error trying to start a game")
     }
   }
 
   // stops timer, posts ending time to db
   const endGame = async (visited?: number[][]) => {
     try {
-      const game = await axios.put("/api/sweeper/endGame", { _id: gameId, visited })
+      const res: AxiosResponse<EndedGame | ApiErrorResponse> = await axios.put("/api/sweeper/endGame", {
+        _id: gameId,
+        visited,
+      })
 
       if (interval) clearInterval(interval)
-      return game
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
+
+      const { data } = res || {}
+
+      if (!data || isApiErrorResponse(data)) {
+        handleGameError("Error trying to end the game")
+        return
       }
+    } catch (e) {
+      handleGameError("Error trying to end the game")
     }
   }
 
   // gets 10 top scores from db
   const fetchHighScores = async () => {
     try {
-      const res = await axios.get("/api/sweeper/getScores")
-
+      const res: AxiosResponse<Score[] | ApiErrorResponse> = await axios.get("/api/sweeper/getScores")
       const { data } = res || {}
+
+      if (!data || isApiErrorResponse(data)) {
+        setScoresError("Error fetching scores")
+        return
+      }
+
       setScores(data)
     } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message)
-      }
+      setScoresError("Error fetching scores")
     }
   }
 
@@ -160,9 +191,11 @@ const Sweeper = () => {
   }
 
   const handleClickCell = async (i: number, j: number) => {
+    if (gameError) return
     if (!mineGrid) return
 
     if (loading) return
+    if (!gameStatus) return
     if (gameStatus === GameStatus.WON) return
     if (gameStatus === GameStatus.LOST) return
 
@@ -223,11 +256,10 @@ const Sweeper = () => {
     if (gameStatus === GameStatus.WON) return
 
     setGameStatus(GameStatus.WON)
-    const gameResponse = await endGame(tempVisited)
+    await endGame(tempVisited)
 
-    const { data } = gameResponse || {}
     // Only fetch updated scores if game has a chance to be in the top 10
-    if (!shouldFetchHighScores(scores, data?.time)) return
+    if (!shouldFetchHighScores(scores, timer)) return
     fetchHighScores()
   }
 
@@ -249,6 +281,7 @@ const Sweeper = () => {
             flaggedGrid={flaggedGrid}
             handleClickCell={handleClickCell}
             gameStatus={gameStatus}
+            hasError={!!gameError}
           />
         </div>
         <Scores gameId={gameId} scores={scores} />
@@ -259,7 +292,10 @@ const Sweeper = () => {
           get a bit creative with it. Hope you enjoy it!
         </p> */}
       {/* </PortfolioItemDetails> */}
+
       <Confetti showConfetti={gameStatus === GameStatus.WON} />
+      {gameError && <ErrorNotification message={gameError} />}
+      {scoresError && <ErrorNotification message={scoresError} />}
     </ContainerWithNavigation>
   )
 }

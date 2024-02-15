@@ -17,6 +17,7 @@ const Scores = ({ scores, gameId }: Props) => {
         <ul data-test-id="scores-list" className={styles.scoreList}>
           {scores.map((s, index) => {
             const { time, startTime, _id } = s || {}
+
             if (!time || !startTime || !_id) return null
 
             return (

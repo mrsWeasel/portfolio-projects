@@ -4,9 +4,10 @@ import {
   DbInitiatedGame,
   DbInsertOneResult,
   DbStartedGame,
+  EndedGame,
+  InitiatedGame,
   Score,
   StartedGame,
-  WonGame,
 } from "@/typed/typed"
 import { ObjectId } from "mongodb"
 
@@ -179,4 +180,12 @@ export const getApiErrorResponse = (error: unknown): ApiErrorResponse => {
   }
 
   return { message: ApiError.InternalError, status: 500 }
+}
+
+export const isApiErrorResponse = (
+  data: ApiErrorResponse | Score[] | InitiatedGame | StartedGame | EndedGame
+): data is ApiErrorResponse => {
+  if ("message" in data) return true
+
+  return false
 }

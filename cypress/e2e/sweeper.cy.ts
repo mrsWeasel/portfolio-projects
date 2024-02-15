@@ -194,4 +194,70 @@ describe("Sweeper game", () => {
 
     cy.get(`[data-test-id="item-0-1"]`).should("contain", "2")
   })
+
+  it("Shows error message in sweeper grid and notification when trying to start game but api returns error", () => {
+    cy.intercept("PUT", "/api/sweeper/startGame*", {
+      statusCode: 500,
+      body: {
+        message: "INTERNAL_ERROR",
+      },
+    })
+
+    cy.wait("@initGame")
+
+    // Assert grid
+    cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
+
+    // Assert error when trying to start game
+    cy.get(`[data-test-id="item-0-1"]`).click()
+    cy.get('[data-test-id="sweeper-error"]').should("exist")
+
+    // Assert timer
+    assertTimerIsStopped()
+  })
+
+  it("Shows error notification when trying to end game but api returns error", () => {
+    cy.intercept("PUT", "/api/sweeper/endGame*", {
+      statusCode: 500,
+      body: {
+        message: "INTERNAL_ERROR",
+      },
+    })
+
+    cy.wait("@initGame")
+
+    // Assert grid
+    cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
+
+    // Click a cell with "2"
+    cy.get(`[data-test-id="item-0-1"]`).click()
+    cy.get(`[data-test-id="item-0-1"]`).should("contain", "2")
+
+    // Wait to get some time on timer
+    cy.wait(2000)
+
+    // Click a cell with mine
+    cy.get('[data-test-id="item-0-0"]').click()
+
+    // Assert error when ending the game is not successful
+    cy.get('[data-test-id="sweeper-error"]').should("exist")
+
+    // Assert timer
+    assertTimerIsStopped()
+  })
+
+  it("Shows error notification when fetching scores fails", () => {
+    cy.intercept("GET", "/api/sweeper/getScores*", {
+      statusCode: 500,
+      body: {
+        message: "INTERNAL_ERROR",
+      },
+    })
+
+    // Assert grid
+    cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
+
+    // Assert error notification
+    cy.get('[data-test-id="error-notification"]').should("exist")
+  })
 })

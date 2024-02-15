@@ -1,6 +1,7 @@
 import { cellHasValueInGrid, getAmountOfSurroundingMines } from "@/services/sweeperService"
 import { GameStatus } from "@/typed/typed"
 import styles from "./sweeper.module.css"
+import Error from "./Error"
 
 interface SweeperGridProps {
   mineGrid: number[][] | null
@@ -8,11 +9,23 @@ interface SweeperGridProps {
   visitedGrid: number[][] | null
   handleClickCell: (i: number, j: number) => Promise<void>
   gameStatus: GameStatus | null
+  hasError: boolean
 }
 
-const SweeperGrid = ({ mineGrid, flaggedGrid, visitedGrid, handleClickCell, gameStatus }: SweeperGridProps) => {
-  if (!(mineGrid && flaggedGrid && visitedGrid)) {
-    return <div className={styles.skeletonContainer}></div>
+const SweeperGrid = ({
+  mineGrid,
+  flaggedGrid,
+  visitedGrid,
+  handleClickCell,
+  gameStatus,
+  hasError,
+}: SweeperGridProps) => {
+  const isLoading = !(mineGrid && flaggedGrid && visitedGrid)
+
+  if (hasError) {
+    return <Error />
+  } else if (isLoading) {
+    return <div className={styles.skeletonContainer}>Setting up...</div>
   } else {
     return (
       <div data-test-id="sweeper-grid-container" className={styles.gridContainer}>
