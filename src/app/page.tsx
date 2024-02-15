@@ -1,5 +1,5 @@
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
-import styles from "./page.module.css"
+import styles from "./home.module.css"
 import Link from "next/link"
 import Header from "@/components/header/header"
 

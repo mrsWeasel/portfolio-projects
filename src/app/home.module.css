@@ -28,6 +28,11 @@
   background-color: var(--medium-lila);
 }
 
+.notFoundContainer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
 @media tablet {
   .tableRow,
   .tableHeading {
