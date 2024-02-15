@@ -1,5 +1,5 @@
 "use client"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
 import {
   generateMineGrid,
@@ -23,8 +23,6 @@ import Confetti from "@/components/confetti/Confetti"
 import { isApiErrorResponse } from "@/services/apiValidation"
 import ErrorNotification from "@/components/notification/errorNotification"
 
-let interval: number | undefined
-
 const Sweeper = () => {
   const [loading, setLoading] = useState(false)
   const [mineGrid, setMineGrid] = useState<number[][] | null>(null)
@@ -39,8 +37,15 @@ const Sweeper = () => {
   const [gameError, setGameError] = useState("")
   const [scoresError, setScoresError] = useState("")
 
+  const interval = useRef<number>()
+
+  // for storing temporarily the state of visited cells when traversing through grid
+  const tempVisited = useRef<number[][]>(generateGrid(10))
+  // for stopping recursion in case game is already won
+  let forceStop = useRef<boolean>(false)
+
   const reset = () => {
-    if (interval) clearInterval(interval)
+    if (interval.current) clearInterval(interval.current)
     setGameId(null)
     setGameStatus(null)
     setFlagging(false)
@@ -50,7 +55,7 @@ const Sweeper = () => {
   }
 
   const handleGameError = (errorMessage: string): void => {
-    if (interval) clearInterval(interval)
+    if (interval.current) clearInterval(interval.current)
     setLoading(false)
     setGameError(errorMessage)
   }
@@ -98,7 +103,7 @@ const Sweeper = () => {
         return
       }
 
-      interval = window?.setInterval(() => {
+      interval.current = window?.setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1)
       }, 1000)
     } catch (e) {
@@ -114,7 +119,7 @@ const Sweeper = () => {
         visited,
       })
 
-      if (interval) clearInterval(interval)
+      if (interval.current) clearInterval(interval.current)
 
       const { data } = res || {}
 
@@ -149,21 +154,16 @@ const Sweeper = () => {
     fetchHighScores()
 
     return () => {
-      if (interval) clearInterval(interval)
+      if (interval) clearInterval(interval.current)
     }
   }, [initiateGame])
 
-  // for storing temporarily the state of visited cells when traversing through grid
-  let tempVisited
-  // for stopping recursion in case game is already won
-  let forceStop = false
-
   const revealConnectedEmptyCells = async (i: number, j: number, visitedCells: number[][]) => {
-    if (forceStop) return
+    if (forceStop.current) return
     if (!mineGrid) return
-    tempVisited = JSON.parse(JSON.stringify(visitedCells))
-    tempVisited[i][j] = 1
-    setVisitedGrid(tempVisited)
+    tempVisited.current = JSON.parse(JSON.stringify(visitedCells))
+    tempVisited.current[i][j] = 1
+    setVisitedGrid(tempVisited.current)
 
     if (getAmountOfSurroundingMines(i, j, mineGrid)) return
 
@@ -172,18 +172,18 @@ const Sweeper = () => {
     const adjacent = [up, upRight, right, downRight, down, downLeft, left, upLeft]
 
     for (let l = 0; l < adjacent.length; l++) {
-      if (forceStop) break
+      if (forceStop.current) break
 
       const curr = adjacent[l]
       if (!isInRange(curr.y, curr.x, mineGrid)) continue
-      if (cellHasValueInGrid(curr.y, curr.x, tempVisited)) continue
-      revealConnectedEmptyCells(curr.y, curr.x, tempVisited)
+      if (cellHasValueInGrid(curr.y, curr.x, tempVisited.current)) continue
+      revealConnectedEmptyCells(curr.y, curr.x, tempVisited.current)
     }
 
     // check if game is won
-    if (!forceStop && isGameWon(tempVisited, mineGrid)) {
-      forceStop = true
-      handleWin(tempVisited)
+    if (!forceStop.current && isGameWon(tempVisited.current, mineGrid)) {
+      forceStop.current = true
+      handleWin(tempVisited.current)
     }
   }
 
@@ -249,11 +249,11 @@ const Sweeper = () => {
     setFlaggedGrid(generateGrid(10))
   }
 
-  const handleWin = async (tempVisited: number[][]) => {
+  const handleWin = async (visitedCells: number[][]) => {
     if (gameStatus === GameStatus.WON) return
 
     setGameStatus(GameStatus.WON)
-    await endGame(tempVisited)
+    await endGame(visitedCells)
 
     // Only fetch updated scores if game has a chance to be in the top 10
     if (!shouldFetchHighScores(scores, timer)) return
