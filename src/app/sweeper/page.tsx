@@ -1,6 +1,6 @@
 "use client"
 import { useCallback, useEffect, useRef, useState } from "react"
-import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
+import Container from "@/components/container/container"
 import {
   generateMineGrid,
   getDirections,
@@ -260,7 +260,7 @@ const Sweeper = () => {
   }
 
   return (
-    <ContainerWithNavigation>
+    <Container>
       <Header title="Minesweeper game" linkToHome />
       <Grid columns={2}>
         <div>
@@ -285,7 +285,7 @@ const Sweeper = () => {
       <Confetti showConfetti={gameStatus === GameStatus.WON} />
       {gameError && <ErrorNotification message={gameError} />}
       {scoresError && <ErrorNotification message={scoresError} />}
-    </ContainerWithNavigation>
+    </Container>
   )
 }
 

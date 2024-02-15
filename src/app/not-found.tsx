@@ -1,15 +1,15 @@
-import ContainerWithNavigation from "@/components/containerWithNavigation/containerWithNavigation"
-import styles from "./home.module.css"
+import Container from "@/components/container/container"
 import Header from "@/components/header/header"
+import styles from "./home.module.css"
 
 const NotFound = () => {
   return (
-    <ContainerWithNavigation>
+    <Container>
       <Header title="Not found " alignment="center" linkToHome />
       <div data-test-id="not-found" className={styles.notFoundContainer}>
         <p>Hmm 😐 Looks like you are searching for something that does not exist.</p>
       </div>
-    </ContainerWithNavigation>
+    </Container>
   )
 }
 
