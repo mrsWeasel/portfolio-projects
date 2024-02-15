@@ -52,7 +52,7 @@ You can either use local MongoDB or create a free tier account in MongoDB Atlas.
 
 If you wish to run MongoDB locally, install MongoDB community server with HomeBrew. Step by step instructions: https://www.mongodb.com/docs/manual/administration/install-community/#std-label-install-mdb-community-edition (install version 7.0 to make sure it is compatible!)
 
-Create `env.local` file for storing environment variables. Copy and paste from below. MONGODB_URI will work as is. Replace other details with your own.
+Create `.env.local` file for storing environment variables. Copy and paste from below. MONGODB_URI will work as is. Replace other details with your own.
 
 ```
 MONGODB_URI=mongodb://localhost:27017
@@ -63,7 +63,7 @@ CRON_SECRET=yoursecret
 
 ### Setting up with remote db
 
-First, create a free tier account in MongoDB Atlas. Set up a cluster and create a new database. Save database details in `env.test`.
+First, create a free tier account in MongoDB Atlas. Set up a cluster and create a new database. Save database details in `.env.test`.
 
 ## Running the project
 
