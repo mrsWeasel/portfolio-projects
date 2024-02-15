@@ -35,7 +35,7 @@ const SweeperToolbar = ({ elapsedSeconds, flagging, initGameDisabled, setFlaggin
 
         <button
           data-test-id="toolbar-button-init"
-          className={`${styles.toolBarButton}`}
+          className={`${styles.startButton}`}
           disabled={initGameDisabled}
           onClick={() => handleInitNewGame()}
         >

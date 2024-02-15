@@ -87,5 +87,6 @@
 | 15.2.  | 0.25 | Clean up unused / commented code and typos, update TODOs                                                                               |
 | 15.2.  | 0.5  | Use refs for variables that should not be affected by Reacts lifecycle                                                                 |
 | 15.2.  | 0.5  | Address TODOs in code                                                                                                                  |
+| 15.2.  | 1    | Visual tweaks: add custom favicon, remove loading text, add tooltip to start game button                                               |
 
-## Total hours: 117.25
+## Total hours: 118.25
