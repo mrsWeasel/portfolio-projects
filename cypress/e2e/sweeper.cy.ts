@@ -37,10 +37,9 @@ describe("Sweeper game", () => {
         _id,
       },
     }).as("initGame")
-
-    cy.visit("http://localhost:3000/sweeper")
   })
   it("Wins game when all non-mined cells are revealed, last clicked item being one with number", () => {
+    cy.visit("http://localhost:3000/sweeper")
     cy.wait("@initGame")
 
     // Assert toolbar
@@ -87,6 +86,7 @@ describe("Sweeper game", () => {
   })
 
   it("Wins game when all non-mined cells are revealed, last clicked item being empty (no number)", () => {
+    cy.visit("http://localhost:3000/sweeper")
     cy.wait("@initGame")
 
     // Assert toolbar
@@ -133,6 +133,7 @@ describe("Sweeper game", () => {
   })
 
   it("Loses when hits a cell with mine", () => {
+    cy.visit("http://localhost:3000/sweeper")
     cy.wait("@initGame")
 
     // Assert toolbar
@@ -163,6 +164,7 @@ describe("Sweeper game", () => {
   })
 
   it("Toggles between clicking cells open and marking them with flag", () => {
+    cy.visit("http://localhost:3000/sweeper")
     cy.wait("@initGame")
 
     // Assert toolbar
@@ -203,6 +205,7 @@ describe("Sweeper game", () => {
       },
     })
 
+    cy.visit("http://localhost:3000/sweeper")
     cy.wait("@initGame")
 
     // Assert grid
@@ -224,6 +227,7 @@ describe("Sweeper game", () => {
       },
     })
 
+    cy.visit("http://localhost:3000/sweeper")
     cy.wait("@initGame")
 
     // Assert grid
@@ -252,12 +256,15 @@ describe("Sweeper game", () => {
       body: {
         message: "INTERNAL_ERROR",
       },
-    })
+    }).as("getScores")
 
-    // Assert grid
-    cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
+    cy.visit("http://localhost:3000/sweeper")
+    cy.wait("@getScores")
 
     // Assert error notification
     cy.get('[data-test-id="error-notification"]').should("exist")
+
+    // Assert grid
+    cy.get('[data-test-id="sweeper-grid-container"]').should("exist")
   })
 })

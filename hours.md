@@ -83,5 +83,6 @@
 | 13.2.  | 0.5  | Style error component and extract it to another component, tweak loading state                                                         |
 | 14.2.  | 0.5  | Cypress tests for api errors, fix timer not stopping after error                                                                       |
 | 15.2.  | 0.5  | Show error notification when fetching scores fails, add Cypress test case                                                              |
+| 15.2.  | 0.5  | Try to fix flaky test (asserting that toaster notification is shown)                                                                   |
 
-## Total hours: 115.5
+## Total hours: 116
