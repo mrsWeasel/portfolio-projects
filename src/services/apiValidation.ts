@@ -52,8 +52,11 @@ const isScore = (object: unknown): object is Score => {
 }
 
 const isObjectId = (param: unknown): param is ObjectId => {
-  // TODO: placeholder - length as string should be 24
-  return true
+  if (!param) return false
+
+  const stringifiedParam = param.toString()
+
+  return stringifiedParam.length === 24
 }
 
 const isError = (error: unknown): error is Error => {
