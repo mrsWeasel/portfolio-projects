@@ -84,5 +84,8 @@
 | 14.2.  | 0.5  | Cypress tests for api errors, fix timer not stopping after error                                                                       |
 | 15.2.  | 0.5  | Show error notification when fetching scores fails, add Cypress test case                                                              |
 | 15.2.  | 0.5  | Try to fix flaky test (asserting that toaster notification is shown)                                                                   |
+| 15.2.  | 0.25 | Clean up unused / commented code and typos, update TODOs                                                                               |
+| 15.2.  | 0.5  | Use refs for variables that should not be affected by Reacts lifecycle                                                                 |
+| 15.2.  | 0.5  | Address TODOs in code                                                                                                                  |
 
-## Total hours: 116
+## Total hours: 117.25
