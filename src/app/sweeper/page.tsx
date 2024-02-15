@@ -209,7 +209,7 @@ const Sweeper = () => {
       return
     }
 
-    // // if cell is flagged, do not reveal it (might be clicked by accident)
+    // if cell is flagged, do not reveal it (might be clicked by accident)
     if (cellHasValueInGrid(i, j, flaggedGrid)) {
       return
     }
