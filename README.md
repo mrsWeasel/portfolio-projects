@@ -46,11 +46,27 @@ On root level, run install script:
 npm install
 ```
 
+This project is built using Node 18.16.0 (npm v9.5.1). It is recommended to use the same Node version. If you don't have nvm installed yet, [install](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) it first.
+
+Then, to use the Node version specified in projects `.nvmrc` file, try to run:
+
+```bash
+nvm use
+```
+
+If you get an error due to not having the correct version installed, run first:
+
+```bash
+nvm install
+```
+
+and then try again.
+
 You can either use local MongoDB or create a free tier account in MongoDB Atlas.
 
 ### Setting up with local db
 
-If you wish to run MongoDB locally, install MongoDB community server with HomeBrew. Step by step instructions: https://www.mongodb.com/docs/manual/administration/install-community/#std-label-install-mdb-community-edition (install version 7.0 to make sure it is compatible!)
+If you wish to run MongoDB locally, install MongoDB community server with HomeBrew following [step by step instructions](https://www.mongodb.com/docs/manual/administration/install-community/#std-label-install-mdb-community-edition) (install version 7.0 to make sure it is compatible!)
 
 Create `.env.local` file for storing environment variables. Copy and paste from below. MONGODB_URI will work as is. Replace other details with your own.
 
