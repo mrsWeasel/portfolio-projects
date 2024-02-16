@@ -93,5 +93,6 @@
 | 15.2.  | 0.5  | Clean globals.css (remove unused styles), rename ContainerWithNavigation and remove commented unused code                              |
 | 16.2.  | 0.25 | Clean up unused styles from container.module.css, replace hardcoded values with function parameters in sweeperService                  |
 | 16.2.  | 0.5  | Add test coverage to sweeperService to make sure nothing broke after changes (replacing hardcoded values)                              |
+| 16.2.  | 0.5  | Add .nvmrc and update setup instructions in README: how to use correct version of Node.js                                              |
 
-## Total hours: 121
+## Total hours: 121.5
