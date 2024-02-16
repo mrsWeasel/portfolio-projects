@@ -96,5 +96,6 @@
 | 16.2.  | 0.5  | Add .nvmrc and update setup instructions in README: how to use correct version of Node.js                                              |
 | 16.2.  | 0.5  | Fix bug in randomizeMines revealed by newly added tests                                                                                |
 | 16.2.  | 0.5  | Set auth header in Jest's setup file instead of api route, update test + add coverage for /deleteScores route                          |
+| 16.2.  | 1.5  | Add validation + some comments for inline documentation to /deleteScores route + new test case for /deleteScores                       |
 
-## Total hours: 122.5
+## Total hours: 124

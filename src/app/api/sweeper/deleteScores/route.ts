@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server"
 import { clientPromise } from "@/lib/mongodb"
-import { ApiError } from "@/typed/typed"
-import { getApiErrorResponse } from "@/services/apiValidation"
-
-type DeleteSettings = "all" | "onlyNotWon"
+import { ApiError, DeleteSettings } from "@/typed/typed"
+import { getApiErrorResponse, validateDeleteSettingsUrlParam } from "@/services/apiValidation"
 
 /* 
-Method needs to be GET for now - Vercel does not support anything else for cron jobs
-This api route is for deleting scores - used by api tests and cron jobs only 
+Method needs to be GET (and not DELETE) for now - Vercel does not support anything else for cron jobs.
+This api route is for deleting scores - used by api tests and cron jobs only.
+
+Url has query param 'delete' which defines how the delete operation functions. There are two options:
+1. 'all' is used by api tests to clear database before each test.
+2. 'onlyNotWon' is used by Vercels cron job - it cleans away lost and unfinished games to keep production db tidy.
 */
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url)
 
-    const deleteSettings = url?.searchParams?.get("delete") as DeleteSettings
+    const param = url?.searchParams?.get("delete")
+    const deleteSettings = validateDeleteSettingsUrlParam(param)
 
     const authToken = request.headers.get("authorization")?.replace("Bearer ", "") || ""
 
@@ -37,7 +40,7 @@ export async function GET(request: Request) {
     }
 
     // delete either everything OR just the games that do not have field "time" (lost / unfinished ones)
-    const filter = deleteSettings === "all" ? {} : { time: { $exists: false } }
+    const filter = deleteSettings === DeleteSettings.All ? {} : { time: { $exists: false } }
 
     const result = await database.collection(sweeperCollection).deleteMany(filter)
 
