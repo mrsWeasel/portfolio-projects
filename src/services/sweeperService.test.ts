@@ -1,5 +1,5 @@
 import { createMockScores } from "../../mock/scores"
-import { shouldFetchHighScores } from "./sweeperService"
+import { randomizeMines, shouldFetchHighScores } from "./sweeperService"
 
 const { generateGrid, generateMineGrid, isInRange } = require("./sweeperService")
 
@@ -35,6 +35,60 @@ describe("generateMineGrid", () => {
     expect(grid[7].flat()).toEqual([0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
     expect(grid[8].flat()).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 1, 0])
     expect(grid[9].flat()).toEqual([1, 0, 0, 0, 0, 0, 0, 0, 1, 0])
+  })
+
+  it("Generates mine grid with default size", () => {
+    const mines = [2, 6, 8, 36, 54, 55, 71, 88, 90, 98]
+
+    const grid = generateMineGrid(mines)
+    expect(grid.length).toBe(10)
+    expect(grid[0].length).toBe(10)
+
+    expect(grid[0].flat()).toEqual([0, 0, 1, 0, 0, 0, 1, 0, 1, 0])
+    expect(grid[1].flat()).not.toContain(1)
+    expect(grid[2].flat()).not.toContain(1)
+    expect(grid[3].flat()).toEqual([0, 0, 0, 0, 0, 0, 1, 0, 0, 0])
+    expect(grid[4].flat()).not.toContain(1)
+    expect(grid[5].flat()).toEqual([0, 0, 0, 0, 1, 1, 0, 0, 0, 0])
+    expect(grid[6].flat()).not.toContain(1)
+    expect(grid[7].flat()).toEqual([0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
+    expect(grid[8].flat()).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 1, 0])
+    expect(grid[9].flat()).toEqual([1, 0, 0, 0, 0, 0, 0, 0, 1, 0])
+  })
+
+  it("Generates mine grid with given size", () => {
+    const mines = [2, 6, 8, 15]
+
+    const grid = generateMineGrid(mines, 4)
+    expect(grid.length).toBe(4)
+    expect(grid[0].length).toBe(4)
+
+    expect(grid[0].flat()).toEqual([0, 0, 1, 0])
+    expect(grid[1].flat()).toEqual([0, 0, 1, 0])
+    expect(grid[2].flat()).toEqual([1, 0, 0, 0])
+    expect(grid[3].flat()).toEqual([0, 0, 0, 1])
+  })
+})
+
+describe("randomizeMines", () => {
+  it("Returns 10 mines with valid range by default", () => {
+    const mines = randomizeMines()
+
+    expect(mines.length).toBe(10)
+
+    mines.forEach((mine) => {
+      expect(mine).toBeLessThan(100)
+    })
+  })
+
+  it("Returns given amount of mines with valid range", () => {
+    const mines = randomizeMines(4)
+
+    expect(mines.length).toBe(4)
+
+    mines.forEach((mine) => {
+      expect(mine).toBeLessThan(16)
+    })
   })
 })
 
