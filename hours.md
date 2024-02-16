@@ -95,5 +95,6 @@
 | 16.2.  | 0.5  | Add test coverage to sweeperService to make sure nothing broke after changes (replacing hardcoded values)                              |
 | 16.2.  | 0.5  | Add .nvmrc and update setup instructions in README: how to use correct version of Node.js                                              |
 | 16.2.  | 0.5  | Fix bug in randomizeMines revealed by newly added tests                                                                                |
+| 16.2.  | 0.5  | Set auth header in Jest's setup file instead of api route, update test + add coverage for /deleteScores route                          |
 
-## Total hours: 122
+## Total hours: 122.5

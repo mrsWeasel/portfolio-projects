@@ -10,14 +10,10 @@ Method needs to be GET for now - Vercel does not support anything else for cron 
 This api route is for deleting scores - used by api tests and cron jobs only 
 */
 export async function GET(request: Request) {
-  const url = new URL(request.url)
-
-  const deleteSettings = url?.searchParams?.get("delete") as DeleteSettings
-
   try {
-    if (process.env.NODE_ENV === "development") {
-      request.headers.set("authorization", `Bearer ${process.env.CRON_SECRET}`)
-    }
+    const url = new URL(request.url)
+
+    const deleteSettings = url?.searchParams?.get("delete") as DeleteSettings
 
     const authToken = request.headers.get("authorization")?.replace("Bearer ", "") || ""
 

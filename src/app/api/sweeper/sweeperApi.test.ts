@@ -2,14 +2,12 @@ import { unobfuscateMines, generateMineGrid } from "../../../services/sweeperSer
 import request from "supertest"
 
 const baseUrl = "http://localhost:3000/api/sweeper"
+const token = `Bearer ${process.env.CRON_SECRET}`
 
 describe("initGame api route", () => {
   beforeEach(async () => {
-    await request(baseUrl).get("/deleteScores?delete=all")
-  })
-
-  afterAll(async () => {
-    await request(baseUrl).get("/deleteScores?delete=all")
+    const response = await request(baseUrl).get("/deleteScores?delete=all").set("Authorization", token)
+    expect(response.status).toBe(200)
   })
 
   test("initGame api route", async () => {
@@ -23,11 +21,8 @@ describe("initGame api route", () => {
 
 describe("startGame api route", () => {
   beforeEach(async () => {
-    await request(baseUrl).get("/deleteScores?delete=all")
-  })
-
-  afterAll(async () => {
-    await request(baseUrl).get("/deleteScores?delete=all")
+    const response = await request(baseUrl).get("/deleteScores?delete=all").set("Authorization", token)
+    expect(response.status).toBe(200)
   })
 
   test("startGame api route - when request body is valid, response should be ok", async () => {
@@ -48,12 +43,10 @@ describe("startGame api route", () => {
 
 describe("endGame api route", () => {
   beforeEach(async () => {
-    await request(baseUrl).get("/deleteScores?delete=all")
+    const response = await request(baseUrl).get("/deleteScores?delete=all").set("Authorization", token)
+    expect(response.status).toBe(200)
   })
 
-  afterAll(async () => {
-    await request(baseUrl).get("/deleteScores?delete=all")
-  })
   test("endGame api route / game won - when request body is valid, response should be ok ", async () => {
     const initResponse = await request(baseUrl).post("/initGame")
     const { _id, obfuscatedMines } = initResponse.body
@@ -103,5 +96,17 @@ describe("endGame api route", () => {
     await request(baseUrl).put("/startGame").send({ _id }).expect(200)
 
     await request(baseUrl).put("/endGame").send({ visited }).expect(400)
+  })
+})
+
+describe("deleteScores api route", () => {
+  it("Is not successful without authorization token", async () => {
+    const response = await request(baseUrl).get("/deleteScores?delete=all")
+    expect(response.status).toBe(401)
+  })
+
+  it("Is not successful with invalid authorization token", async () => {
+    const response = await request(baseUrl).get("/deleteScores?delete=all").set("Authorization", "asdf")
+    expect(response.status).toBe(401)
   })
 })

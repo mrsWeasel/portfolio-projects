@@ -8,4 +8,5 @@ module.exports = {
   moduleNameMapper: {
     "@/services/(.*)": "<rootDir>/src/services/$1",
   },
+  setupFiles: ["<rootDir>/setup-tests.ts"],
 }
