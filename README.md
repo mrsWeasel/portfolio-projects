@@ -46,6 +46,22 @@ On root level, run install script:
 npm install
 ```
 
+This project is built using Node 18.16.0 (npm v9.5.1). It is recommended to use the same Node version. If you don't have nvm installed yet, [install](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) it first.
+
+Then, to use the Node version specified in projects `.nvmrc`` file, try to run:
+
+```bash
+nvm use
+```
+
+If you get an error due to not having the correct version installed, run first:
+
+```bash
+nvm install
+```
+
+and then try again.
+
 You can either use local MongoDB or create a free tier account in MongoDB Atlas.
 
 ### Setting up with local db
