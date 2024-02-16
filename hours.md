@@ -91,5 +91,6 @@
 | 15.2.  | 1    | Custom 404 page, bump Next.js version because of a bug in previous version (404 page reloads infinitely)                               |
 | 15.2.  | 0.5  | E2E tests for 404 page, figuring out how to not make Cypress fail on 404 and unhandled NEXT_NOT_FOUND error                            |
 | 15.2.  | 0.5  | Clean globals.css (remove unused styles), rename ContainerWithNavigation and remove commented unused code                              |
+| 16.2.  | 0.25 | Clean up unused styles from container.module.css, replace hardcoded values with function parameters in sweeperService                  |
 
-## Total hours: 120.25
+## Total hours: 120.5

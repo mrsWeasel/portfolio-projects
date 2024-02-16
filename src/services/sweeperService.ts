@@ -20,13 +20,11 @@ export const generateGrid = (size = 10): number[][] => {
   return Array(size).fill(Array(size).fill(0))
 }
 
-// console.log(arr)
-
 export const randomizeMines = (size = 10): number[] => {
   const mines: number[] = []
 
-  while (mines.length < 10) {
-    const mineIndex = Math.round(Math.random() * 100)
+  while (mines.length < size) {
+    const mineIndex = Math.round(Math.random() * size * size)
     if (mines.indexOf(mineIndex) === -1) {
       mines.push(mineIndex)
     }
@@ -45,12 +43,12 @@ export const unobfuscateMines = (obfuscatedMines: string): number[] => {
 }
 
 export const generateMineGrid = (mines = randomizeMines(10), size = 10): number[][] => {
-  const arr = Array(100).fill(0)
+  const arr = Array(size * size).fill(0)
 
   let tempRow: number[] = []
   const mineGrid: number[][] = []
 
-  arr.forEach((cell, index) => {
+  arr.forEach((_cell, index) => {
     if (mines.indexOf(index) !== -1) {
       tempRow.push(1)
     } else {
