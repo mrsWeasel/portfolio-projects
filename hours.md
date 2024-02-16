@@ -94,5 +94,6 @@
 | 16.2.  | 0.25 | Clean up unused styles from container.module.css, replace hardcoded values with function parameters in sweeperService                  |
 | 16.2.  | 0.5  | Add test coverage to sweeperService to make sure nothing broke after changes (replacing hardcoded values)                              |
 | 16.2.  | 0.5  | Add .nvmrc and update setup instructions in README: how to use correct version of Node.js                                              |
+| 16.2.  | 0.5  | Fix bug in randomizeMines revealed by newly added tests                                                                                |
 
-## Total hours: 121.5
+## Total hours: 122
