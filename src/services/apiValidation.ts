@@ -4,6 +4,7 @@ import {
   DbInitiatedGame,
   DbInsertOneResult,
   DbStartedGame,
+  DeleteSettings,
   EndedGame,
   InitiatedGame,
   Score,
@@ -63,6 +64,24 @@ const isError = (error: unknown): error is Error => {
   if (error instanceof Error) return true
 
   return false
+}
+
+const isDeleteSettings = (param: unknown): param is DeleteSettings => {
+  switch (param) {
+    case DeleteSettings.All:
+    case DeleteSettings.OnlyNotWon:
+      return true
+    default:
+      return false
+  }
+}
+
+export const validateDeleteSettingsUrlParam = (param: unknown): DeleteSettings => {
+  if (!param || !isString(param) || !isDeleteSettings(param)) {
+    throw new Error(`${ApiError.InvalidRequest}: ${param} does not match with type DeleteSettings`)
+  }
+
+  return param
 }
 
 export const validateScores = (arr: unknown): Score[] => {

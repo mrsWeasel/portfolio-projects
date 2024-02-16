@@ -57,3 +57,8 @@ export interface ApiErrorResponse {
   message: string
   status: number
 }
+
+export enum DeleteSettings {
+  All = "all",
+  OnlyNotWon = "onlyNotWon",
+}
