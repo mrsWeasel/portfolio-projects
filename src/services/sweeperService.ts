@@ -24,7 +24,7 @@ export const randomizeMines = (size = 10): number[] => {
   const mines: number[] = []
 
   while (mines.length < size) {
-    const mineIndex = Math.round(Math.random() * size * size)
+    const mineIndex = Math.floor(Math.random() * size * size)
     if (mines.indexOf(mineIndex) === -1) {
       mines.push(mineIndex)
     }

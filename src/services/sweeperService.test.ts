@@ -78,6 +78,7 @@ describe("randomizeMines", () => {
 
     mines.forEach((mine) => {
       expect(mine).toBeLessThan(100)
+      expect(mine).toBeGreaterThanOrEqual(0)
     })
   })
 
@@ -88,6 +89,7 @@ describe("randomizeMines", () => {
 
     mines.forEach((mine) => {
       expect(mine).toBeLessThan(16)
+      expect(mine).toBeGreaterThanOrEqual(0)
     })
   })
 })
