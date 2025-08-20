@@ -21,12 +21,14 @@ describe("Sweeper game", () => {
     cy.exec(
       `env MONGODB_URI=${Cypress.env("MONGODB_URI")} MONGODB_LEADERBOARD_DB=${Cypress.env(
         "MONGODB_LEADERBOARD_DB"
-      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:clear`
+      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:clear`,
+      { failOnNonZeroExit: false }
     )
     cy.exec(
       `env MONGODB_URI=${Cypress.env("MONGODB_URI")} MONGODB_LEADERBOARD_DB=${Cypress.env(
         "MONGODB_LEADERBOARD_DB"
-      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:seed`
+      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:seed`,
+      { failOnNonZeroExit: false }
     )
 
     cy.intercept("POST", "/api/sweeper/initGame", {

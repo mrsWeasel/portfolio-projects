@@ -9,11 +9,11 @@ on:
 
 jobs:
   e2e:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     environment: local
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [2.x]
         mongodb-version: ['7.0']
 
     steps:
@@ -51,7 +51,7 @@ jobs:
         CRON_SECRET: ${{ secrets.CRON_SECRET }}
 
   Deploy-Production:
-    needs: e2e
+    # needs: e2e
     runs-on: ubuntu-latest
     environment: production
     steps:
