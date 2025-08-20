@@ -12,9 +12,13 @@ Url has query param 'delete' which defines how the delete operation functions. T
 2. 'onlyNotWon' is used by Vercels cron job - it cleans away lost and unfinished games to keep production db tidy.
 */
 export async function GET(request: Request) {
-  try {
-    const url = new URL(request.url)
+  /*
+   * this needs to stay outside of try / catch block! Next.js throws DynamicServerError internally and
+   * switches from static to dynamic rendering. However it can't do that if we catch the error here -> build breaks.
+   */
+  const url = new URL(request.url)
 
+  try {
     const param = url?.searchParams?.get("delete")
     const deleteSettings = validateDeleteSettingsUrlParam(param)
 
