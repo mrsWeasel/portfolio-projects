@@ -46,7 +46,7 @@ On root level, run install script:
 npm install
 ```
 
-This project is built using Node 18.16.0 (npm v9.5.1). It is recommended to use the same Node version. If you don't have nvm installed yet, [install](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) it first.
+This project is built using Node 22.18.0 (npm v9.5.1). It is recommended to use the same Node version. If you don't have nvm installed yet, [install](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) it first.
 
 Then, to use the Node version specified in projects `.nvmrc` file, try to run:
 
