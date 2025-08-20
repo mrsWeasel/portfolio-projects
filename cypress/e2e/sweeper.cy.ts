@@ -18,16 +18,20 @@ const _id = "64a0629d6cd31da8c69f4f67"
 
 describe("Sweeper game", () => {
   beforeEach(() => {
-    cy.exec(
-      `env MONGODB_URI=${Cypress.env("MONGODB_URI")} MONGODB_LEADERBOARD_DB=${Cypress.env(
-        "MONGODB_LEADERBOARD_DB"
-      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:clear`
-    )
-    cy.exec(
-      `env MONGODB_URI=${Cypress.env("MONGODB_URI")} MONGODB_LEADERBOARD_DB=${Cypress.env(
-        "MONGODB_LEADERBOARD_DB"
-      )} MONGODB_MINESWEEPER_COLLECTION=${Cypress.env("MONGODB_MINESWEEPER_COLLECTION")} npm run db:local:seed`
-    )
+    cy.exec("npm run db:local:clear", {
+      env: {
+        MONGODB_URI: Cypress.env("MONGODB_URI"),
+        MONGODB_LEADERBOARD_DB: Cypress.env("MONGODB_LEADERBOARD_DB"),
+        MONGODB_MINESWEEPER_COLLECTION: Cypress.env("MONGODB_MINESWEEPER_COLLECTION"),
+      },
+    })
+    cy.exec("npm run db:local:seed", {
+      env: {
+        MONGODB_URI: Cypress.env("MONGODB_URI"),
+        MONGODB_LEADERBOARD_DB: Cypress.env("MONGODB_LEADERBOARD_DB"),
+        MONGODB_MINESWEEPER_COLLECTION: Cypress.env("MONGODB_MINESWEEPER_COLLECTION"),
+      },
+    })
 
     cy.intercept("POST", "/api/sweeper/initGame", {
       statusCode: 200,
